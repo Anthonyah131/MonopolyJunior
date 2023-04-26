@@ -3,6 +3,7 @@ module cr.ac.una.monopolyjunior {
     requires javafx.fxml;
     requires com.jfoenix;
     requires java.logging;
+    requires java.base;
     
     opens cr.ac.una.monopolyjunior to javafx.fxml, com.jfoenix;
     opens cr.ac.una.monopolyjunior.controller to com.jfoenix,javafx.fxml;
