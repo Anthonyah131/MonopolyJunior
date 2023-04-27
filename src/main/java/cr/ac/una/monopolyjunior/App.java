@@ -1,5 +1,6 @@
 package cr.ac.una.monopolyjunior;
 
+import cr.ac.una.monopolyjunior.util.FlowController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -15,13 +16,12 @@ import javafx.scene.shape.Rectangle;
  */
 public class App extends Application {
 
-    private static final int ROWS = 9;
-    private static final int COLUMNS = 9;
-    private static final int TILE_SIZE = 60;
-
     @Override
     public void start(Stage primaryStage) throws Exception {
-        GridPane board = new GridPane();
+        FlowController.getInstance().InitializeFlow(primaryStage, null);
+        FlowController.getInstance().goMain();
+        
+        /*GridPane board = new GridPane();
 
         // Crear las casillas del tablero
         for (int row = 0; row < ROWS; row++) {
@@ -74,7 +74,7 @@ public class App extends Application {
 
         Scene scene = new Scene(board);
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show();*/
     }
 
     public static void main(String[] args) {

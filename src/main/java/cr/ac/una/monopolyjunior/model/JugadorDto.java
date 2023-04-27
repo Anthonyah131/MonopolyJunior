@@ -14,6 +14,7 @@ public class JugadorDto {
     private String nombre;
     private int saldo;
     private int posicionActual;
+    private String ficha;
 //    private ArrayList<Propiedad> propiedades;
 //
 //    public JugadorDto(String nombre, int saldo) {

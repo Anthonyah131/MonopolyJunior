@@ -5,6 +5,7 @@
 package cr.ac.una.monopolyjunior.controller;
 
 import com.jfoenix.controls.JFXButton;
+import cr.ac.una.monopolyjunior.util.FlowController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -42,6 +43,7 @@ public class InicioViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnNuevaPartida(ActionEvent event) {
+        FlowController.getInstance().goViewInWindow("NuevaPartidaView");
     }
 
     @FXML
