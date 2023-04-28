@@ -1,0 +1,7 @@
+.board-pane {
+    -fx-background-image: url("../resources/Tablero2.png");
+}
+
+.grid-pane {
+    -fx-background-fills: transparent;
+}

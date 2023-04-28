@@ -8,13 +8,13 @@ package cr.ac.una.monopolyjunior.model;
  *
  * @author ANTHONY
  */
-public class CasillaDto {
+public class Casilla {
     private String nombre;
     private String tipo;
     private int posX;
     private int posY;
 
-    public CasillaDto(String nombre, String tipo, int posX, int posY) {
+    public Casilla(String nombre, String tipo, int posX, int posY) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.posX = posX;
@@ -54,7 +54,7 @@ public class CasillaDto {
     }
     
 
-    public void accion(JugadorDto jugador, BancaDto banca, TableroDto tablero) {
+    public void accion(JugadorDto jugador, Banca banca, Tablero tablero) {
         switch (this.tipo) {
             case "propiedad":
                 // Acciones a realizar cuando el jugador cae en una propiedad

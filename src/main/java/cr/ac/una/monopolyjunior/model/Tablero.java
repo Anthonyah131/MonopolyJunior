@@ -12,40 +12,26 @@ import javafx.collections.ObservableList;
  *
  * @author ANTHONY
  */
-public class TableroDto {
-    public SimpleStringProperty id;
-    private ObservableList<CasillaDto> casillas;
+public class Tablero {
+    private ObservableList<Casilla> casillas;
     private ObservableList<JugadorDto> jugadores;
-    private ObservableList<TarjetaDto> tajetas;
+    private ObservableList<Tarjeta> tajetas;
 
-    public TableroDto() {
-        this.id = new SimpleStringProperty();
+    public Tablero() {
         casillas = FXCollections.observableArrayList();
         jugadores = FXCollections.observableArrayList();
         tajetas = FXCollections.observableArrayList();
     }
 
-    public TableroDto(TableroDto tableroDto) {
+    public Tablero(Tablero tableroDto) {
         this();
-        this.id.set(tableroDto.getId().toString());
-    }
-    
-    public Long getId() {
-        if(id.get()!=null && !id.get().isEmpty())
-            return Long.valueOf(id.get());
-        else
-            return null;
     }
 
-    public void setId(Long id) {
-        this.id.set(id.toString());
-    }
-
-    public ObservableList<CasillaDto> getCasillas() {
+    public ObservableList<Casilla> getCasillas() {
         return casillas;
     }
 
-    public void setCasillas(ObservableList<CasillaDto> casillas) {
+    public void setCasillas(ObservableList<Casilla> casillas) {
         this.casillas = casillas;
     }
 
@@ -62,14 +48,14 @@ public class TableroDto {
         int posicionActual = jugador.getPosicion();
         int nuevaPosicion = (posicionActual + cantidad) % this.casillas.size();
         jugador.setPosicion(nuevaPosicion);
-        CasillaDto casillaActual = this.casillas.get(nuevaPosicion);
+        Casilla casillaActual = this.casillas.get(nuevaPosicion);
         casillaActual.efecto(jugador);
     }
 
     public void imprimirTablero() {
         for (int i = 0; i < this.casillas.size(); i++) {
             System.out.print("[");
-            CasillaDto casilla = this.casillas.get(i);
+            Casilla casilla = this.casillas.get(i);
             if (casilla instanceof Propiedad) {
                 Jugador propietario = ((Propiedad) casilla).getPropietario();
                 if (propietario == null) {

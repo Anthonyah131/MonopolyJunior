@@ -2,6 +2,7 @@ package cr.ac.una.monopolyjunior;
 
 import cr.ac.una.monopolyjunior.util.FlowController;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -16,11 +17,15 @@ import javafx.scene.shape.Rectangle;
  */
 public class App extends Application {
 
+    private static final int ROWS = 9;
+    private static final int COLUMNS = 9;
+    private static final int TILE_SIZE = 50;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         FlowController.getInstance().InitializeFlow(primaryStage, null);
         FlowController.getInstance().goMain();
-        
+
         /*GridPane board = new GridPane();
 
         // Crear las casillas del tablero
@@ -51,26 +56,18 @@ public class App extends Application {
 
 // Obtener el StackPane existente en la posición (0, 0)
         StackPane stackPane = (StackPane) board.getChildren().get(0);
-        Label labelAntiguo = (Label) stackPane.getChildren().get(1);
-        System.out.println(stackPane.getChildren().size());
-        stackPane.getChildren().remove(labelAntiguo);
-        System.out.println(stackPane.getChildren().size());
+
+        board.getChildren().remove(stackPane);
 
 // Crear un nuevo Label para reemplazar el StackPane existente
         Label label = new Label("Nuevo Label");
 
-// Reemplazar el StackPane existente con el nuevo Label en la posición (0, 0)
-        stackPane.getChildren().add(label);
-
-// Obtener el Label en la posición (0, 0)
-        Label newLabel = (Label) stackPane.getChildren().get(1);
+        board.add(label, 0, 0);
 
 // Imprimir el texto del Label
-        StackPane stackPanee = (StackPane) board.getChildren().get(0);
-        Label labelAntiguoo = (Label) stackPanee.getChildren().get(1);
-        
-        System.out.println(stackPanee.getChildren().size());
-        System.out.println(labelAntiguoo.getText());
+        Node node = (Node) board.getChildren().get(0);
+
+        System.out.println(node);
 
         Scene scene = new Scene(board);
         primaryStage.setScene(scene);

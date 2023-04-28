@@ -4,21 +4,15 @@
  */
 package cr.ac.una.monopolyjunior.model;
 
-import java.util.Random;
+import java.util.ArrayList;
 
 /**
  *
  * @author ANTHONY
  */
-public class DadoDto {
-    private int caras;
+public class Banca {
+    private ArrayList<Propiedad> propiedades;
 
-    public DadoDto(int caras) {
-        this.caras = caras;
-    }
-
-    public int lanzar() {
-        Random random = new Random();
-        return random.nextInt(this.caras) + 1;
+    public Banca() {
     }
 }

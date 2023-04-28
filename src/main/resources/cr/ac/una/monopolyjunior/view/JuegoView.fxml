@@ -1,8 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 
-<AnchorPane id="AnchorPane" fx:id="rootJuegoView" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="cr.ac.una.monopolyjunior.controller.JuegoViewController">
-    
-</AnchorPane>
+<BorderPane fx:id="rootJuegoView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="714.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.JuegoViewController">
+   <center>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane fx:id="boardAnchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="564.0" prefWidth="564.0">
+               <children>
+                  <GridPane fx:id="boardPane" alignment="CENTER" layoutY="6.0" prefHeight="564.0" prefWidth="564.0" styleClass="board-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="90.0" minWidth="0.0" prefWidth="0.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="55.0" minWidth="0.0" prefWidth="0.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="55.0" minWidth="0.0" prefWidth="0.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="55.0" minWidth="0.0" prefWidth="0.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="55.0" minWidth="0.0" prefWidth="0.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="55.0" minWidth="0.0" prefWidth="0.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="55.0" minWidth="0.0" prefWidth="0.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="55.0" minWidth="0.0" prefWidth="0.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="90.0" minWidth="0.0" prefWidth="0.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="90.0" minHeight="0.0" prefHeight="90.0" valignment="CENTER" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="55.0" minHeight="55.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="55.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="55.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="55.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="55.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="55.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="55.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="90.0" minHeight="0.0" prefHeight="0.0" valignment="CENTER" vgrow="ALWAYS" />
+                     </rowConstraints>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </center>
+   <left>
+      <VBox alignment="TOP_CENTER" prefWidth="150.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="btnFinalizarTurno" onAction="#onActionBtnFinalizarTurno" text="Finalizar Turno" />
+            <JFXButton fx:id="btnMiCapital" onAction="#onActionBtnMiCapital" text="Mi Capital" />
+            <JFXButton fx:id="btnComprarPropi" onAction="#onActionBtnComprarPropi" text="Comprar Propiedades" />
+            <JFXButton fx:id="btnVerderPropi" onAction="#onActionBtnVenderPropi" text="Vender Propiedades" />
+            <JFXButton fx:id="btnContruir" onAction="#onActionBtnConstruir" text="Contruir Casas o Hoteles" />
+            <JFXButton fx:id="btnHipotecar" onAction="#onActionBtnHipotecar" text="Hipotecar" />
+            <JFXButton fx:id="btnPagarHipoteca" onAction="#btnPagarHipoteca" text="Pagar o liberar Hipoteca" />
+            <JFXButton fx:id="btnFinalizarJuego" onAction="#onActionBtnFinalizarJuego" text="Finalizar Juego" />
+         </children>
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </left>
+   <top>
+      <HBox prefHeight="75.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="imgLogo" fitHeight="50.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="lbTurno" text="Turno de:  ......" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <children>
+                  <Label fx:id="lbCapital" text="Capital: ....." />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </top>
+</BorderPane>

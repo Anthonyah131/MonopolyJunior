@@ -8,11 +8,11 @@ package cr.ac.una.monopolyjunior.model;
  *
  * @author ANTHONY
  */
-public class CasaDto {
+public class Casa {
     private int precio;
 //    private Calle calle;
 //
-//    public CasaDto(int precio, Calle calle) {
+//    public Casa(int precio, Calle calle) {
 //        this.precio = precio;
 //        this.calle = calle;
 //    }

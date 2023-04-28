@@ -13,12 +13,12 @@ import javafx.scene.paint.Color;
  *
  * @author ANTHONY
  */
-public class SolarDto extends PropiedadDto {
+public class Solar extends Propiedad {
     private Color color;
-    private ObservableList<CasaDto> casas;
-    private HotelDto hotel;
+    private ObservableList<Casa> casas;
+    private Hotel hotel;
 
-    public SolarDto(String nombre, int precioCompra, int renta, int valorHipoteca, Color color) {
+    public Solar(String nombre, int precioCompra, int renta, int valorHipoteca, Color color) {
         super(nombre, precioCompra, renta, valorHipoteca);
         this.color = color;
         this.casas = FXCollections.observableArrayList();
@@ -30,14 +30,14 @@ public class SolarDto extends PropiedadDto {
 
     public void construirCasa() {
 //        if (this.hotel == null && this.casas.size() < 4) {
-//            CasaDto casa = new CasaDto(this.costoConstruccion, this);
+//            Casa casa = new Casa(this.costoConstruccion, this);
 //            this.casas.add(casa);
 //        }
     }
 
     public void construirHotel() {
 //        if (this.hotel == null && this.casas.size() == 4) {
-//            this.hotel = new HotelDto(this.costoConstruccion, this);
+//            this.hotel = new Hotel(this.costoConstruccion, this);
 //            this.casas.clear();
 //        }
     }

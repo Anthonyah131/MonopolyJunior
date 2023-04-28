@@ -8,10 +8,10 @@ package cr.ac.una.monopolyjunior.model;
  *
  * @author ANTHONY
  */
-public class EstacionDto extends PropiedadDto {
+public class Estacion extends Propiedad {
     private static final int MULTIPLICADOR_RENTA = 25;
 
-    public EstacionDto(String nombre, int precioCompra, int renta, int valorHipoteca) {
+    public Estacion(String nombre, int precioCompra, int renta, int valorHipoteca) {
         super(nombre, precioCompra, renta, valorHipoteca);
     }
 

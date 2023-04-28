@@ -8,11 +8,11 @@ package cr.ac.una.monopolyjunior.model;
  *
  * @author ANTHONY
  */
-public class HotelDto {
+public class Hotel {
     private int precio;
-    private CasillaDto calle;
+    private Casilla calle;
 
-    public HotelDto(int precio, CasillaDto calle) {
+    public Hotel(int precio, Casilla calle) {
         this.precio = precio;
         this.calle = calle;
     }
@@ -21,7 +21,7 @@ public class HotelDto {
         return this.precio;
     }
 
-    public CasillaDto getCalle() {
+    public Casilla getCalle() {
         return this.calle;
     }
 }

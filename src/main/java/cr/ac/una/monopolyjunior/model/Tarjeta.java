@@ -8,11 +8,11 @@ package cr.ac.una.monopolyjunior.model;
  *
  * @author ANTHONY
  */
-public class TarjetaDto {
+public class Tarjeta {
     private String tipo;
     private String descripcion;
 
-    public TarjetaDto(String tipo, String descripcion) {
+    public Tarjeta(String tipo, String descripcion) {
         this.tipo = tipo;
         this.descripcion = descripcion;
     }
@@ -25,7 +25,7 @@ public class TarjetaDto {
         return this.descripcion;
     }
 
-    public void aplicarEfecto(JugadorDto jugador, BancaDto banca, TableroDto tablero) {
+    public void aplicarEfecto(JugadorDto jugador, Banca banca, Tablero tablero) {
         switch (this.tipo) {
             case "suerte":
                 // Acciones a realizar cuando el jugador recibe una tarjeta de suerte

@@ -4,12 +4,17 @@
  */
 package cr.ac.una.monopolyjunior.controller;
 
+import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -21,13 +26,40 @@ import javafx.scene.shape.Rectangle;
  * @author ANTHONY
  */
 public class JuegoViewController extends Controller implements Initializable {
-    
+
     @FXML
-    private AnchorPane rootJuegoView;
+    private BorderPane rootJuegoView;
+    @FXML
+    private AnchorPane boardAnchor;
+    @FXML
+    private GridPane boardPane;
+    @FXML
+    private ImageView imgLogo;
+    @FXML
+    private Label lbTurno;
+    @FXML
+    private Label lbCapital;
+    @FXML
+    private JFXButton btnFinalizarTurno;
+    @FXML
+    private JFXButton btnMiCapital;
+    @FXML
+    private JFXButton btnComprarPropi;
+    @FXML
+    private JFXButton btnVerderPropi;
+    @FXML
+    private JFXButton btnContruir;
+    @FXML
+    private JFXButton btnHipotecar;
+    @FXML
+    private JFXButton btnPagarHipoteca;
+    @FXML
+    private JFXButton btnFinalizarJuego;
     
     private static final int ROWS = 9;
     private static final int COLUMNS = 9;
-    private static final int TILE_SIZE = 60;
+    private static final int TILE_SIZE1 = 55;
+    private static final int TILE_SIZE2 = 90;
 
     /**
      * Initializes the controller class.
@@ -35,41 +67,67 @@ public class JuegoViewController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         crearTablero();
-    }    
-    
+    }
+
     @Override
     public void initialize() {
     }
-    
-    public void crearTablero() {
-        GridPane board = new GridPane();
 
-        // Crear las casillas del tablero
+    public void crearTablero() {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
                 StackPane tile = new StackPane();
-                tile.setPrefSize(TILE_SIZE, TILE_SIZE);
-                
-                Rectangle border = new Rectangle(TILE_SIZE, TILE_SIZE);
-                border.setFill(null);
-                border.setStroke(Color.BLACK);
-                tile.getChildren().add(border);
+                tile.getStylesheets().add("grid-pane");
 
-                // Asignar un color diferente a las casillas especiales
-                if (row == 0 || row == ROWS - 1 || col == 0 || col == COLUMNS - 1) {
-                    tile.setStyle("-fx-background-color: #f8f8ff;");
-                    Label label = new Label("Hola Mundo");
-                    tile.getChildren().add(label);
-                } else if (row % 2 == 0) {
-                    tile.setStyle("-fx-background-color: #ffe4b5;");
+                if (row == 0 && (col == 0 || col == 8) || row == 8 && (col == 0 || col == 8)) {
+                    tile.setPrefSize(TILE_SIZE2, TILE_SIZE2);
+                    
+                } else if (row == 0 || row == 8) {
+                    tile.setPrefSize(TILE_SIZE1, TILE_SIZE2);
+                    
+                } else if (col == 0 || col == 8) {
+                    tile.setPrefSize(TILE_SIZE2, TILE_SIZE1);
+                    
                 } else {
-                    tile.setStyle("-fx-background-color: #add8e6;");
+                    tile.setPrefSize(TILE_SIZE1, TILE_SIZE1);
+                    
                 }
-                
-                board.add(tile, col, row);
+                boardPane.add(tile, col, row);
             }
         }
-        rootJuegoView.getChildren().add(board);
     }
-    
+
+    @FXML
+    private void onActionBtnFinalizarTurno(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnMiCapital(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnComprarPropi(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnVenderPropi(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnConstruir(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnHipotecar(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnPagarHipoteca(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnFinalizarJuego(ActionEvent event) {
+    }
+
+
 }

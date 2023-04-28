@@ -8,7 +8,7 @@ package cr.ac.una.monopolyjunior.model;
  *
  * @author ANTHONY
  */
-public class PropiedadDto {
+public class Propiedad {
 
     private String nombre;
     private int precioCompra;
@@ -16,7 +16,7 @@ public class PropiedadDto {
     private int renta;
     private JugadorDto propietario;
 
-    public PropiedadDto(String nombre, int precioCompra, int renta, int valorHipoteca) {
+    public Propiedad(String nombre, int precioCompra, int renta, int valorHipoteca) {
         this.nombre = nombre;
         this.precioCompra = precioCompra;
         this.renta = renta;
