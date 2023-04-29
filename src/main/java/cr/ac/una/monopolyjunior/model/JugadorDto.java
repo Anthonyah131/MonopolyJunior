@@ -5,6 +5,7 @@
 package cr.ac.una.monopolyjunior.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,57 +14,72 @@ import java.util.ArrayList;
 public class JugadorDto {
     private String nombre;
     private int saldo;
-    private int posicionActual;
     private String ficha;
-//    private ArrayList<Propiedad> propiedades;
-//
-//    public JugadorDto(String nombre, int saldo) {
-//        this.nombre = nombre;
-//        this.saldo = saldo;
-//        this.posicionActual = 0; // El jugador empieza en la posición 0 del tablero
-//        this.propiedades = new ArrayList<Propiedad>();
-//    }
-//
-//    // Getters y setters
-//    public String getNombre() {
-//        return this.nombre;
-//    }
-//
-//    public int getSaldo() {
-//        return this.saldo;
-//    }
-//
-//    public int getPosicionActual() {
-//        return this.posicionActual;
-//    }
-//
-//    public void setPosicionActual(int posicionActual) {
-//        this.posicionActual = posicionActual;
-//    }
-//
-//    public ArrayList<Propiedad> getPropiedades() {
-//        return this.propiedades;
-//    }
-//
-//    // Métodos
-//    public void agregarPropiedad(Propiedad propiedad) {
-//        this.propiedades.add(propiedad);
-//    }
-//
-//    public void pagar(int cantidad) {
-//        this.saldo -= cantidad;
-//    }
-//
-//    public void recibir(int cantidad) {
-//        this.saldo += cantidad;
-//    }
-//
-//    public void mover(int cantidad) {
-//        this.posicionActual += cantidad;
-//        if (this.posicionActual >= Tablero.CANTIDAD_CASILLAS) {
-//            // Si el jugador pasa por la casilla de salida, recibe una cantidad de dinero
-//            this.posicionActual -= Tablero.CANTIDAD_CASILLAS;
-//            this.recibir(Tablero.CANTIDAD_SALIDA);
-//        }
-//    }
+    private int posicionX;
+    private int posicionY;
+    private List<Propiedad> propiedades;
+
+    public JugadorDto(String nombre, String ficha, int saldo) {
+        this.nombre = nombre;
+        this.saldo = saldo;
+        this.ficha = ficha;
+        this.posicionX = 8;
+        this.posicionY = 8;
+        this.propiedades = new ArrayList<>();
+    }
+
+    // Getters y setters
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public int getSaldo() {
+        return this.saldo;
+    }
+
+    public String getFicha() {
+        return ficha;
+    }
+
+    public void setFicha(String ficha) {
+        this.ficha = ficha;
+    }
+
+    public int getPosicionX() {
+        return posicionX;
+    }
+
+    public void setPosicionX(int posicionX) {
+        this.posicionX = posicionX;
+    }
+
+    public int getPosicionY() {
+        return posicionY;
+    }
+
+    public void setPosicionY(int posicionY) {
+        this.posicionY = posicionY;
+    }
+
+    public List<Propiedad> getPropiedades() {
+        return this.propiedades;
+    }
+
+    // Métodos
+    public void agregarPropiedad(Propiedad propiedad) {
+        this.propiedades.add(propiedad);
+    }
+
+    public void pagar(int cantidad) {
+        this.saldo -= cantidad;
+    }
+
+    public void recibir(int cantidad) {
+        this.saldo += cantidad;
+    }
+
+    public void mover(int x, int y) {
+        this.posicionX = x;
+        this.posicionY = y;
+    }
 }

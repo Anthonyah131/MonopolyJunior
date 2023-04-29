@@ -24,14 +24,14 @@
                                  <children>
                                     <Label text="Player 1" />
                                     <Label fx:id="lbPlayer1" text="...." />
-                                    <ImageView fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="imgPlayer1" fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </VBox>
                               <VBox fx:id="containerPlayer2" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0">
                                  <children>
                                     <Label text="Player 2" />
                                     <Label fx:id="lbPlayer2" text="...." />
-                                    <ImageView fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="imgPlayer2" fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </VBox>
                            </children>

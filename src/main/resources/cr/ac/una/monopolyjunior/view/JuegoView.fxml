@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
 <BorderPane fx:id="rootJuegoView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="714.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.JuegoViewController">
    <center>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
@@ -78,7 +77,8 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label fx:id="lbTurno" text="Turno de:  ......" />
+                  <Label text="Turno de: " />
+                  <Label fx:id="lbTurno" text="Player 1" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">

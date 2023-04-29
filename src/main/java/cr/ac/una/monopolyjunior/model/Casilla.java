@@ -56,8 +56,9 @@ public class Casilla {
 
     public void accion(JugadorDto jugador, Banca banca, Tablero tablero) {
         switch (this.tipo) {
-            case "propiedad":
-                // Acciones a realizar cuando el jugador cae en una propiedad
+            case "Go":
+                break;
+            case "Propiedad":
 //                PropiedadDto propiedad = tablero.getPropiedad(this.nombre);
 //                if (propiedad.getPropietario() == null) {
 //                    // El jugador puede comprar la propiedad
@@ -70,18 +71,17 @@ public class Casilla {
 //                    jugador.pagar(renta, propiedad.getPropietario(), banca);
 //                }
                 break;
-            case "descanso":
-                // Acciones a realizar cuando el jugador cae en una casilla de descanso
+            case "Impuesto":
                 break;
-            case "suerte":
-                // Acciones a realizar cuando el jugador cae en una casilla de suerte
+            case "Parking Free":
+                break;
+            case "Ve a la Carcel":
+                break;
+            case "Carcel":
+                break;
+            case "Suerte":
 //                TarjetaDto tarjetaSuerte = tablero.getTarjetaSuerte();
 //                tarjetaSuerte.aplicarEfecto(jugador, banca, tablero);
-                break;
-            case "comunidad":
-                // Acciones a realizar cuando el jugador cae en una casilla de comunidad
-//                TarjetaDto tarjetaComunidad = tablero.getTarjetaComunidad();
-//                tarjetaComunidad.aplicarEfecto(jugador, banca, tablero);
                 break;
         }
     }

@@ -14,17 +14,17 @@ import javafx.scene.paint.Color;
  * @author ANTHONY
  */
 public class Solar extends Propiedad {
-    private Color color;
+    private String color;
     private ObservableList<Casa> casas;
     private Hotel hotel;
 
-    public Solar(String nombre, int precioCompra, int renta, int valorHipoteca, Color color) {
+    public Solar(String nombre, int precioCompra, int renta, int valorHipoteca, String color) {
         super(nombre, precioCompra, renta, valorHipoteca);
         this.color = color;
         this.casas = FXCollections.observableArrayList();
     }
 
-    public Color getColor() {
+    public String getColor() {
         return this.color;
     }
 

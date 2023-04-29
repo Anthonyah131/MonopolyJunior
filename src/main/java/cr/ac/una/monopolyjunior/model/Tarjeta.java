@@ -28,11 +28,30 @@ public class Tarjeta {
     public void aplicarEfecto(JugadorDto jugador, Banca banca, Tablero tablero) {
         switch (this.tipo) {
             case "suerte":
-                // Acciones a realizar cuando el jugador recibe una tarjeta de suerte
                 // ...
                 break;
             case "comunidad":
-                // Acciones a realizar cuando el jugador recibe una tarjeta de comunidad
+                // ...
+                break;
+            case "Ve a la carcel":
+                // ...
+                break;
+            case "Ve a la casilla Go":
+                // ...
+                break;
+            case "Cobras $600":
+                // ...
+                break;
+            case "Cobras $400":
+                // ...
+                break;
+            case "Pagas $500":
+                // ...
+                break;
+            case "Pagas $200":
+                // ...
+                break;
+            case "Retrocedes dos lugares":
                 // ...
                 break;
         }
