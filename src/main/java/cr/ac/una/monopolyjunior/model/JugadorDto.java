@@ -17,7 +17,7 @@ public class JugadorDto {
     private String ficha;
     private int posicionX;
     private int posicionY;
-    private List<Propiedad> propiedades;
+    private List<String> propiedades;
 
     public JugadorDto(String nombre, String ficha, int saldo) {
         this.nombre = nombre;
@@ -61,12 +61,12 @@ public class JugadorDto {
         this.posicionY = posicionY;
     }
 
-    public List<Propiedad> getPropiedades() {
+    public List<String> getPropiedades() {
         return this.propiedades;
     }
 
     // Métodos
-    public void agregarPropiedad(Propiedad propiedad) {
+    public void agregarPropiedad(String propiedad) {
         this.propiedades.add(propiedad);
     }
 

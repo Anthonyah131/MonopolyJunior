@@ -12,8 +12,8 @@ public class Propiedad {
 
     private String nombre;
     private int precioCompra;
-    private int valorHipoteca;
     private int renta;
+    private int valorHipoteca;
     private JugadorDto propietario;
 
     public Propiedad(String nombre, int precioCompra, int renta, int valorHipoteca) {
@@ -35,6 +35,14 @@ public class Propiedad {
 
     public int getRenta() {
         return this.renta;
+    }
+
+    public int getValorHipoteca() {
+        return valorHipoteca;
+    }
+
+    public void setValorHipoteca(int valorHipoteca) {
+        this.valorHipoteca = valorHipoteca;
     }
 
     public JugadorDto getPropietario() {

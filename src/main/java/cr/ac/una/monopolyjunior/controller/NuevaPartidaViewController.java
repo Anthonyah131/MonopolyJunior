@@ -53,29 +53,30 @@ public class NuevaPartidaViewController extends Controller implements Initializa
     private JFXButton btnContinuar;
 
     String fichaPlayer = "";
-    List<Image> fichas = new ArrayList<>();
+    List<String> fichas = new ArrayList<>();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        fichas.add(new Image("cr/ac/una/monopolyjunior/resources/fichas/Battleship.png"));
-        fichas.add(new Image("cr/ac/una/monopolyjunior/resources/fichas/Car.png"));
-        fichas.add(new Image("cr/ac/una/monopolyjunior/resources/fichas/Dog.png"));
-        fichas.add(new Image("cr/ac/una/monopolyjunior/resources/fichas/Hat.png"));
-        fichas.add(new Image("cr/ac/una/monopolyjunior/resources/fichas/Iron.png"));
-        fichas.add(new Image("cr/ac/una/monopolyjunior/resources/fichas/Shoe.png"));
-        fichas.add(new Image("cr/ac/una/monopolyjunior/resources/fichas/Thimble.png"));
-        fichas.add(new Image("cr/ac/una/monopolyjunior/resources/fichas/Wheelbarrow.png"));
+        fichas.add("Battleship.png");
+        fichas.add("Car.png");
+        fichas.add("Dog.png");
+        fichas.add("Hat.png");
+        fichas.add("Iron.png");
+        fichas.add("Shoe.png");
+        fichas.add("Thimble.png");
+        fichas.add("Wheelbarrow.png");
 
         for (int i = 0; i < 8; i++) {
-            ImageView imageview = new ImageView(fichas.get(i));
+            ImageView imageview = new ImageView("cr/ac/una/monopolyjunior/resources/fichas/" + fichas.get(i));
+            imageview.setId(fichas.get(i));
             imageview.setPreserveRatio(false);
             imageview.setFitHeight(75);
             imageview.setFitWidth(75);
             imageview.setOnMouseClicked(event -> {
-                fichaPlayer = imageview.getImage().getUrl();
+                fichaPlayer = imageview.getId();
                 System.out.println(fichaPlayer);
             });
             if (i >= 4) {
@@ -94,7 +95,8 @@ public class NuevaPartidaViewController extends Controller implements Initializa
     private void onActionBtnContinuar(ActionEvent event) {
         if ("Player 1".equals(lbPlayer.getText())) {
             if (!fichaPlayer.isBlank() && !txfNombreJugador.getText().isBlank()) {
-                imgPlayer1.setImage(new Image(fichaPlayer));
+                imgPlayer1.setImage(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + fichaPlayer));
+                imgPlayer1.setId(fichaPlayer);
                 lbPlayer1.setText(txfNombreJugador.getText());
                 fichaPlayer = "";
                 txfNombreJugador.setText("");
@@ -104,10 +106,11 @@ public class NuevaPartidaViewController extends Controller implements Initializa
             }
         } else if ("Player 2".equals(lbPlayer.getText())) {
             if (!fichaPlayer.isBlank() && !txfNombreJugador.getText().isBlank()) {
-                imgPlayer2.setImage(new Image(fichaPlayer));
+                imgPlayer2.setImage(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + fichaPlayer));
+                imgPlayer2.setId(fichaPlayer);
                 lbPlayer2.setText(txfNombreJugador.getText());
                 JuegoViewController juegoViewController = (JuegoViewController) FlowController.getInstance().getController("JuegoView");
-                juegoViewController.crearTablero(lbPlayer1.getText(), imgPlayer1.getImage().getUrl(), lbPlayer2.getText(), imgPlayer2.getImage().getUrl());
+                juegoViewController.crearTablero(lbPlayer1.getText(), imgPlayer1.getId(), lbPlayer2.getText(), imgPlayer2.getId());
                 FlowController.getInstance().goViewInWindow("JuegoView");
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Player 2", getStage(), "Error creando el Player 2, revise los campos");

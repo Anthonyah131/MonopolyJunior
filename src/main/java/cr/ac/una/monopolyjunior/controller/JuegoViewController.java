@@ -6,18 +6,17 @@ package cr.ac.una.monopolyjunior.controller;
 
 import com.jfoenix.controls.JFXButton;
 import cr.ac.una.monopolyjunior.model.Banca;
+import cr.ac.una.monopolyjunior.model.Casilla;
+import cr.ac.una.monopolyjunior.model.Dado;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
 import cr.ac.una.monopolyjunior.model.Tablero;
-import cr.ac.una.monopolyjunior.util.FlowController;
-import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,6 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -61,6 +61,10 @@ public class JuegoViewController extends Controller implements Initializable {
     private JFXButton btnPagarHipoteca;
     @FXML
     private JFXButton btnFinalizarJuego;
+    @FXML
+    private StackPane stakPaneDados;
+    @FXML
+    private JFXButton btnDados;
 
     private static final int ROWS = 9;
     private static final int COLUMNS = 9;
@@ -69,6 +73,7 @@ public class JuegoViewController extends Controller implements Initializable {
 
     Tablero tablero;
     Banca banca;
+    Dado dado;
 
     /**
      * Initializes the controller class.
@@ -87,8 +92,10 @@ public class JuegoViewController extends Controller implements Initializable {
         tablero = new Tablero(jugador1, jugador2);
 
         lbTurno.setText(tablero.getJugadores().get(0).getNombre());
+        lbCapital.setText("" + tablero.getJugadores().get(0).getSaldo());
 
         banca = new Banca();
+        dado = new Dado(6);
 
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
@@ -120,12 +127,13 @@ public class JuegoViewController extends Controller implements Initializable {
             }
         }
         if (node != null) {
-            ImageView imgPlayer1 = new ImageView(new Image(tablero.getJugadores().get(0).getFicha()));
+            System.out.println("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha());
+            ImageView imgPlayer1 = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha()));
             imgPlayer1.setFitWidth(50);
             imgPlayer1.setFitHeight(50);
             imgPlayer1.setId("imgPlayer1");
 
-            ImageView imgPlayer2 = new ImageView(new Image(tablero.getJugadores().get(1).getFicha()));
+            ImageView imgPlayer2 = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(1).getFicha()));
             imgPlayer2.setFitWidth(50);
             imgPlayer2.setFitHeight(50);
             imgPlayer2.setId("imgPlayer2");
@@ -136,123 +144,15 @@ public class JuegoViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnFinalizarTurno(ActionEvent event) {
+        JugadorDto player;
         if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
-            int posX = tablero.getJugadores().get(0).getPosicionX();
-            int posY = tablero.getJugadores().get(0).getPosicionY();
-
-            StackPane node = null;
-            for (Node child : boardPane.getChildren()) {
-                if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
-                    node = (StackPane) child;
-                    break;
-                }
-            }
-
-            Random rand = new Random();
-            int dado = rand.nextInt(6) + 1;
-
-            if (posX >= 0 && posX <= 7 && posY == 0) {
-                posX += dado;
-                if (posX > 8) {
-                    posX = 8;
-                }
-            } else if (posX == 8 && posY >= 0 && posY <= 7) {
-                posY += dado;
-                if (posY > 8) {
-                    posY = 8;
-                }
-            } else if (posX >= 1 && posX <= 8 && posY == 8) {
-                posX -= dado;
-                if (posX < 0) {
-                    posX = 0;
-                }
-            } else if (posX == 0 && posY >= 1 && posY <= 8) {
-                posY -= dado;
-                if (posY < 0) {
-                    posY = 0;
-                }
-            }
-
-            if (node != null) {
-                ImageView imgFicha = null;
-                for (Node child : node.getChildren()) {
-                    if ("imgPlayer1".equals(child.getId())) {
-                        imgFicha = (ImageView) child;
-                        break;
-                    }
-                }
-                node.getChildren().remove(imgFicha);
-
-                for (Node child : boardPane.getChildren()) {
-                    if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
-                        node = (StackPane) child;
-                        node.getChildren().add(imgFicha);
-                        break;
-                    }
-                }
-            }
-
-            tablero.getJugadores().get(0).mover(posX, posY);
-            lbTurno.setText(tablero.getJugadores().get(1).getNombre());
+            player = tablero.getJugadores().get(1);
+            actualizarDatosInterfaz(player);
         } else if (tablero.getJugadores().get(1).getNombre().equals(lbTurno.getText())) {
-            int posX = tablero.getJugadores().get(1).getPosicionX();
-            int posY = tablero.getJugadores().get(1).getPosicionY();
-
-            StackPane node = null;
-            for (Node child : boardPane.getChildren()) {
-                if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
-                    node = (StackPane) child;
-                    break;
-                }
-            }
-
-            Random rand = new Random();
-            int dado = rand.nextInt(6) + 1;
-
-            if (posX >= 0 && posX <= 7 && posY == 0) {
-                posX += dado;
-                if (posX > 8) {
-                    posX = 8;
-                }
-            } else if (posX == 8 && posY >= 0 && posY <= 7) {
-                posY += dado;
-                if (posY > 8) {
-                    posY = 8;
-                }
-            } else if (posX >= 1 && posX <= 8 && posY == 8) {
-                posX -= dado;
-                if (posX < 0) {
-                    posX = 0;
-                }
-            } else if (posX == 0 && posY >= 1 && posY <= 8) {
-                posY -= dado;
-                if (posY < 0) {
-                    posY = 0;
-                }
-            }
-
-            if (node != null) {
-                ImageView imgFicha = null;
-                for (Node child : node.getChildren()) {
-                    if ("imgPlayer2".equals(child.getId())) {
-                        imgFicha = (ImageView) child;
-                        break;
-                    }
-                }
-                node.getChildren().remove(imgFicha);
-
-                for (Node child : boardPane.getChildren()) {
-                    if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
-                        node = (StackPane) child;
-                        node.getChildren().add(imgFicha);
-                        break;
-                    }
-                }
-            }
-
-            tablero.getJugadores().get(1).mover(posX, posY);
-            lbTurno.setText(tablero.getJugadores().get(0).getNombre());
+            player = tablero.getJugadores().get(0);
+            actualizarDatosInterfaz(player);
         }
+        translateAnimation(0.5, stakPaneDados, -2000);
     }
 
     @FXML
@@ -282,4 +182,100 @@ public class JuegoViewController extends Controller implements Initializable {
     @FXML
     private void onActionBtnFinalizarJuego(ActionEvent event) {
     }
+
+    @FXML
+    private void onActionBtnDados(ActionEvent event) {
+        JugadorDto player;
+        String id = "";
+
+        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(0);
+            id = "imgPlayer1";
+        } else {
+            player = tablero.getJugadores().get(1);
+            id = "imgPlayer2";
+        }
+
+        int posX = player.getPosicionX();
+        int posY = player.getPosicionY();
+
+        StackPane node = null;
+        for (Node child : boardPane.getChildren()) {
+            if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                node = (StackPane) child;
+                break;
+            }
+        }
+
+        int dadoTirado = dado.lanzar();
+
+        if (posX >= 0 && posX <= 7 && posY == 0) {
+            posX += dadoTirado;
+            if (posX > 8) {
+                posX = 8;
+            }
+        } else if (posX == 8 && posY >= 0 && posY <= 7) {
+            posY += dadoTirado;
+            if (posY > 8) {
+                posY = 8;
+            }
+        } else if (posX >= 1 && posX <= 8 && posY == 8) {
+            posX -= dadoTirado;
+            if (posX < 0) {
+                posX = 0;
+            }
+        } else if (posX == 0 && posY >= 1 && posY <= 8) {
+            posY -= dadoTirado;
+            if (posY < 0) {
+                posY = 0;
+            }
+        }
+
+        if (node != null) {
+            ImageView imgFicha = null;
+            for (Node child : node.getChildren()) {
+                if (id.equals(child.getId())) {
+                    imgFicha = (ImageView) child;
+                    break;
+                }
+            }
+            node.getChildren().remove(imgFicha);
+
+            for (Node child : boardPane.getChildren()) {
+                if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                    node = (StackPane) child;
+                    node.getChildren().add(imgFicha);
+                    break;
+                }
+            }
+        }
+
+        tablero.moverJugador(player, posX, posY);
+        accionCasilla(player);
+        actualizarDatosInterfaz(player);
+        translateAnimation(0.5, stakPaneDados, 2000);
+    }
+
+    public void accionCasilla(JugadorDto jugador) {
+        Casilla casilla = tablero.getCasillaActual(jugador);
+        casilla.accion(jugador, banca, tablero, getStage());
+        System.out.println(jugador.getNombre() + " : " + casilla.getNombre());
+    }
+
+    public void actualizarDatosInterfaz(JugadorDto player) {
+        lbTurno.setText(player.getNombre());
+        lbCapital.setText("" + player.getSaldo());
+    }
+
+    public void translateAnimation(double duration, Node node, double width) { //Metodo de la animacion
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(duration), node);
+        translateTransition.setOnFinished(event -> {
+//            isAnimating = false;
+//            jfxBtnAnt.setDisable(false);
+//            jfxBtnSig.setDisable(false);
+        });
+        translateTransition.setByX(width);
+        translateTransition.play();
+    }
+
 }
