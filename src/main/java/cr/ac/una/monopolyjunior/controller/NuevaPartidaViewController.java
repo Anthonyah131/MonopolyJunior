@@ -19,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -50,10 +51,13 @@ public class NuevaPartidaViewController extends Controller implements Initializa
     @FXML
     private JFXTextField txfNombreJugador;
     @FXML
+    private JFXButton btnCancelar;
+    @FXML
     private JFXButton btnContinuar;
 
-    String fichaPlayer = "";
+    String fichaPlayer;
     List<String> fichas = new ArrayList<>();
+    JFXButton imagenSeleccionada;
 
     /**
      * Initializes the controller class.
@@ -68,27 +72,40 @@ public class NuevaPartidaViewController extends Controller implements Initializa
         fichas.add("Shoe.png");
         fichas.add("Thimble.png");
         fichas.add("Wheelbarrow.png");
-
-        for (int i = 0; i < 8; i++) {
-            ImageView imageview = new ImageView("cr/ac/una/monopolyjunior/resources/fichas/" + fichas.get(i));
-            imageview.setId(fichas.get(i));
-            imageview.setPreserveRatio(false);
-            imageview.setFitHeight(75);
-            imageview.setFitWidth(75);
-            imageview.setOnMouseClicked(event -> {
-                fichaPlayer = imageview.getId();
-                System.out.println(fichaPlayer);
-            });
-            if (i >= 4) {
-                contenedorFichas2.getChildren().add(imageview);
-            } else {
-                contenedorFichas1.getChildren().add(imageview);
-            }
-        }
+        
+        contenedorFichas1.setSpacing(5);
+        contenedorFichas2.setSpacing(5);
     }
 
     @Override
     public void initialize() {
+        imagenSeleccionada = null;
+        fichaPlayer = "";
+        txfNombreJugador.setText("");
+        
+        lbPlayer1.setText("...");
+        lbPlayer2.setText("...");
+        imgPlayer1.setImage(null);
+        imgPlayer2.setImage(null);
+        
+        contenedorFichas1.getChildren().clear();
+        contenedorFichas2.getChildren().clear();
+        
+        for (int i = 0; i < 8; i++) {
+            JFXButton btnFicha = new JFXButton();
+            ImageView imageview = new ImageView("cr/ac/una/monopolyjunior/resources/fichas/" + fichas.get(i));
+            btnFicha.setId(fichas.get(i));
+            imageview.setPreserveRatio(false);
+            imageview.setFitHeight(75);
+            imageview.setFitWidth(75);
+            btnFicha.setGraphic(imageview);
+            btnFicha.setOnMouseClicked(this::seleccionarImagen);
+            if (i >= 4) {
+                contenedorFichas2.getChildren().add(btnFicha);
+            } else {
+                contenedorFichas1.getChildren().add(btnFicha);
+            }
+        }
     }
 
     @FXML
@@ -100,6 +117,7 @@ public class NuevaPartidaViewController extends Controller implements Initializa
                 lbPlayer1.setText(txfNombreJugador.getText());
                 fichaPlayer = "";
                 txfNombreJugador.setText("");
+                imagenSeleccionada.setDisable(true);
                 lbPlayer.setText("Player 2");
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Player 1", getStage(), "Error creando el Player 1, revise los campos");
@@ -112,10 +130,30 @@ public class NuevaPartidaViewController extends Controller implements Initializa
                 JuegoViewController juegoViewController = (JuegoViewController) FlowController.getInstance().getController("JuegoView");
                 juegoViewController.crearTablero(lbPlayer1.getText(), imgPlayer1.getId(), lbPlayer2.getText(), imgPlayer2.getId());
                 FlowController.getInstance().goViewInWindow("JuegoView");
+                getStage().close();
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Player 2", getStage(), "Error creando el Player 2, revise los campos");
             }
         }
+    }
+
+    public void seleccionarImagen(MouseEvent event) {
+        JFXButton btnFicha = (JFXButton) event.getSource();
+
+        if (imagenSeleccionada != null) {
+            imagenSeleccionada.getStyleClass().remove("seleccionada");
+        }
+        
+        btnFicha.getStyleClass().add("seleccionada");
+
+        imagenSeleccionada = btnFicha;
+        fichaPlayer = btnFicha.getId();
+    }
+
+    @FXML
+    private void onActionBtnCancelar(ActionEvent event) {
+        FlowController.getInstance().goMain();
+        getStage().close();
     }
 
 }

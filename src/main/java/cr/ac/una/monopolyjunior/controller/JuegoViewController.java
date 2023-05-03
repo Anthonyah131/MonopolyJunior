@@ -9,7 +9,10 @@ import cr.ac.una.monopolyjunior.model.Banca;
 import cr.ac.una.monopolyjunior.model.Casilla;
 import cr.ac.una.monopolyjunior.model.Dado;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
+import cr.ac.una.monopolyjunior.model.Propiedad;
 import cr.ac.una.monopolyjunior.model.Tablero;
+import cr.ac.una.monopolyjunior.util.FlowController;
+import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
@@ -17,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -80,23 +84,6 @@ public class JuegoViewController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }
-
-    @Override
-    public void initialize() {
-    }
-
-    public void crearTablero(String player1, String ficha1, String player2, String ficha2) {
-        JugadorDto jugador1 = new JugadorDto(player1, ficha1, 1500);
-        JugadorDto jugador2 = new JugadorDto(player2, ficha2, 1500);
-        tablero = new Tablero(jugador1, jugador2);
-
-        lbTurno.setText(tablero.getJugadores().get(0).getNombre());
-        lbCapital.setText("" + tablero.getJugadores().get(0).getSaldo());
-
-        banca = new Banca();
-        dado = new Dado(6);
-
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
                 StackPane tile = new StackPane();
@@ -118,8 +105,29 @@ public class JuegoViewController extends Controller implements Initializable {
                 boardPane.add(tile, col, row);
             }
         }
+    }
+
+    @Override
+    public void initialize() {
+    }
+
+    public void crearTablero(String player1, String ficha1, String player2, String ficha2) {
+        JugadorDto jugador1 = new JugadorDto(player1, ficha1, 1500);
+        JugadorDto jugador2 = new JugadorDto(player2, ficha2, 1500);
+        tablero = new Tablero(jugador1, jugador2);
+
+        lbTurno.setText(tablero.getJugadores().get(0).getNombre());
+        lbCapital.setText("" + tablero.getJugadores().get(0).getSaldo());
+
+        banca = new Banca();
+        dado = new Dado(6);
 
         StackPane node = null;
+        for (Node child : boardPane.getChildren()) {
+            node = (StackPane) child;
+            node.getChildren().clear();
+        }
+        
         for (Node child : boardPane.getChildren()) {
             if (GridPane.getColumnIndex(child) == 8 && GridPane.getRowIndex(child) == 8) {
                 node = (StackPane) child;
@@ -157,10 +165,26 @@ public class JuegoViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnMiCapital(ActionEvent event) {
+        JugadorDto player = null;
+        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(0);
+        } else if (tablero.getJugadores().get(1).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(1);
+        }
+        OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+        opcionJugadorViewController.miCapitalInterfaz(player, tablero);
+        FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
     }
 
     @FXML
     private void onActionBtnComprarPropi(ActionEvent event) {
+        JugadorDto player = null;
+        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(0);
+        } else if (tablero.getJugadores().get(1).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(1);
+        }
+        comprarPropiedad(player);
     }
 
     @FXML
@@ -181,6 +205,8 @@ public class JuegoViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnFinalizarJuego(ActionEvent event) {
+        FlowController.getInstance().goMain();
+        getStage().close();
     }
 
     @FXML
@@ -254,6 +280,19 @@ public class JuegoViewController extends Controller implements Initializable {
         accionCasilla(player);
         actualizarDatosInterfaz(player);
         translateAnimation(0.5, stakPaneDados, 2000);
+    }
+
+    public void comprarPropiedad(JugadorDto jugador) {
+        Casilla casilla = tablero.getCasillaActual(jugador);
+        Propiedad propiedad = tablero.getPropiedad(casilla.getNombre());
+        if (propiedad.getPropietario() == null) {
+            String tipo = tablero.getCasillaActual(jugador).getTipo();
+            if ("Solar".equals(tipo) || "Servicio Publico".equals(tipo) || "Estacion".equals(tipo)) {
+                accionCasilla(jugador);
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Comprar Propiedad", getStage(), "La propiedad ya tiene un dueño.");
+        }
     }
 
     public void accionCasilla(JugadorDto jugador) {

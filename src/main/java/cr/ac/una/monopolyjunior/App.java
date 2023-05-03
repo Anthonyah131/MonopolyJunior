@@ -2,15 +2,8 @@ package cr.ac.una.monopolyjunior;
 
 import cr.ac.una.monopolyjunior.util.FlowController;
 import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 /**
  * JavaFX App

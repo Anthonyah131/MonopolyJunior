@@ -35,7 +35,7 @@ public class InicioViewController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @Override
     public void initialize() {
@@ -44,6 +44,7 @@ public class InicioViewController extends Controller implements Initializable {
     @FXML
     private void onActionBtnNuevaPartida(ActionEvent event) {
         FlowController.getInstance().goViewInWindow("NuevaPartidaView");
+        FlowController.getInstance().salir();
     }
 
     @FXML
@@ -52,6 +53,7 @@ public class InicioViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnSalir(ActionEvent event) {
+        FlowController.getInstance().salir();
     }
-    
+
 }

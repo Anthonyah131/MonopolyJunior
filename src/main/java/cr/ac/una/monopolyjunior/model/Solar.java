@@ -18,8 +18,8 @@ public class Solar extends Propiedad {
     private ObservableList<Casa> casas;
     private Hotel hotel;
 
-    public Solar(String nombre, int precioCompra, int renta, int valorHipoteca, String color) {
-        super(nombre, precioCompra, renta, valorHipoteca);
+    public Solar(String nombre, int precioCompra, int renta, int renta1Casa, int renta2Casa, int renta3Casa, int renta4Casa, int rentaHotel, int valorHipoteca, String color) {
+        super(nombre, precioCompra, renta, renta1Casa, renta2Casa, renta3Casa, renta4Casa, rentaHotel, valorHipoteca);
         this.color = color;
         this.casas = FXCollections.observableArrayList();
     }
