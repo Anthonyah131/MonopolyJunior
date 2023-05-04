@@ -64,6 +64,8 @@ public class JuegoViewController extends Controller implements Initializable {
     @FXML
     private JFXButton btnPagarHipoteca;
     @FXML
+    private JFXButton btnPagarDeudaMulta;
+    @FXML
     private JFXButton btnFinalizarJuego;
     @FXML
     private StackPane stakPaneDados;
@@ -127,7 +129,7 @@ public class JuegoViewController extends Controller implements Initializable {
             node = (StackPane) child;
             node.getChildren().clear();
         }
-        
+
         for (Node child : boardPane.getChildren()) {
             if (GridPane.getColumnIndex(child) == 8 && GridPane.getRowIndex(child) == 8) {
                 node = (StackPane) child;
@@ -204,6 +206,24 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
+    private void onActionBtnPagarDeudaMulta(ActionEvent event) {
+        JugadorDto player = null;
+        Boolean bandera = false;
+        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(0);
+            bandera = tablero.player1Debe;
+        } else if (tablero.getJugadores().get(1).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(1);
+            bandera = tablero.player2Debe;
+        }
+        if (bandera == true) {
+            accionCasilla(player);
+        } else {
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Deuda o Multa", getStage(), "Deuda o Multa ya pago.");
+        }
+    }
+
+    @FXML
     private void onActionBtnFinalizarJuego(ActionEvent event) {
         FlowController.getInstance().goMain();
         getStage().close();
@@ -222,6 +242,15 @@ public class JuegoViewController extends Controller implements Initializable {
             id = "imgPlayer2";
         }
 
+        int dadoTirado = dado.lanzar();
+
+        moverFicha(dadoTirado, id, player);
+
+        accionCasilla(player);
+        translateAnimation(0.5, stakPaneDados, 2000);
+    }
+
+    public void moverFicha(int dadoTirado, String id, JugadorDto player) {
         int posX = player.getPosicionX();
         int posY = player.getPosicionY();
 
@@ -232,8 +261,6 @@ public class JuegoViewController extends Controller implements Initializable {
                 break;
             }
         }
-
-        int dadoTirado = dado.lanzar();
 
         if (posX >= 0 && posX <= 7 && posY == 0) {
             posX += dadoTirado;
@@ -257,6 +284,11 @@ public class JuegoViewController extends Controller implements Initializable {
             }
         }
 
+//        posX = 8; // Ve a la Carcel
+//        posY = 0; // Ve a la Carcel
+//        posX = 0; // Impuesto
+//        posY = 7; // Impuesto
+
         if (node != null) {
             ImageView imgFicha = null;
             for (Node child : node.getChildren()) {
@@ -277,9 +309,48 @@ public class JuegoViewController extends Controller implements Initializable {
         }
 
         tablero.moverJugador(player, posX, posY);
-        accionCasilla(player);
-        actualizarDatosInterfaz(player);
-        translateAnimation(0.5, stakPaneDados, 2000);
+    }
+
+    public void moverFicha(JugadorDto player, int posX, int posY) {
+        String id = "";
+
+        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(0);
+            id = "imgPlayer1";
+        } else {
+            player = tablero.getJugadores().get(1);
+            id = "imgPlayer2";
+        }
+
+        int posXA = player.getPosicionX();
+        int posYA = player.getPosicionY();
+
+        StackPane node = null;
+        for (Node child : boardPane.getChildren()) {
+            if (GridPane.getColumnIndex(child) == posXA && GridPane.getRowIndex(child) == posYA) {
+                node = (StackPane) child;
+                break;
+            }
+        }
+
+        if (node != null) {
+            ImageView imgFicha = null;
+            for (Node child : node.getChildren()) {
+                if (id.equals(child.getId())) {
+                    imgFicha = (ImageView) child;
+                    break;
+                }
+            }
+            node.getChildren().remove(imgFicha);
+
+            for (Node child : boardPane.getChildren()) {
+                if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                    node = (StackPane) child;
+                    node.getChildren().add(imgFicha);
+                    break;
+                }
+            }
+        }
     }
 
     public void comprarPropiedad(JugadorDto jugador) {
@@ -298,6 +369,7 @@ public class JuegoViewController extends Controller implements Initializable {
     public void accionCasilla(JugadorDto jugador) {
         Casilla casilla = tablero.getCasillaActual(jugador);
         casilla.accion(jugador, banca, tablero, getStage());
+        actualizarDatosInterfaz(jugador);
         System.out.println(jugador.getNombre() + " : " + casilla.getNombre());
     }
 
@@ -316,5 +388,4 @@ public class JuegoViewController extends Controller implements Initializable {
         translateTransition.setByX(width);
         translateTransition.play();
     }
-
 }

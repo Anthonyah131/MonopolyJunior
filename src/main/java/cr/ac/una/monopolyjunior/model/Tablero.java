@@ -17,6 +17,8 @@ public class Tablero {
     private List<Propiedad> propiedades;
     private List<JugadorDto> jugadores;
     private List<Tarjeta> tajetas;
+    public Boolean player1Debe = false;
+    public Boolean player2Debe = false;
 
     public Tablero(JugadorDto player1, JugadorDto player2) {
         casillas = new ArrayList<>();
@@ -36,7 +38,7 @@ public class Tablero {
         casillas.add(new Casilla("Avenida Toros", "Solar", 2, 8));
         casillas.add(new Casilla("Avenida Camaano", "Solar", 1, 8));
         casillas.add(new Casilla("Carcel", "Carcel", 0, 8));
-        casillas.add(new Casilla("Impuesto", "Impuesto", 0, 7));
+        casillas.add(new Casilla("Impuesto", "Impuesto190", 0, 7));
         casillas.add(new Casilla("?", "Suerte", 0, 6));
         casillas.add(new Casilla("Tren 2", "Estacion", 0, 5));
         casillas.add(new Casilla("Zona Franca", "Solar", 0, 4));
@@ -50,7 +52,7 @@ public class Tablero {
         casillas.add(new Casilla("Heredia Media Calle", "Solar", 4, 0));
         casillas.add(new Casilla("?", "Suerte", 5, 0));
         casillas.add(new Casilla("Tren 3", "Estacion", 6, 0));
-        casillas.add(new Casilla("Impuesto", "Impuesto", 7, 0));
+        casillas.add(new Casilla("Impuesto", "Impuesto160", 7, 0));
         casillas.add(new Casilla("Ve a la Carcel", "Ve a la Carcel", 8, 0));
         casillas.add(new Casilla("Lagunilla Escuela", "Solar", 8, 1));
         casillas.add(new Casilla("Calle Los Perdidos", "Solar", 8, 2));

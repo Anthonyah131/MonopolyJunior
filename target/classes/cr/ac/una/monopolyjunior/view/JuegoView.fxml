@@ -67,6 +67,7 @@
             <JFXButton fx:id="btnContruir" onAction="#onActionBtnConstruir" text="Contruir Casas o Hoteles" />
             <JFXButton fx:id="btnHipotecar" onAction="#onActionBtnHipotecar" text="Hipotecar" />
             <JFXButton fx:id="btnPagarHipoteca" onAction="#btnPagarHipoteca" text="Pagar o liberar Hipoteca" />
+            <JFXButton fx:id="btnPagarDeudaMulta" onAction="#onActionBtnPagarDeudaMulta" text="Pagar Impuesto o Multa" />
             <JFXButton fx:id="btnFinalizarJuego" onAction="#onActionBtnFinalizarJuego" text="Finalizar Juego" />
          </children>
          <padding>

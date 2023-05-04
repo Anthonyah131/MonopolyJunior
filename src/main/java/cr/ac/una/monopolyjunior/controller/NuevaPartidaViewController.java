@@ -80,8 +80,9 @@ public class NuevaPartidaViewController extends Controller implements Initializa
     @Override
     public void initialize() {
         imagenSeleccionada = null;
-        fichaPlayer = "";
+        fichaPlayer = "Player 1";
         txfNombreJugador.setText("");
+        lbPlayer.setText(fichaPlayer);
         
         lbPlayer1.setText("...");
         lbPlayer2.setText("...");
