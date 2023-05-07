@@ -13,15 +13,10 @@ public class Propiedad {
     private String nombre;
     private int precioCompra;
     private int renta;
-    private int renta1Casa;
-    private int renta2Casa;
-    private int renta3Casa;
-    private int renta4Casa;
-    private int rentaHotel;
     private int valorHipoteca;
     private JugadorDto propietario;
 
-    public Propiedad(String nombre, int precioCompra, int renta, int renta1Casa, int renta2Casa, int renta3Casa, int renta4Casa, int rentaHotel, int valorHipoteca) {
+    public Propiedad(String nombre, int precioCompra, int renta, int valorHipoteca) {
         this.nombre = nombre;
         this.precioCompra = precioCompra;
         this.renta = renta;
@@ -40,26 +35,6 @@ public class Propiedad {
 
     public int getRenta() {
         return this.renta;
-    }
-
-    public int getRenta1Casa() {
-        return renta1Casa;
-    }
-
-    public int getRenta2Casa() {
-        return renta2Casa;
-    }
-
-    public int getRenta3Casa() {
-        return renta3Casa;
-    }
-
-    public int getRenta4Casa() {
-        return renta4Casa;
-    }
-
-    public int getRentaHotel() {
-        return rentaHotel;
     }
 
     public int getValorHipoteca() {

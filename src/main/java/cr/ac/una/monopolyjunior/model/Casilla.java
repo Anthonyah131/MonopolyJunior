@@ -61,11 +61,14 @@ public class Casilla {
         this.posY = posY;
     }
 
-    public void accion(JugadorDto jugador, Banca banca, Tablero tablero, Stage stageJuegoView) {
+    public void accion(JugadorDto jugador, Banca banca, Tablero tablero, Stage stageJuegoView, int dadoTirado) {
         Propiedad propiedad = null;
         OpcionJugadorViewController opcionJugadorViewController;
         switch (this.tipo) {
             case "Go":
+                opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+                opcionJugadorViewController.goInterfaz(jugador, banca, tablero, stageJuegoView);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 break;
             case "Solar":
                 propiedad = tablero.getPropiedad(this.nombre);
@@ -75,9 +78,9 @@ public class Casilla {
                     FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 } else if (!propiedad.getPropietario().getNombre().equals(jugador.getNombre())) {
                     System.out.println("Debe pagar alquiler a " + propiedad.getPropietario().getNombre());
-                    // El jugador tiene que pagar renta al propietario
-//                    int renta = propiedad.getRenta();
-//                    jugador.pagar(renta, propiedad.getPropietario(), banca);
+                    opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+                    opcionJugadorViewController.rentaSolarInterfaz(jugador, tablero, this.nombre);
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 }
                 break;
             case "Servicio Publico":
@@ -88,9 +91,9 @@ public class Casilla {
                     FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 } else if (!propiedad.getPropietario().getNombre().equals(jugador.getNombre())) {
                     System.out.println("Debe pagar alquiler a " + propiedad.getPropietario().getNombre());
-                    // El jugador tiene que pagar renta al propietario
-//                    int renta = propiedad.getRenta();
-//                    jugador.pagar(renta, propiedad.getPropietario(), banca);
+                    opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+                    opcionJugadorViewController.rentaServicioPublicoInterfaz(jugador, tablero, this.nombre, dadoTirado);
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 }
                 break;
             case "Estacion":
@@ -101,9 +104,9 @@ public class Casilla {
                     FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 } else if (!propiedad.getPropietario().getNombre().equals(jugador.getNombre())) {
                     System.out.println("Debe pagar alquiler a " + propiedad.getPropietario().getNombre());
-                    // El jugador tiene que pagar renta al propietario
-//                    int renta = propiedad.getRenta();
-//                    jugador.pagar(renta, propiedad.getPropietario(), banca);
+                    opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+                    opcionJugadorViewController.rentaEstacionInterfaz(jugador, tablero, nombre);
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 }
                 break;
             case "Impuesto190":
@@ -122,7 +125,7 @@ public class Casilla {
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.CarcelInterfaz(jugador, tablero);
                 FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
-                
+
                 JuegoViewController juegoViewController = (JuegoViewController) FlowController.getInstance().getController("JuegoView");
                 juegoViewController.moverFicha(jugador, 0, 8);
                 jugador.mover(0, 8);
@@ -143,8 +146,13 @@ public class Casilla {
                 }
                 break;
             case "Suerte":
-//                TarjetaDto tarjetaSuerte = tablero.getTarjetaSuerte();
-//                tarjetaSuerte.aplicarEfecto(jugador, banca, tablero);
+                if (tablero.player1Debe || tablero.player2Debe) {
+                    Tarjeta tarjetaSuerte = tablero.getUltimaTarjeta();
+                    tarjetaSuerte.aplicarEfecto(jugador, banca, tablero, stageJuegoView);
+                } else {
+                    Tarjeta tarjetaSuerte = tablero.getTarjeta();
+                    tarjetaSuerte.aplicarEfecto(jugador, banca, tablero, stageJuegoView);
+                }
                 break;
         }
     }

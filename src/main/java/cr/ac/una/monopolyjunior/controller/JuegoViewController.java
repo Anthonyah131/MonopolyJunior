@@ -19,6 +19,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -27,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -67,10 +69,6 @@ public class JuegoViewController extends Controller implements Initializable {
     private JFXButton btnPagarDeudaMulta;
     @FXML
     private JFXButton btnFinalizarJuego;
-    @FXML
-    private StackPane stakPaneDados;
-    @FXML
-    private JFXButton btnDados;
 
     private static final int ROWS = 9;
     private static final int COLUMNS = 9;
@@ -80,6 +78,7 @@ public class JuegoViewController extends Controller implements Initializable {
     Tablero tablero;
     Banca banca;
     Dado dado;
+    int dadoTirado;
 
     /**
      * Initializes the controller class.
@@ -114,10 +113,24 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     public void crearTablero(String player1, String ficha1, String player2, String ficha2) {
+        if(boardAnchor.getChildren().size() >= 2)
+            boardAnchor.getChildren().remove(1);
+        
+        JFXButton btnDados= new JFXButton("Lanzar Dados");
+        btnDados.setOnAction(this::onActionBtnDados);
+        HBox hobxDados = new HBox(btnDados);
+        hobxDados.setAlignment(Pos.CENTER);
+        StackPane stakPaneDados = new StackPane(hobxDados);
+        stakPaneDados.setMinWidth(564);
+        stakPaneDados.setMinHeight(564);
+        stakPaneDados.setMaxWidth(564);
+        stakPaneDados.setMaxHeight(564);
+        boardAnchor.getChildren().add(stakPaneDados);
+        
         JugadorDto jugador1 = new JugadorDto(player1, ficha1, 1500);
         JugadorDto jugador2 = new JugadorDto(player2, ficha2, 1500);
         tablero = new Tablero(jugador1, jugador2);
-
+        
         lbTurno.setText(tablero.getJugadores().get(0).getNombre());
         lbCapital.setText("" + tablero.getJugadores().get(0).getSaldo());
 
@@ -162,7 +175,7 @@ public class JuegoViewController extends Controller implements Initializable {
             player = tablero.getJugadores().get(0);
             actualizarDatosInterfaz(player);
         }
-        translateAnimation(0.5, stakPaneDados, -2000);
+        translateAnimation(0.5, boardAnchor.getChildren().get(1), -2000);
     }
 
     @FXML
@@ -219,7 +232,7 @@ public class JuegoViewController extends Controller implements Initializable {
         if (bandera == true) {
             accionCasilla(player);
         } else {
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Deuda o Multa", getStage(), "Deuda o Multa ya pago.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Deuda o Multa", getStage(), "Sin pagos pendientes.");
         }
     }
 
@@ -229,7 +242,6 @@ public class JuegoViewController extends Controller implements Initializable {
         getStage().close();
     }
 
-    @FXML
     private void onActionBtnDados(ActionEvent event) {
         JugadorDto player;
         String id = "";
@@ -242,12 +254,13 @@ public class JuegoViewController extends Controller implements Initializable {
             id = "imgPlayer2";
         }
 
-        int dadoTirado = dado.lanzar();
+//        dadoTirado = dado.lanzar();
+        dadoTirado = 1;
 
         moverFicha(dadoTirado, id, player);
 
         accionCasilla(player);
-        translateAnimation(0.5, stakPaneDados, 2000);
+        translateAnimation(0.5, boardAnchor.getChildren().get(1), 2000);
     }
 
     public void moverFicha(int dadoTirado, String id, JugadorDto player) {
@@ -352,6 +365,10 @@ public class JuegoViewController extends Controller implements Initializable {
             }
         }
     }
+    
+    public void pasaPorGo() {
+        
+    }
 
     public void comprarPropiedad(JugadorDto jugador) {
         Casilla casilla = tablero.getCasillaActual(jugador);
@@ -368,7 +385,7 @@ public class JuegoViewController extends Controller implements Initializable {
 
     public void accionCasilla(JugadorDto jugador) {
         Casilla casilla = tablero.getCasillaActual(jugador);
-        casilla.accion(jugador, banca, tablero, getStage());
+        casilla.accion(jugador, banca, tablero, getStage(), dadoTirado);
         actualizarDatosInterfaz(jugador);
         System.out.println(jugador.getNombre() + " : " + casilla.getNombre());
     }

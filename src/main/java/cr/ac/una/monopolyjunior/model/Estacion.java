@@ -9,17 +9,41 @@ package cr.ac.una.monopolyjunior.model;
  * @author ANTHONY
  */
 public class Estacion extends Propiedad {
-    private static final int MULTIPLICADOR_RENTA = 25;
 
-    public Estacion(String nombre, int precioCompra, int renta, int renta1Casa, int renta2Casa, int renta3Casa, int renta4Casa, int rentaHotel, int valorHipoteca) {
-        super(nombre, precioCompra, renta, renta1Casa, renta2Casa, renta3Casa, renta4Casa, rentaHotel, valorHipoteca);
+    private static final int MULTIPLICADOR_RENTA = 25;
+    private int renta2Estaciones;
+    private int renta3Estaciones;
+    private int renta4Estaciones;
+
+    public Estacion(String nombre, int precioCompra, int renta, int renta2Estaciones, int renta3Estaciones, int renta4Estaciones, int valorHipoteca) {
+        super(nombre, precioCompra, renta, valorHipoteca);
+        this.renta2Estaciones = renta2Estaciones;
+        this.renta3Estaciones = renta3Estaciones;
+        this.renta4Estaciones = renta4Estaciones;
     }
 
     public int calcularRenta(int numeroEstaciones) {
-//        if (tienePropietario()) {
-//            return MULTIPLICADOR_RENTA * numeroEstaciones;
-//        } else {
-            return 0;
-//        }
+        int rentaa = 0;
+        if (tienePropietario()) {
+            switch (numeroEstaciones) {
+                case 1:
+                    rentaa = this.getRenta();
+                    break;
+                case 2:
+                    rentaa = this.renta2Estaciones;
+                    break;
+                case 3:
+                    rentaa = this.renta3Estaciones;
+                    break;
+                case 4:
+                    rentaa = this.renta4Estaciones;
+                    break;
+
+                default:
+            }
+            return rentaa;
+        } else {
+            return rentaa;
+        }
     }
 }

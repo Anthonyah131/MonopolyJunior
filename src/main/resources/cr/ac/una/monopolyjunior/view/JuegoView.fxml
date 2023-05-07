@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="rootJuegoView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="714.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.JuegoViewController">
@@ -43,15 +42,6 @@
                         <RowConstraints maxHeight="90.0" minHeight="0.0" prefHeight="0.0" valignment="CENTER" vgrow="ALWAYS" />
                      </rowConstraints>
                   </GridPane>
-                  <StackPane fx:id="stakPaneDados" prefHeight="564.0" prefWidth="564.0">
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <JFXButton fx:id="btnDados" onAction="#onActionBtnDados" text="Lanzar Dados" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </StackPane>
                </children>
             </AnchorPane>
          </children>

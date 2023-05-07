@@ -22,4 +22,8 @@ public class Banca {
     public void cobrarImpuesto(int monto, JugadorDto jugador) {
         jugador.pagar(monto);
     }
+    
+    public void pagar(int monto, JugadorDto jugador) {
+        jugador.recibir(monto);
+    }
 }

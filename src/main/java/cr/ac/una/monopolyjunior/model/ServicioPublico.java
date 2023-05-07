@@ -11,8 +11,8 @@ package cr.ac.una.monopolyjunior.model;
 public class ServicioPublico extends Propiedad {
     private static final int MULTIPLICADOR_RENTA = 10;
 
-    public ServicioPublico(String nombre, int precioCompra, int renta, int renta1Casa, int renta2Casa, int renta3Casa, int renta4Casa, int rentaHotel, int valorHipoteca) {
-        super(nombre, precioCompra, renta, renta1Casa, renta2Casa, renta3Casa, renta4Casa, rentaHotel, valorHipoteca);
+    public ServicioPublico(String nombre, int precioCompra, int renta, int valorHipoteca) {
+        super(nombre, precioCompra, renta, valorHipoteca);
     }
 
     public int calcularRenta(int valorDados) {

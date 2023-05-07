@@ -6,9 +6,12 @@ package cr.ac.una.monopolyjunior.controller;
 
 import com.jfoenix.controls.JFXButton;
 import cr.ac.una.monopolyjunior.model.Banca;
+import cr.ac.una.monopolyjunior.model.Estacion;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
 import cr.ac.una.monopolyjunior.model.Propiedad;
+import cr.ac.una.monopolyjunior.model.ServicioPublico;
 import cr.ac.una.monopolyjunior.model.Tablero;
+import cr.ac.una.monopolyjunior.model.Tarjeta;
 import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
 import java.util.Random;
@@ -419,6 +422,304 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         vbox.getChildren().addAll(cartaPropiedad, hboxOpciones);
         stackPane.getChildren().add(vbox);
         rootOpcionJugadorView.getChildren().add(stackPane);
+    }
+
+    public void rentaSolarInterfaz(JugadorDto jugador, Tablero tablero, String nombre) {
+        rootOpcionJugadorView.getChildren().clear();
+
+        for (int i = 0; i < tablero.getJugadores().size(); i++) {
+            if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                tablero.player1Debe = true;
+            } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                tablero.player2Debe = true;
+            }
+        }
+
+        StackPane stackPane = new StackPane();
+        VBox vbox = new VBox();
+
+        VBox cartaPropiedad = new VBox();
+
+        VBox vboxTitulo = new VBox();
+        Label lbTituloPropiedad = new Label("Renta");
+        vboxTitulo.getChildren().addAll(lbTituloPropiedad);
+
+        Propiedad propiedad = tablero.getPropiedad(nombre);
+
+        int renta = propiedad.getRenta();
+
+        Label lbInfo = new Label("Te encuentras en propiedad ajena debes pagar $" + renta);
+
+        cartaPropiedad.getChildren().addAll(vboxTitulo, lbInfo);
+
+        JFXButton btnPagar = new JFXButton("Pagar");
+        btnPagar.setOnAction(event -> {
+            if (jugador.getSaldo() >= renta) {
+                jugador.pagar(renta);
+                propiedad.getPropietario().recibir(renta);
+                for (int i = 0; i < tablero.getJugadores().size(); i++) {
+                    if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                        tablero.player1Debe = false;
+                    } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                        tablero.player2Debe = false;
+                    }
+                }
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Renta", getStage(), "Renta pagada exitosamente.");
+                getStage().close();
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Renta", getStage(), "Saldo insuficiente para pagar la renta.");
+            }
+        });
+        JFXButton btnEsperar = new JFXButton("Esperar");
+        btnEsperar.setOnAction(event -> {
+            for (int i = 0; i < tablero.getJugadores().size(); i++) {
+                if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                    tablero.player1Debe = true;
+                } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                    tablero.player2Debe = true;
+                }
+            }
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Renta", getStage(), "Recuerda pagar la renta, si no seras declarado en bancarrota.");
+            getStage().close();
+        });
+        HBox hboxOpciones = new HBox(btnPagar, btnEsperar);
+
+        vbox.getChildren().addAll(cartaPropiedad, hboxOpciones);
+        stackPane.getChildren().add(vbox);
+        rootOpcionJugadorView.getChildren().add(stackPane);
+    }
+
+    public void rentaServicioPublicoInterfaz(JugadorDto jugador, Tablero tablero, String nombre, int dadoTirado) {
+        rootOpcionJugadorView.getChildren().clear();
+
+        for (int i = 0; i < tablero.getJugadores().size(); i++) {
+            if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                tablero.player1Debe = true;
+            } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                tablero.player2Debe = true;
+            }
+        }
+
+        StackPane stackPane = new StackPane();
+        VBox vbox = new VBox();
+
+        VBox cartaPropiedad = new VBox();
+
+        VBox vboxTitulo = new VBox();
+        Label lbTituloPropiedad = new Label("Servicio Publico");
+        vboxTitulo.getChildren().addAll(lbTituloPropiedad);
+
+        ServicioPublico propiedad = (ServicioPublico) tablero.getPropiedad(nombre);
+
+        int renta = propiedad.calcularRenta(dadoTirado);
+
+        Label lbInfo = new Label("Te encuentras en propiedad ajena debes pagar $" + renta);
+
+        cartaPropiedad.getChildren().addAll(vboxTitulo, lbInfo);
+
+        JFXButton btnPagar = new JFXButton("Pagar");
+        btnPagar.setOnAction(event -> {
+            if (jugador.getSaldo() >= renta) {
+                jugador.pagar(renta);
+                propiedad.getPropietario().recibir(renta);
+                for (int i = 0; i < tablero.getJugadores().size(); i++) {
+                    if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                        tablero.player1Debe = false;
+                    } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                        tablero.player2Debe = false;
+                    }
+                }
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Renta", getStage(), "Renta pagada exitosamente.");
+                getStage().close();
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Renta", getStage(), "Saldo insuficiente para pagar la renta.");
+            }
+        });
+        JFXButton btnEsperar = new JFXButton("Esperar");
+        btnEsperar.setOnAction(event -> {
+            for (int i = 0; i < tablero.getJugadores().size(); i++) {
+                if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                    tablero.player1Debe = true;
+                } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                    tablero.player2Debe = true;
+                }
+            }
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Renta", getStage(), "Recuerda pagar la renta, si no seras declarado en bancarrota.");
+            getStage().close();
+        });
+        HBox hboxOpciones = new HBox(btnPagar, btnEsperar);
+
+        vbox.getChildren().addAll(cartaPropiedad, hboxOpciones);
+        stackPane.getChildren().add(vbox);
+        rootOpcionJugadorView.getChildren().add(stackPane);
+    }
+
+    public void rentaEstacionInterfaz(JugadorDto jugador, Tablero tablero, String nombre) {
+        rootOpcionJugadorView.getChildren().clear();
+
+        for (int i = 0; i < tablero.getJugadores().size(); i++) {
+            if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                tablero.player1Debe = true;
+            } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                tablero.player2Debe = true;
+            }
+        }
+
+        StackPane stackPane = new StackPane();
+        VBox vbox = new VBox();
+
+        VBox cartaPropiedad = new VBox();
+
+        VBox vboxTitulo = new VBox();
+        Label lbTituloPropiedad = new Label("Servicio Publico");
+        vboxTitulo.getChildren().addAll(lbTituloPropiedad);
+
+        Estacion propiedad = (Estacion) tablero.getPropiedad(nombre);
+
+        int renta = propiedad.calcularRenta(1);
+
+        Label lbInfo = new Label("Te encuentras en propiedad ajena debes pagar $" + renta);
+
+        cartaPropiedad.getChildren().addAll(vboxTitulo, lbInfo);
+
+        JFXButton btnPagar = new JFXButton("Pagar");
+        btnPagar.setOnAction(event -> {
+            if (jugador.getSaldo() >= renta) {
+                jugador.pagar(renta);
+                propiedad.getPropietario().recibir(renta);
+                for (int i = 0; i < tablero.getJugadores().size(); i++) {
+                    if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                        tablero.player1Debe = false;
+                    } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                        tablero.player2Debe = false;
+                    }
+                }
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Renta", getStage(), "Renta pagada exitosamente.");
+                getStage().close();
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Renta", getStage(), "Saldo insuficiente para pagar la renta.");
+            }
+        });
+        JFXButton btnEsperar = new JFXButton("Esperar");
+        btnEsperar.setOnAction(event -> {
+            for (int i = 0; i < tablero.getJugadores().size(); i++) {
+                if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                    tablero.player1Debe = true;
+                } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                    tablero.player2Debe = true;
+                }
+            }
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Renta", getStage(), "Recuerda pagar la renta, si no seras declarado en bancarrota.");
+            getStage().close();
+        });
+        HBox hboxOpciones = new HBox(btnPagar, btnEsperar);
+
+        vbox.getChildren().addAll(cartaPropiedad, hboxOpciones);
+        stackPane.getChildren().add(vbox);
+        rootOpcionJugadorView.getChildren().add(stackPane);
+    }
+
+    public void tarjetaInterfaz(JugadorDto jugador, Banca banca, Tablero tablero, Tarjeta tarjetaSuerte, Stage stageJuegoView) {
+        rootOpcionJugadorView.getChildren().clear();
+
+        StackPane stackPane = new StackPane();
+        VBox vbox = new VBox();
+
+        VBox cartaTarjeta = new VBox();
+        Label lbTituloPropiedad = new Label(tarjetaSuerte.getTipo());
+        Label lbInfo = new Label(tarjetaSuerte.getDescripcion());
+
+        cartaTarjeta.getChildren().addAll(lbTituloPropiedad, lbInfo);
+
+        int deuda;
+
+        if ("Pagas $500".equals(tarjetaSuerte.getTipo()) || "Pagas $200".equals(tarjetaSuerte.getTipo())) {
+            switch (tarjetaSuerte.getTipo()) {
+                case "Pagas $200":
+                    deuda = 200;
+                    break;
+                case "Pagas $500":
+                    deuda = 500;
+                    break;
+                default:
+                    deuda = 0;
+                    break;
+            }
+            for (int i = 0; i < tablero.getJugadores().size(); i++) {
+                if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                    tablero.player1Debe = true;
+                } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                    tablero.player2Debe = true;
+                }
+            }
+
+            JFXButton btnPagar = new JFXButton("Pagar");
+            btnPagar.setOnAction(event -> {
+                if (jugador.getSaldo() >= deuda) {
+                    jugador.pagar(deuda);
+                    for (int i = 0; i < tablero.getJugadores().size(); i++) {
+                        if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                            tablero.player1Debe = false;
+                        } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                            tablero.player2Debe = false;
+                        }
+                    }
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Suerte", getStage(), "Deuda pagada exitosamente.");
+                    getStage().close();
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Suerte", getStage(), "Saldo insuficiente para pagar la Deuda.");
+                }
+            });
+            JFXButton btnEsperar = new JFXButton("Esperar");
+            btnEsperar.setOnAction(event -> {
+                for (int i = 0; i < tablero.getJugadores().size(); i++) {
+                    if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                        tablero.player1Debe = true;
+                    } else if (i == 1 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
+                        tablero.player2Debe = true;
+                    }
+                }
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Suerte", getStage(), "Recuerda pagar la Deuda, si no seras declarado en bancarrota.");
+                getStage().close();
+            });
+            HBox hboxOpciones = new HBox(btnPagar, btnEsperar);
+            vbox.getChildren().addAll(cartaTarjeta, hboxOpciones);
+        } else {
+            JFXButton btnAceptar = new JFXButton("Aceptar");
+            btnAceptar.setOnAction(event -> {
+                getStage().close();
+            });
+            HBox hboxOpciones = new HBox(btnAceptar);
+            vbox.getChildren().addAll(cartaTarjeta, hboxOpciones);
+        }
+
+        stackPane.getChildren().add(vbox);
+        rootOpcionJugadorView.getChildren().add(stackPane);
+    }
+
+    public void goInterfaz(JugadorDto jugador, Banca banca, Tablero tablero, Stage stageJuegoView) {
+        rootOpcionJugadorView.getChildren().clear();
+
+        StackPane stackPane = new StackPane();
+        VBox vbox = new VBox();
+
+        VBox cartaTarjeta = new VBox();
+        Label lbTituloPropiedad = new Label("Go");
+        Label lbInfo = new Label("Recibes $200 por pasar por acá");
+
+        cartaTarjeta.getChildren().addAll(lbTituloPropiedad, lbInfo);
+
+        JFXButton btnAceptar = new JFXButton("Aceptar");
+        btnAceptar.setOnAction(event -> {
+            getStage().close();
+        });
+        HBox hboxOpciones = new HBox(btnAceptar);
+        vbox.getChildren().addAll(cartaTarjeta, hboxOpciones);
+
+        stackPane.getChildren().add(vbox);
+        rootOpcionJugadorView.getChildren().add(stackPane);
+        
+        banca.pagar(200, jugador);
     }
 
     private void cargarPropiedades(TableView tbvPropiedades, JugadorDto jugador, Tablero tablero) {
