@@ -142,7 +142,7 @@ public class Casilla {
                     opcionJugadorViewController.CarcelInterfaz(jugador, tablero);
                     FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Deuda o Multa", stageJuegoView, "Deuda o Multa ya pago.");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Deuda o Multa", stageJuegoView, "Sin deudas o multas.");
                 }
                 break;
             case "Suerte":

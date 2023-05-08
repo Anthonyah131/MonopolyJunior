@@ -99,7 +99,7 @@ public class Tablero {
 //        tarjetas.add(new Tarjeta("", ""));
     }
 
-    public Tablero(Tablero tableroDto) {
+    public Tablero(Tablero tablero) {
     }
 
     public List<Casilla> getCasillas() {

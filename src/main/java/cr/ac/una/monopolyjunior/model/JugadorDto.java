@@ -23,8 +23,10 @@ public class JugadorDto {
         this.nombre = nombre;
         this.saldo = saldo;
         this.ficha = ficha;
-        this.posicionX = 8;
-        this.posicionY = 8;
+//        this.posicionX = 8;
+//        this.posicionY = 8;
+        this.posicionX = 6;
+        this.posicionY = 0;
         this.propiedades = new ArrayList<>();
     }
 
