@@ -4,8 +4,12 @@
  */
 package cr.ac.una.monopolyjunior.model;
 
+import cr.ac.una.monopolyjunior.controller.ConstruirViewController;
+import cr.ac.una.monopolyjunior.controller.OpcionJugadorViewController;
+import cr.ac.una.monopolyjunior.util.FlowController;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.stage.Stage;
 
 /**
  *
@@ -81,6 +85,15 @@ public class Tablero {
         propiedades.add(new Solar("Calle Soledad", 280, 70, 0, 0, 0, 0, 0, 160, "Verde"));
         propiedades.add(new Estacion("Tren 4", 200, 100, 205, 315, 450, 250));
 
+        player1.agregarPropiedad("Avenida Lopez");
+        player1.agregarPropiedad("Avenida Toros");
+        player1.agregarPropiedad("Avenida Camaano");
+        player1.agregarPropiedad("Mirador");
+        propiedades.get(1).setPropietario(player1);
+        propiedades.get(3).setPropietario(player1);
+        propiedades.get(4).setPropietario(player1);
+        propiedades.get(4).setPropietario(player1);
+        
         tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
         tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));
         tarjetas.add(new Tarjeta("Cobras $600", "Recibes una herencia de un familiar el cual no sabías que existía Cobras $600"));
@@ -144,6 +157,23 @@ public class Tablero {
                 .orElse(null);
     }
 
+    public void puedeConstruir(JugadorDto jugador, Stage stageJuegoView) {
+        List<String> propi = jugador.getPropiedades();
+        for (String prop : propi) {
+            System.out.println(prop);
+        }
+        boolean azul = propi.stream().anyMatch(p -> p.equals("Avenida Lopez")) && propi.stream().anyMatch(p -> p.equals("Avenida Toros")) && propi.stream().anyMatch(p -> p.equals("Avenida Camaano"));
+        boolean amarillo = propi.stream().anyMatch(p -> p.equals("Zona Franca")) && propi.stream().anyMatch(p -> p.equals("Finca Miramar")) && propi.stream().anyMatch(p -> p.equals("Mirador"));
+        boolean rojo = propi.stream().allMatch(p -> p.equals("Avenida Perez")) && propi.stream().anyMatch(p -> p.equals("Avenida Central")) && propi.stream().anyMatch(p -> p.equals("Heredia Media Calle"));
+        boolean verde = propi.stream().allMatch(p -> p.equals("Lagunilla Escuela")) && propi.stream().anyMatch(p -> p.equals("Calle Los Perdidos")) && propi.stream().anyMatch(p -> p.equals("Calle Soledad"));
+
+        ConstruirViewController construirViewController = (ConstruirViewController) FlowController.getInstance().getController("ConstruirView");
+        construirViewController.construirCasasHoteles(jugador, this, azul, amarillo, rojo, verde);
+        FlowController.getInstance().goViewInWindowModal("ConstruirView", stageJuegoView, true);
+        
+        System.out.println(azul + " : " + amarillo + " : " + rojo + " : " + verde);
+    }
+
     public Tarjeta getTarjeta() {
         Tarjeta primerTarjeta = tarjetas.get(0);
         tarjetas.remove(0);
@@ -151,7 +181,7 @@ public class Tablero {
 
         return primerTarjeta;
     }
-    
+
     public Tarjeta getUltimaTarjeta() {
         Tarjeta ultimaTarjeta = tarjetas.get(tarjetas.size() - 1);
 

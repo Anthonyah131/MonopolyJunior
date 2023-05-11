@@ -151,7 +151,7 @@ public class JuegoViewController extends Controller implements Initializable {
         }
 
         for (Node child : boardPane.getChildren()) {
-            if (GridPane.getColumnIndex(child) == 6 && GridPane.getRowIndex(child) == 0) {
+            if (GridPane.getColumnIndex(child) == 8 && GridPane.getRowIndex(child) == 8) {
                 node = (StackPane) child;
                 break;
             }
@@ -177,18 +177,32 @@ public class JuegoViewController extends Controller implements Initializable {
     private void onActionBtnFinalizarTurno(ActionEvent event) {
         JugadorDto player;
         if (turnoP1) {
-            turnoP1 = false;
-            turnoP2 = true;
             player = tablero.getJugadores().get(1);
-            actualizarDatosInterfaz(player);
+            if (tablero.player1Debe) {
+                OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+                opcionJugadorViewController.turnoBancarrota(player, tablero);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
+            } else {
+                turnoP1 = false;
+                turnoP2 = true;
+                actualizarDatosInterfaz(player);
+                translateAnimation(0.5, boardAnchor.getChildren().get(1), -2000);
+                desactivarOpciones();
+            }
         } else if (turnoP2) {
-            turnoP1 = true;
-            turnoP2 = false;
             player = tablero.getJugadores().get(0);
-            actualizarDatosInterfaz(player);
+            if (tablero.player1Debe) {
+                OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+                opcionJugadorViewController.turnoBancarrota(player, tablero);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
+            } else {
+                turnoP1 = true;
+                turnoP2 = false;
+                actualizarDatosInterfaz(player);
+                translateAnimation(0.5, boardAnchor.getChildren().get(1), -2000);
+                desactivarOpciones();
+            }
         }
-        translateAnimation(0.5, boardAnchor.getChildren().get(1), -2000);
-        desactivarOpciones();
     }
 
     @FXML
@@ -207,9 +221,9 @@ public class JuegoViewController extends Controller implements Initializable {
     @FXML
     private void onActionBtnComprarPropi(ActionEvent event) {
         JugadorDto player = null;
-        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+        if (turnoP1) {
             player = tablero.getJugadores().get(0);
-        } else if (tablero.getJugadores().get(1).getNombre().equals(lbTurno.getText())) {
+        } else if (turnoP2) {
             player = tablero.getJugadores().get(1);
         }
         comprarPropiedad(player);
@@ -221,6 +235,13 @@ public class JuegoViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnConstruir(ActionEvent event) {
+        JugadorDto player = null;
+        if (turnoP1) {
+            player = tablero.getJugadores().get(0);
+        } else if (turnoP2) {
+            player = tablero.getJugadores().get(1);
+        }
+        tablero.puedeConstruir(player, getStage());
     }
 
     @FXML
@@ -393,7 +414,7 @@ public class JuegoViewController extends Controller implements Initializable {
 
     public void pasaPorGo() {
         System.out.println("Ups te pasaste Go no olvides tus $200");
-        
+
         JugadorDto jugador;
 
         if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
@@ -401,7 +422,7 @@ public class JuegoViewController extends Controller implements Initializable {
         } else {
             jugador = tablero.getJugadores().get(1);
         }
-        
+
         OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
         opcionJugadorViewController.goInterfaz(jugador, banca, tablero, getStage());
         FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
@@ -431,7 +452,7 @@ public class JuegoViewController extends Controller implements Initializable {
         lbTurno.setText(player.getNombre());
         lbCapital.setText("" + player.getSaldo());
     }
-    
+
     public void desactivarOpciones() {
         btnFinalizarTurno.setDisable(true);
         btnMiCapital.setDisable(true);
@@ -442,7 +463,7 @@ public class JuegoViewController extends Controller implements Initializable {
         btnPagarHipoteca.setDisable(true);
         btnPagarDeudaMulta.setDisable(true);
     }
-    
+
     public void activarOpciones() {
         btnFinalizarTurno.setDisable(false);
         btnMiCapital.setDisable(false);

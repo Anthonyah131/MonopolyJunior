@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="cr.ac.una.monopolyjunior.controller.ConstruirViewController">
+   <children>
+      <StackPane layoutX="210.0" layoutY="123.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER">
+               <children>
+                  <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab fx:id="tbpPropiedades" text="Propiedades">
+                        <content>
+                          <AnchorPane>
+                                 <children>
+                                    <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <columns>
+                                        <TableColumn fx:id="tbcNombre" prefWidth="200.0" text="Nombre" />
+                                        <TableColumn fx:id="tbcCasas" minWidth="0.0" prefWidth="100.0" text="C2" />
+                                          <TableColumn fx:id="tbcHotel" minWidth="0.0" prefWidth="100.0" text="C2" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab fx:id="tbpConstruir" onSelectionChanged="#onSelectionChangedTbpConstruir" text="Construir">
+                        <content>
+                          <AnchorPane>
+                                 <children>
+                                    <StackPane layoutX="86.0" layoutY="109.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="300.0" prefWidth="200.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER">
+                                                         <children>
+                                                            <Label fx:id="lbTitulo" text="Titulo" />
+                                                         </children>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER">
+                                                         <children>
+                                                            <HBox alignment="CENTER">
+                                                               <children>
+                                                                  <Label text="Casas: " />
+                                                                  <HBox alignment="CENTER">
+                                                                     <children>
+                                                                        <JFXButton fx:id="btnMenos" onAction="#onActionMenos" text="-" />
+                                                                        <Label fx:id="lbCasasCantidad" text="0" />
+                                                                        <JFXButton fx:id="btnMas" onAction="#onActionMas" text="+" />
+                                                                     </children>
+                                                                  </HBox>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox alignment="CENTER">
+                                                               <children>
+                                                                  <Label text="Hotel" />
+                                                                  <HBox alignment="CENTER">
+                                                                     <children>
+                                                                        <JFXButton fx:id="btnMenosH" onAction="#onActionMenosH" text="-" />
+                                                                        <Label fx:id="lbCasasCantidad1" text="0" />
+                                                                        <JFXButton fx:id="btnMasH" onAction="#onActionMasH" text="+" />
+                                                                     </children>
+                                                                  </HBox>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <JFXButton fx:id="btnListo" onAction="#onActionBtnListo" text="Listo" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

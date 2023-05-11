@@ -718,8 +718,41 @@ public class OpcionJugadorViewController extends Controller implements Initializ
 
         stackPane.getChildren().add(vbox);
         rootOpcionJugadorView.getChildren().add(stackPane);
-        
+
         banca.pagar(200, jugador);
+    }
+
+    public void turnoBancarrota(JugadorDto jugador, Tablero tablero) {
+        rootOpcionJugadorView.getChildren().clear();
+
+        StackPane stackPane = new StackPane();
+        VBox vbox = new VBox();
+
+        VBox cartaPropiedad = new VBox();
+
+        VBox vboxTitulo = new VBox();
+        Label lbTituloPropiedad = new Label("Saldo Pendiente");
+        vboxTitulo.getChildren().addAll(lbTituloPropiedad);
+
+        Label lbInfo = new Label("Tienes un saldo pendiente, si continuas con el, te declaras en bancarrota, deseas continuar?");
+
+        cartaPropiedad.getChildren().addAll(vboxTitulo, lbInfo);
+
+        JFXButton btnContinuar = new JFXButton("Continuar");
+        btnContinuar.setOnAction(event -> {
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Bancarrota", getStage(), "Te has declarado en bancarrota");
+            getStage().close();
+        });
+        JFXButton btnEsperar = new JFXButton("Esperar");
+        btnEsperar.setOnAction(event -> {
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Bancarrota", getStage(), "Recuerda pagar la deuda, si no seras declarado en bancarrota.");
+            getStage().close();
+        });
+        HBox hboxOpciones = new HBox(btnContinuar, btnEsperar);
+
+        vbox.getChildren().addAll(cartaPropiedad, hboxOpciones);
+        stackPane.getChildren().add(vbox);
+        rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
     private void cargarPropiedades(TableView tbvPropiedades, JugadorDto jugador, Tablero tablero) {
