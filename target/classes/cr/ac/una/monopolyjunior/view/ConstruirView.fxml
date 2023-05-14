@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="cr.ac.una.monopolyjunior.controller.ConstruirViewController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.ConstruirViewController">
    <children>
       <StackPane layoutX="210.0" layoutY="123.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -24,7 +23,7 @@
                         <content>
                           <AnchorPane>
                                  <children>
-                                    <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TableView fx:id="tbvPropiedades" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <columns>
                                         <TableColumn fx:id="tbcNombre" prefWidth="200.0" text="Nombre" />
                                         <TableColumn fx:id="tbcCasas" minWidth="0.0" prefWidth="100.0" text="C2" />
@@ -70,7 +69,7 @@
                                                                   <HBox alignment="CENTER">
                                                                      <children>
                                                                         <JFXButton fx:id="btnMenosH" onAction="#onActionMenosH" text="-" />
-                                                                        <Label fx:id="lbCasasCantidad1" text="0" />
+                                                                        <Label fx:id="lbHotelCantidad" text="0" />
                                                                         <JFXButton fx:id="btnMasH" onAction="#onActionMasH" text="+" />
                                                                      </children>
                                                                   </HBox>

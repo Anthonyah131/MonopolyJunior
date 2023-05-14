@@ -71,7 +71,7 @@ public class Casilla {
                 FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 break;
             case "Solar":
-                propiedad = tablero.getPropiedad(this.nombre);
+                propiedad = tablero.getPropiedadSolar(this.nombre);
                 if (propiedad.getPropietario() == null) {
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                     opcionJugadorViewController.comprarPropiedadInterfaz(jugador, propiedad);
@@ -84,7 +84,7 @@ public class Casilla {
                 }
                 break;
             case "Servicio Publico":
-                propiedad = tablero.getPropiedad(this.nombre);
+                propiedad = tablero.getPropiedadServicio(this.nombre);
                 if (propiedad.getPropietario() == null) {
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                     opcionJugadorViewController.comprarServicioPublicoInterfaz(jugador, propiedad);
@@ -97,7 +97,7 @@ public class Casilla {
                 }
                 break;
             case "Estacion":
-                propiedad = tablero.getPropiedad(this.nombre);
+                propiedad = tablero.getPropiedadEstacion(this.nombre);
                 if (propiedad.getPropietario() == null) {
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                     opcionJugadorViewController.comprarEstacionInterfaz(jugador, propiedad);

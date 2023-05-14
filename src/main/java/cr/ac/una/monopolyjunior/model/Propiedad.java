@@ -16,6 +16,14 @@ public class Propiedad {
     private int valorHipoteca;
     private JugadorDto propietario;
 
+    public Propiedad() {
+        this.nombre = "";
+        this.precioCompra = 0;
+        this.renta = 0;
+        this.valorHipoteca = 0;
+        this.propietario = null;
+    }
+
     public Propiedad(String nombre, int precioCompra, int renta, int valorHipoteca) {
         this.nombre = nombre;
         this.precioCompra = precioCompra;

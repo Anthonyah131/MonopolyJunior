@@ -10,6 +10,7 @@ import cr.ac.una.monopolyjunior.model.Estacion;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
 import cr.ac.una.monopolyjunior.model.Propiedad;
 import cr.ac.una.monopolyjunior.model.ServicioPublico;
+import cr.ac.una.monopolyjunior.model.Solar;
 import cr.ac.una.monopolyjunior.model.Tablero;
 import cr.ac.una.monopolyjunior.model.Tarjeta;
 import cr.ac.una.tarea.util.Mensaje;
@@ -444,9 +445,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         Label lbTituloPropiedad = new Label("Renta");
         vboxTitulo.getChildren().addAll(lbTituloPropiedad);
 
-        Propiedad propiedad = tablero.getPropiedad(nombre);
-
-        int renta = propiedad.getRenta();
+        int renta = tablero.getPropiedadSolar(nombre).calcularRenta();
 
         Label lbInfo = new Label("Te encuentras en propiedad ajena debes pagar $" + renta);
 
@@ -456,7 +455,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         btnPagar.setOnAction(event -> {
             if (jugador.getSaldo() >= renta) {
                 jugador.pagar(renta);
-                propiedad.getPropietario().recibir(renta);
+                tablero.getPropiedadSolar(nombre).getPropietario().recibir(renta);
                 for (int i = 0; i < tablero.getJugadores().size(); i++) {
                     if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
                         tablero.player1Debe = false;
@@ -509,7 +508,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         Label lbTituloPropiedad = new Label("Servicio Publico");
         vboxTitulo.getChildren().addAll(lbTituloPropiedad);
 
-        ServicioPublico propiedad = (ServicioPublico) tablero.getPropiedad(nombre);
+        ServicioPublico propiedad = tablero.getPropiedadServicio(nombre);
 
         int renta = propiedad.calcularRenta(dadoTirado);
 
@@ -574,7 +573,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         Label lbTituloPropiedad = new Label("Servicio Publico");
         vboxTitulo.getChildren().addAll(lbTituloPropiedad);
 
-        Estacion propiedad = (Estacion) tablero.getPropiedad(nombre);
+        Estacion propiedad = (Estacion) tablero.getPropiedadEstacion(nombre);
 
         int renta = propiedad.calcularRenta(1);
 
@@ -758,8 +757,23 @@ public class OpcionJugadorViewController extends Controller implements Initializ
     private void cargarPropiedades(TableView tbvPropiedades, JugadorDto jugador, Tablero tablero) {
         ObservableList<Propiedad> propiedades = FXCollections.observableArrayList();
         for (String prop : jugador.getPropiedades()) {
-            propiedades.add(tablero.getPropiedad(prop));
+            Solar sola = tablero.getPropiedadSolar(prop);
+            if(sola != null)
+                propiedades.add(sola);
         }
+
+        for (String prop : jugador.getPropiedades()) {
+            ServicioPublico servi = tablero.getPropiedadServicio(prop);
+            if(servi != null)
+                propiedades.add(servi);
+        }
+
+        for (String prop : jugador.getPropiedades()) {
+            Estacion esta = tablero.getPropiedadEstacion(prop);
+            if(esta != null)
+                propiedades.add(esta);
+        }
+        
         if (propiedades != null) {
             tbvPropiedades.setItems(propiedades);
             tbvPropiedades.refresh();

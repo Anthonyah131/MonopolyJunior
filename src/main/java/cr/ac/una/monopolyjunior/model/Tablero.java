@@ -18,7 +18,9 @@ import javafx.stage.Stage;
 public class Tablero {
 
     private List<Casilla> casillas;
-    private List<Propiedad> propiedades;
+    private List<Solar> propiedadesSolar;
+    private List<ServicioPublico> propiedadesServicio;
+    private List<Estacion> propiedadesEstacion;
     private List<JugadorDto> jugadores;
     private List<Tarjeta> tarjetas;
     public Boolean player1Debe = false;
@@ -26,7 +28,9 @@ public class Tablero {
 
     public Tablero(JugadorDto player1, JugadorDto player2) {
         casillas = new ArrayList<>();
-        propiedades = new ArrayList<>();
+        propiedadesSolar = new ArrayList<>();
+        propiedadesServicio = new ArrayList<>();
+        propiedadesEstacion = new ArrayList<>();
         jugadores = new ArrayList<>();
         tarjetas = new ArrayList<>();
 
@@ -66,33 +70,33 @@ public class Tablero {
         casillas.add(new Casilla("Tren 4", "Estacion", 8, 6));
         casillas.add(new Casilla("?", "Suerte", 8, 7));
 
-        propiedades.add(new ServicioPublico("Agua", 230, 0, 300));
-        propiedades.add(new Solar("Avenida Lopez", 230, 60, 0, 0, 0, 0, 0, 140, "Azul"));
-        propiedades.add(new Estacion("Tren 1", 200, 100, 205, 315, 450, 250));
-        propiedades.add(new Solar("Avenida Toros", 100, 25, 0, 0, 0, 0, 0, 60, "Azul"));
-        propiedades.add(new Solar("Avenida Camaano", 540, 135, 0, 0, 0, 0, 0, 310, "Azul"));
-        propiedades.add(new Estacion("Tren 2", 200, 100, 205, 315, 450, 250));
-        propiedades.add(new Solar("Zona Franca", 285, 70, 0, 0, 0, 0, 0, 160, "Amarillo"));
-        propiedades.add(new Solar("Finca Miramar", 300, 80, 0, 0, 0, 0, 0, 175, "Amarillo"));
-        propiedades.add(new Solar("Mirador", 300, 80, 0, 0, 0, 0, 0, 175, "Amarillo"));
-        propiedades.add(new Solar("Avenida Perez", 200, 50, 0, 0, 0, 0, 0, 120, "Rojo"));
-        propiedades.add(new ServicioPublico("Luz", 225, 0, 130));
-        propiedades.add(new Solar("Avenida Central", 250, 60, 0, 0, 0, 0, 0, 150, "Rojo"));
-        propiedades.add(new Solar("Heredia Media Calle", 450, 110, 0, 0, 0, 0, 0, 260, "Rojo"));
-        propiedades.add(new Estacion("Tren 3", 200, 100, 205, 315, 450, 250));
-        propiedades.add(new Solar("Lagunilla Escuela", 400, 100, 0, 0, 0, 0, 0, 230, "Verde"));
-        propiedades.add(new Solar("Calle Los Perdidos", 230, 60, 0, 0, 0, 0, 0, 130, "Verde"));
-        propiedades.add(new Solar("Calle Soledad", 280, 70, 0, 0, 0, 0, 0, 160, "Verde"));
-        propiedades.add(new Estacion("Tren 4", 200, 100, 205, 315, 450, 250));
+        propiedadesServicio.add(new ServicioPublico("Agua", 230, 0, 300));
+        propiedadesSolar.add(new Solar("Avenida Lopez", 230, 60, 95, 115, 140, 155, 230, 140, "Azul"));
+        propiedadesEstacion.add(new Estacion("Tren 1", 200, 100, 205, 315, 450, 250));
+        propiedadesSolar.add(new Solar("Avenida Toros", 100, 25, 40, 50, 60, 70, 100, 60, "Azul"));
+        propiedadesSolar.add(new Solar("Avenida Camaano", 540, 135, 215, 270, 325, 360, 540, 310, "Azul"));
+        propiedadesEstacion.add(new Estacion("Tren 2", 200, 100, 205, 315, 450, 250));
+        propiedadesSolar.add(new Solar("Zona Franca", 285, 70, 115, 140, 170, 190, 285, 160, "Amarillo"));
+        propiedadesSolar.add(new Solar("Finca Miramar", 300, 80, 120, 160, 180, 200, 300, 175, "Amarillo"));
+        propiedadesSolar.add(new Solar("Mirador", 300, 80, 120, 160, 180, 200, 300, 175, "Amarillo"));
+        propiedadesSolar.add(new Solar("Avenida Perez", 200, 50, 80, 100, 120, 135, 200, 120, "Rojo"));
+        propiedadesServicio.add(new ServicioPublico("Luz", 225, 0, 130));
+        propiedadesSolar.add(new Solar("Avenida Central", 250, 60, 100, 150, 160, 170, 250, 150, "Rojo"));
+        propiedadesSolar.add(new Solar("Heredia Media Calle", 450, 110, 180, 225, 270, 300, 450, 260, "Rojo"));
+        propiedadesEstacion.add(new Estacion("Tren 3", 200, 100, 205, 315, 450, 250));
+        propiedadesSolar.add(new Solar("Lagunilla Escuela", 400, 100, 160, 200, 240, 270, 400, 230, "Verde"));
+        propiedadesSolar.add(new Solar("Calle Los Perdidos", 230, 60, 95, 115, 140, 155, 230, 130, "Verde"));
+        propiedadesSolar.add(new Solar("Calle Soledad", 280, 70, 110, 140, 170, 190, 280, 160, "Verde"));
+        propiedadesEstacion.add(new Estacion("Tren 4", 200, 100, 205, 315, 450, 250));
 
         player1.agregarPropiedad("Avenida Lopez");
         player1.agregarPropiedad("Avenida Toros");
         player1.agregarPropiedad("Avenida Camaano");
         player1.agregarPropiedad("Mirador");
-        propiedades.get(1).setPropietario(player1);
-        propiedades.get(3).setPropietario(player1);
-        propiedades.get(4).setPropietario(player1);
-        propiedades.get(4).setPropietario(player1);
+        propiedadesSolar.get(0).setPropietario(player1);
+        propiedadesSolar.get(1).setPropietario(player1);
+        propiedadesSolar.get(2).setPropietario(player1);
+        propiedadesSolar.get(5).setPropietario(player1);
         
         tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
         tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));
@@ -149,26 +153,56 @@ public class Tablero {
                 .findFirst()
                 .orElse(null);
     }
-
-    public Propiedad getPropiedad(String nombre) {
-        return propiedades.stream()
+    
+    public Casilla getCasilla(String nombre) {
+        return casillas.stream()
                 .filter(c -> c.getNombre().equals(nombre))
                 .findFirst()
                 .orElse(null);
     }
 
-    public void puedeConstruir(JugadorDto jugador, Stage stageJuegoView) {
+    public Solar getPropiedadSolar(String nombre) {
+        return propiedadesSolar.stream()
+                .filter(c -> c.getNombre().equals(nombre))
+                .findFirst()
+                .orElse(null);
+    }
+    
+    public ServicioPublico getPropiedadServicio(String nombre) {
+        return propiedadesServicio.stream()
+                .filter(c -> c.getNombre().equals(nombre))
+                .findFirst()
+                .orElse(null);
+    }
+    
+    public Estacion getPropiedadEstacion(String nombre) {
+        return propiedadesEstacion.stream()
+                .filter(c -> c.getNombre().equals(nombre))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<Solar> getPropiedadesSolar() {
+        return propiedadesSolar;
+    }
+    
+    public List<ServicioPublico> getPropiedadesServicios() {
+        return propiedadesServicio;
+    }
+    
+    public List<Estacion> getPropiedadesEstacion() {
+        return propiedadesEstacion;
+    }
+
+    public void puedeConstruir(JugadorDto jugador, Stage stageJuegoView, Banca banca) {
         List<String> propi = jugador.getPropiedades();
-        for (String prop : propi) {
-            System.out.println(prop);
-        }
         boolean azul = propi.stream().anyMatch(p -> p.equals("Avenida Lopez")) && propi.stream().anyMatch(p -> p.equals("Avenida Toros")) && propi.stream().anyMatch(p -> p.equals("Avenida Camaano"));
         boolean amarillo = propi.stream().anyMatch(p -> p.equals("Zona Franca")) && propi.stream().anyMatch(p -> p.equals("Finca Miramar")) && propi.stream().anyMatch(p -> p.equals("Mirador"));
         boolean rojo = propi.stream().allMatch(p -> p.equals("Avenida Perez")) && propi.stream().anyMatch(p -> p.equals("Avenida Central")) && propi.stream().anyMatch(p -> p.equals("Heredia Media Calle"));
         boolean verde = propi.stream().allMatch(p -> p.equals("Lagunilla Escuela")) && propi.stream().anyMatch(p -> p.equals("Calle Los Perdidos")) && propi.stream().anyMatch(p -> p.equals("Calle Soledad"));
 
         ConstruirViewController construirViewController = (ConstruirViewController) FlowController.getInstance().getController("ConstruirView");
-        construirViewController.construirCasasHoteles(jugador, this, azul, amarillo, rojo, verde);
+        construirViewController.construirCasasHoteles(jugador, this, banca, azul, amarillo, rojo, verde);
         FlowController.getInstance().goViewInWindowModal("ConstruirView", stageJuegoView, true);
         
         System.out.println(azul + " : " + amarillo + " : " + rojo + " : " + verde);

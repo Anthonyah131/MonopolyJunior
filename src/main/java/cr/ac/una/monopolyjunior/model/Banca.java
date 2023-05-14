@@ -4,12 +4,6 @@
  */
 package cr.ac.una.monopolyjunior.model;
 
-import cr.ac.una.tarea.util.Mensaje;
-import java.util.ArrayList;
-import java.util.List;
-import javafx.scene.control.Alert;
-import javafx.stage.Stage;
-
 /**
  *
  * @author ANTHONY
@@ -19,6 +13,22 @@ public class Banca {
     public Banca() {
     }
 
+    public void cobrarConsCasa(int monto, JugadorDto jugador) {
+        jugador.pagar(monto);
+    }
+    
+    public void demolerConsCasa(int monto, JugadorDto jugador) {
+        jugador.recibir(monto);
+    }
+    
+    public void cobrarConsHotel(int monto, JugadorDto jugador) {
+        jugador.pagar(monto);
+    }
+    
+    public void demolerConsHotel(int monto, JugadorDto jugador) {
+        jugador.recibir(monto);
+    }
+    
     public void cobrarImpuesto(int monto, JugadorDto jugador) {
         jugador.pagar(monto);
     }

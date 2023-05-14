@@ -8,8 +8,11 @@ import com.jfoenix.controls.JFXButton;
 import cr.ac.una.monopolyjunior.model.Banca;
 import cr.ac.una.monopolyjunior.model.Casilla;
 import cr.ac.una.monopolyjunior.model.Dado;
+import cr.ac.una.monopolyjunior.model.Estacion;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
 import cr.ac.una.monopolyjunior.model.Propiedad;
+import cr.ac.una.monopolyjunior.model.ServicioPublico;
+import cr.ac.una.monopolyjunior.model.Solar;
 import cr.ac.una.monopolyjunior.model.Tablero;
 import cr.ac.una.monopolyjunior.util.FlowController;
 import cr.ac.una.tarea.util.Mensaje;
@@ -30,6 +33,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 /**
@@ -148,6 +152,13 @@ public class JuegoViewController extends Controller implements Initializable {
         for (Node child : boardPane.getChildren()) {
             node = (StackPane) child;
             node.getChildren().clear();
+            if (GridPane.getRowIndex(child) == 8 || GridPane.getRowIndex(child) == 0) {
+                HBox hbox = new HBox();
+                node.getChildren().add(hbox);
+            } else {
+                VBox vbox = new VBox();
+                node.getChildren().add(vbox);
+            }
         }
 
         for (Node child : boardPane.getChildren()) {
@@ -156,6 +167,7 @@ public class JuegoViewController extends Controller implements Initializable {
                 break;
             }
         }
+
         if (node != null) {
             System.out.println("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha());
             ImageView imgPlayer1 = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha()));
@@ -241,7 +253,7 @@ public class JuegoViewController extends Controller implements Initializable {
         } else if (turnoP2) {
             player = tablero.getJugadores().get(1);
         }
-        tablero.puedeConstruir(player, getStage());
+        tablero.puedeConstruir(player, getStage(), banca);
     }
 
     @FXML
@@ -288,8 +300,8 @@ public class JuegoViewController extends Controller implements Initializable {
             id = "imgPlayer2";
         }
 
-        dadoTirado = dado.lanzar();
-//        dadoTirado = 5;
+//        dadoTirado = dado.lanzar();
+        dadoTirado = 6;
 
         moverFicha(dadoTirado, id, player);
 
@@ -351,7 +363,7 @@ public class JuegoViewController extends Controller implements Initializable {
         if (node != null) {
             ImageView imgFicha = null;
             for (Node child : node.getChildren()) {
-                if (id.equals(child.getId())) {
+                if (child instanceof ImageView && id.equals(child.getId())) {
                     imgFicha = (ImageView) child;
                     break;
                 }
@@ -368,6 +380,124 @@ public class JuegoViewController extends Controller implements Initializable {
         }
 
         tablero.moverJugador(player, posX, posY);
+    }
+
+    public void agregarCasaIntefaz(Solar solar) {
+        Casilla casilla = tablero.getCasilla(solar.getNombre());
+        int posX = casilla.getPosX();
+        int posY = casilla.getPosY();
+
+        StackPane node;
+        for (Node child : boardPane.getChildren()) {
+            if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                node = (StackPane) child;
+                if (GridPane.getRowIndex(child) == 8 || GridPane.getRowIndex(child) == 0) {
+                    HBox hbox = (HBox) node.getChildren().get(0);
+                    ImageView imgCasa = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/Casa.png"));
+                    imgCasa.setPreserveRatio(false);
+                    imgCasa.setFitHeight(13);
+                    imgCasa.setFitWidth(13);
+                    hbox.getChildren().add(imgCasa);
+                } else {
+                    VBox vbox = (VBox) node.getChildren().get(0);
+                    ImageView imgCasa = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/Casa.png"));
+                    imgCasa.setPreserveRatio(false);
+                    imgCasa.setFitHeight(13);
+                    imgCasa.setFitWidth(13);
+                    vbox.getChildren().add(imgCasa);
+                }
+                break;
+            }
+        }
+
+    }
+
+    public void demolerCasaIntefaz(Solar solar) {
+        Casilla casilla = tablero.getCasilla(solar.getNombre());
+        int posX = casilla.getPosX();
+        int posY = casilla.getPosY();
+
+        StackPane node;
+        for (Node child : boardPane.getChildren()) {
+            if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                node = (StackPane) child;
+                if (GridPane.getRowIndex(child) == 8 || GridPane.getRowIndex(child) == 0) {
+                    HBox hbox = (HBox) node.getChildren().get(0);
+                    hbox.getChildren().remove(0);
+                } else {
+                    VBox vbox = (VBox) node.getChildren().get(0);
+                    vbox.getChildren().remove(0);
+                }
+                break;
+            }
+        }
+    }
+
+    public void agregarHotelIntefaz(Solar solar) {
+        Casilla casilla = tablero.getCasilla(solar.getNombre());
+        int posX = casilla.getPosX();
+        int posY = casilla.getPosY();
+
+        StackPane node;
+        for (Node child : boardPane.getChildren()) {
+            if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                node = (StackPane) child;
+                if (GridPane.getRowIndex(child) == 8 || GridPane.getRowIndex(child) == 0) {
+                    HBox hbox = (HBox) node.getChildren().get(0);
+                    hbox.getChildren().clear();
+                    ImageView imgCasa = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/Hotel.png"));
+                    imgCasa.setPreserveRatio(false);
+                    imgCasa.setFitHeight(13);
+                    imgCasa.setFitWidth(13);
+                    hbox.getChildren().add(imgCasa);
+                } else {
+                    VBox vbox = (VBox) node.getChildren().get(0);
+                    vbox.getChildren().clear();
+                    ImageView imgCasa = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/Hotel.png"));
+                    imgCasa.setPreserveRatio(false);
+                    imgCasa.setFitHeight(13);
+                    imgCasa.setFitWidth(13);
+                    vbox.getChildren().add(imgCasa);
+                }
+                break;
+            }
+        }
+
+    }
+
+    public void demolerHotelIntefaz(Solar solar) {
+        Casilla casilla = tablero.getCasilla(solar.getNombre());
+        int posX = casilla.getPosX();
+        int posY = casilla.getPosY();
+
+        StackPane node;
+        for (Node child : boardPane.getChildren()) {
+            if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                node = (StackPane) child;
+                if (GridPane.getRowIndex(child) == 8 || GridPane.getRowIndex(child) == 0) {
+                    HBox hbox = (HBox) node.getChildren().get(0);
+                    hbox.getChildren().remove(0);
+                    for (int i = 0; i < 4; i++) {
+                        ImageView imgCasa = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/Casa.png"));
+                        imgCasa.setPreserveRatio(false);
+                        imgCasa.setFitHeight(13);
+                        imgCasa.setFitWidth(13);
+                        hbox.getChildren().add(imgCasa);
+                    }
+                } else {
+                    VBox vbox = (VBox) node.getChildren().get(0);
+                    vbox.getChildren().remove(0);
+                    for (int i = 0; i < 4; i++) {
+                        ImageView imgCasa = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/Casa.png"));
+                        imgCasa.setPreserveRatio(false);
+                        imgCasa.setFitHeight(13);
+                        imgCasa.setFitWidth(13);
+                        vbox.getChildren().add(imgCasa);
+                    }
+                }
+                break;
+            }
+        }
     }
 
     public void moverFicha(JugadorDto player, int posX, int posY) {
@@ -430,14 +560,34 @@ public class JuegoViewController extends Controller implements Initializable {
 
     public void comprarPropiedad(JugadorDto jugador) {
         Casilla casilla = tablero.getCasillaActual(jugador);
-        Propiedad propiedad = tablero.getPropiedad(casilla.getNombre());
-        if (propiedad.getPropietario() == null) {
-            String tipo = tablero.getCasillaActual(jugador).getTipo();
-            if ("Solar".equals(tipo) || "Servicio Publico".equals(tipo) || "Estacion".equals(tipo)) {
-                accionCasilla(jugador);
-            }
-        } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Comprar Propiedad", getStage(), "La propiedad ya tiene un dueño.");
+        String tipo = tablero.getCasillaActual(jugador).getTipo();
+        switch (tipo) {
+            case "Solar":
+                Solar solar = tablero.getPropiedadSolar(casilla.getNombre());
+                if (solar.getPropietario() == null) {
+                    accionCasilla(jugador);
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Comprar Propiedad", getStage(), "La propiedad ya tiene un dueño.");
+                }
+                break;
+            case "Servicio Publico":
+                ServicioPublico servicio = tablero.getPropiedadServicio(casilla.getNombre());
+                if (servicio.getPropietario() == null) {
+                    accionCasilla(jugador);
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Comprar Propiedad", getStage(), "La propiedad ya tiene un dueño.");
+                }
+                break;
+            case "Estacion":
+                Estacion estacion = tablero.getPropiedadEstacion(casilla.getNombre());
+                if (estacion.getPropietario() == null) {
+                    accionCasilla(jugador);
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Comprar Propiedad", getStage(), "La propiedad ya tiene un dueño.");
+                }
+                break;
+            default:
+                throw new AssertionError();
         }
     }
 
