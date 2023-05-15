@@ -7,7 +7,6 @@ package cr.ac.una.monopolyjunior.controller;
 import com.jfoenix.controls.JFXButton;
 import cr.ac.una.monopolyjunior.model.Banca;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
-import cr.ac.una.monopolyjunior.model.Propiedad;
 import cr.ac.una.monopolyjunior.model.Solar;
 import cr.ac.una.monopolyjunior.model.Tablero;
 import java.net.URL;

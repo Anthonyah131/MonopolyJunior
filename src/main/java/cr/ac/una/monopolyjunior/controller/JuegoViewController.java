@@ -243,6 +243,15 @@ public class JuegoViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnVenderPropi(ActionEvent event) {
+        JugadorDto player = null;
+        if (turnoP1) {
+            player = tablero.getJugadores().get(0);
+        } else if (turnoP2) {
+            player = tablero.getJugadores().get(1);
+        }
+        VenderViewController venderViewViewController = (VenderViewController) FlowController.getInstance().getController("VenderView");
+        venderViewViewController.VenderPropiedades(tablero, player, banca);
+        FlowController.getInstance().goViewInWindow("VenderView");
     }
 
     @FXML

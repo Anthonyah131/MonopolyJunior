@@ -73,7 +73,7 @@ public class Solar extends Propiedad {
 
     public void demolerHotel(Banca banca) {
         if (this.hotel == 1 && this.casas == 4) {
-            banca.demolerConsCasa(390, getPropietario());
+            banca.demolerConsHotel(390, getPropietario());
             this.hotel--;
             JuegoViewController juegoViewController = (JuegoViewController) FlowController.getInstance().getController("JuegoView");
             juegoViewController.demolerHotelIntefaz(this);

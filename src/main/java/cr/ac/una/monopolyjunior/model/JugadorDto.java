@@ -71,6 +71,15 @@ public class JugadorDto {
     public void agregarPropiedad(String propiedad) {
         this.propiedades.add(propiedad);
     }
+    
+    public void quitarPropiedad(String propiedad) {
+        for(int i = 0; i < this.propiedades.size(); i++) {
+            if(this.propiedades.get(i).equals(propiedad)) {
+                this.propiedades.remove(i);
+            }
+        }
+//        this.propiedades.remove(propiedad);
+    }
 
     public void pagar(int cantidad) {
         this.saldo -= cantidad;

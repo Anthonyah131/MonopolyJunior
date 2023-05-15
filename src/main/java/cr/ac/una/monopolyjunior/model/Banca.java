@@ -36,4 +36,9 @@ public class Banca {
     public void pagar(int monto, JugadorDto jugador) {
         jugador.recibir(monto);
     }
+    
+    public void comprarPropiedad(Propiedad propiedad, JugadorDto jugador) {
+        propiedad.setPropietario(null);
+        jugador.recibir((int) (propiedad.getPrecioCompra()*0.75));
+    }
 }
