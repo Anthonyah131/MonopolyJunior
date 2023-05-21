@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootJuegoView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="714.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.JuegoViewController">
+<BorderPane fx:id="rootJuegoView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="764.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.JuegoViewController">
    <center>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
@@ -48,17 +48,26 @@
       </VBox>
    </center>
    <left>
-      <VBox alignment="TOP_CENTER" prefWidth="150.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton fx:id="btnFinalizarTurno" onAction="#onActionBtnFinalizarTurno" text="Finalizar Turno" />
-            <JFXButton fx:id="btnMiCapital" onAction="#onActionBtnMiCapital" text="Mi Capital" />
-            <JFXButton fx:id="btnComprarPropi" onAction="#onActionBtnComprarPropi" text="Comprar Propiedades" />
-            <JFXButton fx:id="btnVerderPropi" onAction="#onActionBtnVenderPropi" text="Vender Propiedades" />
-            <JFXButton fx:id="btnContruir" onAction="#onActionBtnConstruir" text="Contruir Casas o Hoteles" />
-            <JFXButton fx:id="btnHipotecar" onAction="#onActionBtnHipotecar" text="Hipotecar" />
-            <JFXButton fx:id="btnPagarHipoteca" onAction="#btnPagarHipoteca" text="Pagar o liberar Hipoteca" />
-            <JFXButton fx:id="btnPagarDeudaMulta" onAction="#onActionBtnPagarDeudaMulta" text="Pagar Impuesto o Multa" />
-            <JFXButton fx:id="btnFinalizarJuego" onAction="#onActionBtnFinalizarJuego" text="Finalizar Juego" />
+            <JFXButton fx:id="btnFinalizarTurno" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnFinalizarTurno" styleClass="JuegoView-Button" text="Finalizar Turno" VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="btnMiCapital" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnMiCapital" styleClass="JuegoView-Button" text="Mi Capital" VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="btnComprarPropi" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnComprarPropi" styleClass="JuegoView-Button" text="Comprar Propiedades" VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="btnVerderPropi" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnVenderPropi" styleClass="JuegoView-Button" text="Vender Propiedades" VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="btnContruir" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnConstruir" styleClass="JuegoView-Button" text="Contruir Casas o Hoteles" VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="btnHipotecar" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnHipotecar" styleClass="JuegoView-Button" text="Hipotecar" VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="btnPagarHipoteca" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#btnPagarHipoteca" styleClass="JuegoView-Button" text="Pagar o liberar Hipoteca" VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="btnPagarDeudaMulta" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnPagarDeudaMulta" styleClass="JuegoView-Button" text="Pagar Impuesto o Multa" VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="btnFinalizarJuego" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnFinalizarJuego" styleClass="JuegoView-Button" text="Finalizar Juego" VBox.vgrow="ALWAYS" />
+            <VBox alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+               <children>
+                  <ImageView fx:id="imgFichaTurno" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </ImageView>
+               </children>
+            </VBox>
          </children>
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -71,15 +80,15 @@
    <top>
       <HBox prefHeight="75.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="225.0">
                <children>
-                  <ImageView fx:id="imgLogo" fitHeight="50.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="imgLogo" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Turno de: " />
-                  <Label fx:id="lbTurno" text="Player 1" />
+                  <Label styleClass="JuegoView-lbPlayer" text="Turno de: " />
+                  <Label fx:id="lbTurno" styleClass="JuegoView-lbPlayerNombre" text="Player 1" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
@@ -87,8 +96,8 @@
                   <Insets />
                </HBox.margin>
                <children>
-                  <Label text="Capital: " />
-                  <Label fx:id="lbCapital" text="......" />
+                  <Label styleClass="JuegoView-lbPlayer" text="Capital: " />
+                  <Label fx:id="lbCapital" styleClass="JuegoView-lbPlayerNombre" text="......" />
                </children>
             </HBox>
          </children>

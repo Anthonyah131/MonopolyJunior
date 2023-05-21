@@ -89,14 +89,14 @@ public class Tablero {
         propiedadesSolar.add(new Solar("Calle Soledad", 280, 70, 110, 140, 170, 190, 280, 160, "Verde"));
         propiedadesEstacion.add(new Estacion("Tren 4", 200, 100, 205, 315, 450, 250));
 
-        player1.agregarPropiedad("Avenida Lopez");
-        player1.agregarPropiedad("Avenida Toros");
-        player1.agregarPropiedad("Avenida Camaano");
-        player1.agregarPropiedad("Mirador");
-        propiedadesSolar.get(0).setPropietario(player1);
-        propiedadesSolar.get(1).setPropietario(player1);
-        propiedadesSolar.get(2).setPropietario(player1);
-        propiedadesSolar.get(5).setPropietario(player1);
+//        player1.agregarPropiedad("Avenida Lopez");
+//        player1.agregarPropiedad("Avenida Toros");
+//        player1.agregarPropiedad("Avenida Camaano");
+//        player1.agregarPropiedad("Mirador");
+//        propiedadesSolar.get(0).setPropietario(player1);
+//        propiedadesSolar.get(1).setPropietario(player1);
+//        propiedadesSolar.get(2).setPropietario(player1);
+//        propiedadesSolar.get(5).setPropietario(player1);
         
         tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
         tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));

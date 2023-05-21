@@ -13,6 +13,7 @@ public class Propiedad {
     private String nombre;
     private int precioCompra;
     private int renta;
+    private boolean hipotecada;
     private int valorHipoteca;
     private JugadorDto propietario;
 
@@ -20,6 +21,7 @@ public class Propiedad {
         this.nombre = "";
         this.precioCompra = 0;
         this.renta = 0;
+        this.hipotecada = false;
         this.valorHipoteca = 0;
         this.propietario = null;
     }
@@ -28,6 +30,7 @@ public class Propiedad {
         this.nombre = nombre;
         this.precioCompra = precioCompra;
         this.renta = renta;
+        this.hipotecada = false;
         this.valorHipoteca = valorHipoteca;
         this.propietario = null;
     }
@@ -45,6 +48,14 @@ public class Propiedad {
         return this.renta;
     }
 
+    public boolean isHipotecada() {
+        return hipotecada;
+    }
+
+    public void setHipotecada(boolean hipotecada) {
+        this.hipotecada = hipotecada;
+    }
+
     public int getValorHipoteca() {
         return valorHipoteca;
     }
@@ -59,12 +70,6 @@ public class Propiedad {
 
     public void setPropietario(JugadorDto propietario) {
         this.propietario = propietario;
-    }
-
-    // Métodos
-    public boolean estaHipotecada() {
-        // Este método podría implementarse en una subclase Hipoteca de Propiedad
-        return false;
     }
 
     public void cobrarRenta(JugadorDto jugador) {

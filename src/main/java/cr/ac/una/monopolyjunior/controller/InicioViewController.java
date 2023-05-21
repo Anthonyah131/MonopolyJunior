@@ -11,7 +11,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
@@ -28,13 +30,15 @@ public class InicioViewController extends Controller implements Initializable {
     private JFXButton btnCargarPartida;
     @FXML
     private JFXButton btnSalir;
+    @FXML
+    private AnchorPane root;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        imgView.setImage(new Image("cr/ac/una/monopolyjunior/resources/MonopolyLogo1.png"));
     }
 
     @Override
@@ -43,8 +47,8 @@ public class InicioViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnNuevaPartida(ActionEvent event) {
-        FlowController.getInstance().goViewInWindow("NuevaPartidaView");
         FlowController.getInstance().salir();
+        FlowController.getInstance().goViewInWindow("NuevaPartidaView");
     }
 
     @FXML

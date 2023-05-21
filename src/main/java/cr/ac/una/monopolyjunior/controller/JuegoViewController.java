@@ -10,7 +10,6 @@ import cr.ac.una.monopolyjunior.model.Casilla;
 import cr.ac.una.monopolyjunior.model.Dado;
 import cr.ac.una.monopolyjunior.model.Estacion;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
-import cr.ac.una.monopolyjunior.model.Propiedad;
 import cr.ac.una.monopolyjunior.model.ServicioPublico;
 import cr.ac.una.monopolyjunior.model.Solar;
 import cr.ac.una.monopolyjunior.model.Tablero;
@@ -73,6 +72,8 @@ public class JuegoViewController extends Controller implements Initializable {
     private JFXButton btnPagarDeudaMulta;
     @FXML
     private JFXButton btnFinalizarJuego;
+    @FXML
+    private ImageView imgFichaTurno;
 
     private static final int ROWS = 9;
     private static final int COLUMNS = 9;
@@ -113,6 +114,7 @@ public class JuegoViewController extends Controller implements Initializable {
                 boardPane.add(tile, col, row);
             }
         }
+        imgLogo.setImage(new Image("cr/ac/una/monopolyjunior/resources/MonopolyLogo2.png"));
     }
 
     @Override
@@ -143,6 +145,7 @@ public class JuegoViewController extends Controller implements Initializable {
         turnoP2 = false;
 
         lbTurno.setText(tablero.getJugadores().get(0).getNombre());
+        imgFichaTurno.setImage(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha()));
         lbCapital.setText("" + tablero.getJugadores().get(0).getSaldo());
 
         banca = new Banca();
@@ -191,9 +194,15 @@ public class JuegoViewController extends Controller implements Initializable {
         if (turnoP1) {
             player = tablero.getJugadores().get(1);
             if (tablero.player1Debe) {
-                OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
-                opcionJugadorViewController.turnoBancarrota(player, tablero);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
+                if (new Mensaje().showConfirmation("Saldo Pendiente", getStage(), "Tienes un saldo pendiente, si continuas con el, te declaras en bancarrota, deseas continuar?")) {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Bancarrota", getStage(), "Te has declarado en bancarrota");
+                    OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+                    opcionJugadorViewController.declararGanador(player, tablero);
+                    getStage().close();
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Bancarrota", getStage(), "Recuerda pagar la deuda, si no seras declarado en bancarrota.");
+                }
             } else {
                 turnoP1 = false;
                 turnoP2 = true;
@@ -203,10 +212,16 @@ public class JuegoViewController extends Controller implements Initializable {
             }
         } else if (turnoP2) {
             player = tablero.getJugadores().get(0);
-            if (tablero.player1Debe) {
-                OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
-                opcionJugadorViewController.turnoBancarrota(player, tablero);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
+            if (tablero.player2Debe) {
+                if (new Mensaje().showConfirmation("Saldo Pendiente", getStage(), "Tienes un saldo pendiente, si continuas con el, te declaras en bancarrota, deseas continuar?")) {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Bancarrota", getStage(), "Te has declarado en bancarrota");
+                    OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+                    opcionJugadorViewController.declararGanador(player, tablero);
+                    getStage().close();
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Bancarrota", getStage(), "Recuerda pagar la deuda, si no seras declarado en bancarrota.");
+                }
             } else {
                 turnoP1 = true;
                 turnoP2 = false;
@@ -267,10 +282,28 @@ public class JuegoViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnHipotecar(ActionEvent event) {
+        JugadorDto player = null;
+        if (turnoP1) {
+            player = tablero.getJugadores().get(0);
+        } else if (turnoP2) {
+            player = tablero.getJugadores().get(1);
+        }
+        VenderViewController venderViewViewController = (VenderViewController) FlowController.getInstance().getController("VenderView");
+        venderViewViewController.hipotecarPropiedades(tablero, player, banca);
+        FlowController.getInstance().goViewInWindow("VenderView");
     }
 
     @FXML
     private void btnPagarHipoteca(ActionEvent event) {
+        JugadorDto player = null;
+        if (turnoP1) {
+            player = tablero.getJugadores().get(0);
+        } else if (turnoP2) {
+            player = tablero.getJugadores().get(1);
+        }
+        VenderViewController venderViewViewController = (VenderViewController) FlowController.getInstance().getController("VenderView");
+        venderViewViewController.pagarHipotecaPropiedades(tablero, player, banca);
+        FlowController.getInstance().goViewInWindow("VenderView");
     }
 
     @FXML
@@ -293,8 +326,21 @@ public class JuegoViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnFinalizarJuego(ActionEvent event) {
-        FlowController.getInstance().goMain();
-        getStage().close();
+        JugadorDto player = null;
+        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(0);
+        } else if (tablero.getJugadores().get(1).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(1);
+        }
+        if (new Mensaje().showConfirmation("Finalizar Partida", getStage(), "¿Desea guardar la partida, si dice que no se finalizara la partida actual?")) {
+            FlowController.getInstance().goMain();
+            getStage().close();
+        } else {
+            OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+            opcionJugadorViewController.declararGanador(player, tablero);
+            getStage().close();
+            FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
+        }
     }
 
     private void onActionBtnDados(ActionEvent event) {
@@ -309,8 +355,8 @@ public class JuegoViewController extends Controller implements Initializable {
             id = "imgPlayer2";
         }
 
-//        dadoTirado = dado.lanzar();
-        dadoTirado = 6;
+        dadoTirado = dado.lanzar();
+//        dadoTirado = 6;
 
         moverFicha(dadoTirado, id, player);
 
@@ -596,7 +642,7 @@ public class JuegoViewController extends Controller implements Initializable {
                 }
                 break;
             default:
-                throw new AssertionError();
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Comprar Propiedad", getStage(), "No es posible comprar esto.");
         }
     }
 
@@ -608,6 +654,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     public void actualizarDatosInterfaz(JugadorDto player) {
+        imgFichaTurno.setImage(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + player.getFicha()));
         lbTurno.setText(player.getNombre());
         lbCapital.setText("" + player.getSaldo());
     }

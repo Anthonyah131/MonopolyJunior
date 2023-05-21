@@ -1,3 +1,112 @@
+/* IncioView */
+
+.incio-root {
+    -fx-background-image : url("../resources/MonopolyFondo1.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
+
+.inicio-button {
+    -fx-font-family: Arial;
+    -fx-text-fill: #333333;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, black, 10, 0.5, 2, 2);
+    -fx-font-size: 25px;
+    -fx-font-weight: 800;
+    -fx-padding: 10px;
+    -fx-border-radius: 20;
+}
+
+.inicio-button:hover {
+    -fx-background-color: #9e999c;
+}
+
+/* NuevaPartidaView */
+
+.NuevaPartida-lbPlayer {
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, black, 10, 0.5, 2, 2);
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+}
+
+.NuevaPartida-lbPlayerNombre {
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, black, 10, 0.5, 2, 2);
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+}
+
+#txfNombreJugador{
+    -jfx-focus-color: #ffffff;
+    -jfx-unfocus-color: #ffffff;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, black, 4, 0.5, 2, 2);
+    -fx-font-size: 14px;
+}
+
+#txfNombreJugador:focus{
+  -fx-focus-color: #ffffff; /* Cambia el color de enfoque a rojo */
+}
+
+.NuevaPartida-Ficha {
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+
+.NuevaPartida-Ficha:hover {
+    -fx-background-color: rgba(75,74,79,0.4066001400560224);
+}
+
+.seleccionada {
+    -fx-border-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, black, 10, 0.5, 2, 2);
+}
+
+.NuevaPartida-Button {
+    -fx-text-fill: #333333;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, black, 4, 0.5, 2, 2);
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+    -fx-padding: 4px;
+    -fx-border-radius: 25;
+}
+
+/* JuegoView */
+
+#rootJuegoView {
+    -fx-background-color: #333333;
+}
+
+.JuegoView-lbPlayer {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+}
+
+.JuegoView-lbPlayerNombre {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+}
+
+.JuegoView-Button {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+    -fx-font-weight: 800;
+    -fx-padding: 2px;
+    -fx-border-radius: 10;
+}
+
+.JuegoView-Button:hover {
+    -fx-background-color: rgba(75,74,79,0.4066001400560224);;
+}
+
 .board-pane {
     -fx-background-image: url("../resources/Tablero2.png");
 }
@@ -6,9 +115,4 @@
     -fx-background-fills: transparent;
 }
 
-.seleccionada {
-    -fx-border-color: #4d4d4d;
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
-}
 

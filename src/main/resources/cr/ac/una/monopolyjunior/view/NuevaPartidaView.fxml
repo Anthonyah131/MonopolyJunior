@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="500.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.NuevaPartidaViewController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="500.0" styleClass="incio-root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.NuevaPartidaViewController">
    <children>
       <StackPane layoutX="173.0" layoutY="117.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -22,15 +22,15 @@
                            <children>
                               <VBox fx:id="containerPlayer1" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0">
                                  <children>
-                                    <Label text="Player 1" />
-                                    <Label fx:id="lbPlayer1" text="...." />
+                                    <Label styleClass="NuevaPartida-lbPlayer" text="Player 1" />
+                                    <Label fx:id="lbPlayer1" styleClass="NuevaPartida-lbPlayerNombre" text="...." />
                                     <ImageView fx:id="imgPlayer1" fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </VBox>
                               <VBox fx:id="containerPlayer2" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0">
                                  <children>
-                                    <Label text="Player 2" />
-                                    <Label fx:id="lbPlayer2" text="...." />
+                                    <Label styleClass="NuevaPartida-lbPlayer" text="Player 2" />
+                                    <Label fx:id="lbPlayer2" styleClass="NuevaPartida-lbPlayerNombre" text="...." />
                                     <ImageView fx:id="imgPlayer2" fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </VBox>
@@ -38,21 +38,21 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Label fx:id="lbPlayer" text="Player 1" />
+                  <Label fx:id="lbPlayer" styleClass="NuevaPartida-lbPlayer" text="Player 1" />
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <JFXTextField fx:id="txfNombreJugador" maxWidth="250.0" promptText="Nombre" />
+                        <JFXTextField fx:id="txfNombreJugador" labelFloat="true" maxWidth="250.0" promptText="Nombre" />
                         <VBox maxWidth="300.0" prefHeight="200.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <Label text="Ficha:" />
+                              <Label styleClass="NuevaPartida-lbPlayer" text="Ficha:" />
                               <HBox fx:id="contenedorFichas1" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                               <HBox fx:id="contenedorFichas2" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
-                        <HBox alignment="CENTER">
+                        <HBox alignment="CENTER" spacing="25.0">
                            <children>
-                              <JFXButton fx:id="btnCancelar" onAction="#onActionBtnCancelar" text="Cancelar" />
-                              <JFXButton fx:id="btnContinuar" onAction="#onActionBtnContinuar" text="Continuar" />
+                              <JFXButton fx:id="btnCancelar" onAction="#onActionBtnCancelar" prefWidth="150.0" styleClass="NuevaPartida-Button" text="Cancelar" />
+                              <JFXButton fx:id="btnContinuar" onAction="#onActionBtnContinuar" prefWidth="150.0" styleClass="NuevaPartida-Button" text="Continuar" />
                            </children>
                            <VBox.margin>
                               <Insets />

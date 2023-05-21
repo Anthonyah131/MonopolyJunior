@@ -13,6 +13,7 @@ import cr.ac.una.monopolyjunior.model.ServicioPublico;
 import cr.ac.una.monopolyjunior.model.Solar;
 import cr.ac.una.monopolyjunior.model.Tablero;
 import cr.ac.una.monopolyjunior.model.Tarjeta;
+import cr.ac.una.monopolyjunior.util.FlowController;
 import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
 import java.util.Random;
@@ -455,7 +456,11 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         btnPagar.setOnAction(event -> {
             if (jugador.getSaldo() >= renta) {
                 jugador.pagar(renta);
-                tablero.getPropiedadSolar(nombre).getPropietario().recibir(renta);
+                if (tablero.getPropiedadSolar(nombre).isHipotecada()) {
+                    System.out.println("Propiedad Hipotecada, el banco cobra");
+                } else {
+                    tablero.getPropiedadSolar(nombre).getPropietario().recibir(renta);
+                }
                 for (int i = 0; i < tablero.getJugadores().size(); i++) {
                     if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
                         tablero.player1Debe = false;
@@ -520,7 +525,11 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         btnPagar.setOnAction(event -> {
             if (jugador.getSaldo() >= renta) {
                 jugador.pagar(renta);
-                propiedad.getPropietario().recibir(renta);
+                if (propiedad.isHipotecada()) {
+                    System.out.println("Propiedad Hipotecada, el banco cobra");
+                } else {
+                    propiedad.getPropietario().recibir(renta);
+                }
                 for (int i = 0; i < tablero.getJugadores().size(); i++) {
                     if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
                         tablero.player1Debe = false;
@@ -573,7 +582,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         Label lbTituloPropiedad = new Label("Servicio Publico");
         vboxTitulo.getChildren().addAll(lbTituloPropiedad);
 
-        Estacion propiedad = (Estacion) tablero.getPropiedadEstacion(nombre);
+        Estacion propiedad = tablero.getPropiedadEstacion(nombre);
 
         int renta = propiedad.calcularRenta(1);
 
@@ -585,7 +594,11 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         btnPagar.setOnAction(event -> {
             if (jugador.getSaldo() >= renta) {
                 jugador.pagar(renta);
-                propiedad.getPropietario().recibir(renta);
+                if (propiedad.isHipotecada()) {
+                    System.out.println("Propiedad Hipotecada, el banco cobra");
+                } else {
+                    propiedad.getPropietario().recibir(renta);
+                }
                 for (int i = 0; i < tablero.getJugadores().size(); i++) {
                     if (i == 0 && tablero.getJugadores().get(i).getNombre().equals(jugador.getNombre())) {
                         tablero.player1Debe = false;
@@ -721,7 +734,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         banca.pagar(200, jugador);
     }
 
-    public void turnoBancarrota(JugadorDto jugador, Tablero tablero) {
+    public void declararGanador(JugadorDto jugador, Tablero tablero) {
         rootOpcionJugadorView.getChildren().clear();
 
         StackPane stackPane = new StackPane();
@@ -730,24 +743,26 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         VBox cartaPropiedad = new VBox();
 
         VBox vboxTitulo = new VBox();
-        Label lbTituloPropiedad = new Label("Saldo Pendiente");
+        Label lbTituloPropiedad = new Label("Ganador");
         vboxTitulo.getChildren().addAll(lbTituloPropiedad);
 
-        Label lbInfo = new Label("Tienes un saldo pendiente, si continuas con el, te declaras en bancarrota, deseas continuar?");
+        JugadorDto jugadorGanador = null;
+        for (JugadorDto jug : tablero.getJugadores()) {
+            if (!jug.getNombre().equals(jugador.getNombre())) {
+                jugadorGanador = jug;
+            }
+        }
+
+        Label lbInfo = new Label("!! Felicidades " + jugadorGanador.getNombre() + ", ganaste la partida");
 
         cartaPropiedad.getChildren().addAll(vboxTitulo, lbInfo);
 
         JFXButton btnContinuar = new JFXButton("Continuar");
         btnContinuar.setOnAction(event -> {
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Bancarrota", getStage(), "Te has declarado en bancarrota");
             getStage().close();
+            FlowController.getInstance().goMain();
         });
-        JFXButton btnEsperar = new JFXButton("Esperar");
-        btnEsperar.setOnAction(event -> {
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Bancarrota", getStage(), "Recuerda pagar la deuda, si no seras declarado en bancarrota.");
-            getStage().close();
-        });
-        HBox hboxOpciones = new HBox(btnContinuar, btnEsperar);
+        HBox hboxOpciones = new HBox(btnContinuar);
 
         vbox.getChildren().addAll(cartaPropiedad, hboxOpciones);
         stackPane.getChildren().add(vbox);
@@ -758,22 +773,25 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         ObservableList<Propiedad> propiedades = FXCollections.observableArrayList();
         for (String prop : jugador.getPropiedades()) {
             Solar sola = tablero.getPropiedadSolar(prop);
-            if(sola != null)
+            if (sola != null) {
                 propiedades.add(sola);
+            }
         }
 
         for (String prop : jugador.getPropiedades()) {
             ServicioPublico servi = tablero.getPropiedadServicio(prop);
-            if(servi != null)
+            if (servi != null) {
                 propiedades.add(servi);
+            }
         }
 
         for (String prop : jugador.getPropiedades()) {
             Estacion esta = tablero.getPropiedadEstacion(prop);
-            if(esta != null)
+            if (esta != null) {
                 propiedades.add(esta);
+            }
         }
-        
+
         if (propiedades != null) {
             tbvPropiedades.setItems(propiedades);
             tbvPropiedades.refresh();

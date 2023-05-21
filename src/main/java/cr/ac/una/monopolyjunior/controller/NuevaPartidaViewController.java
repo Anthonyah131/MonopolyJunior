@@ -101,6 +101,7 @@ public class NuevaPartidaViewController extends Controller implements Initializa
             imageview.setFitWidth(75);
             btnFicha.setGraphic(imageview);
             btnFicha.setOnMouseClicked(this::seleccionarImagen);
+            btnFicha.getStyleClass().add("NuevaPartida-Ficha");
             if (i >= 4) {
                 contenedorFichas2.getChildren().add(btnFicha);
             } else {
@@ -121,7 +122,7 @@ public class NuevaPartidaViewController extends Controller implements Initializa
                 imagenSeleccionada.setDisable(true);
                 lbPlayer.setText("Player 2");
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Player 1", getStage(), "Error creando el Player 1, revise los campos");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Player 1", getStage(), "Error ingresando el Player 1, revise los campos");
             }
         } else if ("Player 2".equals(lbPlayer.getText())) {
             if (!fichaPlayer.isBlank() && !txfNombreJugador.getText().isBlank()) {
@@ -133,7 +134,7 @@ public class NuevaPartidaViewController extends Controller implements Initializa
                 FlowController.getInstance().goViewInWindow("JuegoView");
                 getStage().close();
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Player 2", getStage(), "Error creando el Player 2, revise los campos");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Player 2", getStage(), "Error ingresando el Player 2, revise los campos");
             }
         }
     }

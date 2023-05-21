@@ -16,29 +16,40 @@ public class Banca {
     public void cobrarConsCasa(int monto, JugadorDto jugador) {
         jugador.pagar(monto);
     }
-    
+
     public void demolerConsCasa(int monto, JugadorDto jugador) {
         jugador.recibir(monto);
     }
-    
+
     public void cobrarConsHotel(int monto, JugadorDto jugador) {
         jugador.pagar(monto);
     }
-    
+
     public void demolerConsHotel(int monto, JugadorDto jugador) {
         jugador.recibir(monto);
     }
-    
+
     public void cobrarImpuesto(int monto, JugadorDto jugador) {
         jugador.pagar(monto);
     }
-    
+
     public void pagar(int monto, JugadorDto jugador) {
         jugador.recibir(monto);
     }
-    
+
     public void comprarPropiedad(Propiedad propiedad, JugadorDto jugador) {
         propiedad.setPropietario(null);
-        jugador.recibir((int) (propiedad.getPrecioCompra()*0.75));
+        jugador.quitarPropiedad(propiedad.getNombre());
+        jugador.recibir((int) (propiedad.getPrecioCompra() * 0.75));
+    }
+    
+    public void hipotecarPropiedad(Propiedad propiedad, Tablero tablero, JugadorDto jugador) {
+        propiedad.setHipotecada(true);
+        jugador.recibir(propiedad.getValorHipoteca());
+    }
+    
+    public void CobrarHipotecarPropiedad(Propiedad propiedad, Tablero tablero, JugadorDto jugador) {
+        propiedad.setHipotecada(false);
+        jugador.pagar((int) (propiedad.getValorHipoteca() + propiedad.getValorHipoteca() * 0.20));
     }
 }
