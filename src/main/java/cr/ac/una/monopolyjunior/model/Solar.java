@@ -82,17 +82,17 @@ public class Solar extends Propiedad {
     }
 
     public int calcularRenta() {
-        if (this.hotel > 0) {
+        if (this.hotel == 1) {
             return this.rentaHotel;
         } else {
             switch (casas) {
+                case 0:
+                    return this.getRenta();
                 case 1:
-                    System.out.println("Rentaaa: " + this.renta1Casa);
                     return this.renta1Casa;
                 case 2:
                     return this.renta2Casa;
                 case 3:
-                    System.out.println("Rentaaa: " + this.renta3Casa);
                     return this.renta3Casa;
                 case 4:
                     return this.renta4Casa;
@@ -112,6 +112,26 @@ public class Solar extends Propiedad {
 
     public int getHotel() {
         return hotel;
+    }
+
+    public int getRenta1Casa() {
+        return renta1Casa;
+    }
+
+    public int getRenta2Casa() {
+        return renta2Casa;
+    }
+    
+    public int getRenta3Casa() {
+        return renta3Casa;
+    }
+
+    public int getRenta4Casa() {
+        return renta4Casa;
+    }
+
+    public int getRentaHotel() {
+        return rentaHotel;
     }
 
 }

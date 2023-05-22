@@ -56,8 +56,8 @@
             <JFXButton fx:id="btnVerderPropi" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnVenderPropi" styleClass="JuegoView-Button" text="Vender Propiedades" VBox.vgrow="ALWAYS" />
             <JFXButton fx:id="btnContruir" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnConstruir" styleClass="JuegoView-Button" text="Contruir Casas o Hoteles" VBox.vgrow="ALWAYS" />
             <JFXButton fx:id="btnHipotecar" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnHipotecar" styleClass="JuegoView-Button" text="Hipotecar" VBox.vgrow="ALWAYS" />
-            <JFXButton fx:id="btnPagarHipoteca" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#btnPagarHipoteca" styleClass="JuegoView-Button" text="Pagar o liberar Hipoteca" VBox.vgrow="ALWAYS" />
-            <JFXButton fx:id="btnPagarDeudaMulta" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnPagarDeudaMulta" styleClass="JuegoView-Button" text="Pagar Impuesto o Multa" VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="btnPagarHipoteca" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#btnPagarHipoteca" styleClass="JuegoView-Button" text="Liberar Hipoteca" VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="btnPagarDeudaMulta" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnPagarDeudaMulta" styleClass="JuegoView-Button" text="Pagar Deuda" VBox.vgrow="ALWAYS" />
             <JFXButton fx:id="btnFinalizarJuego" maxHeight="40.0" maxWidth="1.7976931348623157E308" onAction="#onActionBtnFinalizarJuego" styleClass="JuegoView-Button" text="Finalizar Juego" VBox.vgrow="ALWAYS" />
             <VBox alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                <children>

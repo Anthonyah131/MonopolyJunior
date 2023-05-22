@@ -115,4 +115,61 @@
     -fx-background-fills: transparent;
 }
 
+/* Carta Propiedad */
 
+.carta-contenedor {
+    -fx-padding: 8px;
+}
+
+.carta-contenedorTitulo {
+    -fx-padding: 4 0 4 0;
+}
+.carta-contenedorTituloAzul {
+    -fx-background-color: #0066ff;
+}
+.carta-contenedorTituloAmarillo {
+    -fx-background-color: #ffff00;
+}
+.carta-contenedorTituloRojo {
+    -fx-background-color: #ff3333;
+}
+.carta-contenedorTituloVerde {
+    -fx-background-color: #00cc00;
+}
+
+.carta-lbTituloPropiedad {
+    -fx-font-size: 13px;
+    -fx-font-weight: 800;
+}
+
+.carta-lbTitulo {
+    -fx-font-size: 13px;
+    -fx-font-weight: 800;
+}
+.carta-lbNombrePropiedad {
+    -fx-font-size: 10px;
+    -fx-text-fill: #fff;
+}
+
+.carta-lbRenta {
+    -fx-padding: 0 0 0 5;
+}
+
+.carta-lbDescripcion {
+    -fx-padding: 5 0 5 0;
+    -fx-font-size: 10px;
+}
+
+.carta-button {
+    -fx-font-family: Arial;
+    -fx-text-fill: #333333;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, black, 3, 0.5, 2, 2);
+    -fx-font-weight: 800;
+    -fx-padding: 5px;
+    -fx-border-radius: 20;
+}
+
+.carta-button:hover {
+    -fx-background-color: #9e999c;
+}

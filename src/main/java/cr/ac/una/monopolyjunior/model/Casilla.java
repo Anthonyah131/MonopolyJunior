@@ -68,26 +68,26 @@ public class Casilla {
             case "Go":
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.goInterfaz(jugador, banca, tablero, stageJuegoView);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 break;
             case "Solar":
                 propiedad = tablero.getPropiedadSolar(this.nombre);
-                if (propiedad.getPropietario() == null) {
+                if (!propiedad.tienePropietario()) {
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
-                    opcionJugadorViewController.comprarPropiedadInterfaz(jugador, propiedad);
-                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                    opcionJugadorViewController.comprarPropiedadInterfaz(jugador, banca, propiedad);
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 } else if (!propiedad.getPropietario().getNombre().equals(jugador.getNombre())) {
                     System.out.println("Debe pagar alquiler a " + propiedad.getPropietario().getNombre());
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                     opcionJugadorViewController.rentaSolarInterfaz(jugador, tablero, this.nombre);
-                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 }
                 break;
             case "Servicio Publico":
                 propiedad = tablero.getPropiedadServicio(this.nombre);
-                if (propiedad.getPropietario() == null) {
+                if (!propiedad.tienePropietario()) {
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
-                    opcionJugadorViewController.comprarServicioPublicoInterfaz(jugador, propiedad);
+                    opcionJugadorViewController.comprarServicioPublicoInterfaz(jugador, banca, propiedad);
                     FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 } else if (!propiedad.getPropietario().getNombre().equals(jugador.getNombre())) {
                     System.out.println("Debe pagar alquiler a " + propiedad.getPropietario().getNombre());
@@ -98,9 +98,9 @@ public class Casilla {
                 break;
             case "Estacion":
                 propiedad = tablero.getPropiedadEstacion(this.nombre);
-                if (propiedad.getPropietario() == null) {
+                if (!propiedad.tienePropietario()) {
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
-                    opcionJugadorViewController.comprarEstacionInterfaz(jugador, propiedad);
+                    opcionJugadorViewController.comprarEstacionInterfaz(jugador, banca, propiedad);
                     FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 } else if (!propiedad.getPropietario().getNombre().equals(jugador.getNombre())) {
                     System.out.println("Debe pagar alquiler a " + propiedad.getPropietario().getNombre());
@@ -142,7 +142,7 @@ public class Casilla {
                     opcionJugadorViewController.CarcelInterfaz(jugador, tablero);
                     FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Deuda o Multa", stageJuegoView, "Sin deudas o multas.");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Deuda o Multa", stageJuegoView, "Suerte que estas de paso, no pagas nada.");
                 }
                 break;
             case "Suerte":

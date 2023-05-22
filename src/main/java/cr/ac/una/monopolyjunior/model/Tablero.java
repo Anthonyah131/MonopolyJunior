@@ -97,11 +97,25 @@ public class Tablero {
 //        propiedadesSolar.get(1).setPropietario(player1);
 //        propiedadesSolar.get(2).setPropietario(player1);
 //        propiedadesSolar.get(5).setPropietario(player1);
+
+//        player1.agregarPropiedad("Agua");
+//        player1.agregarPropiedad("Luz");
+//        propiedadesServicio.get(0).setPropietario(player1);
+//        propiedadesServicio.get(1).setPropietario(player1);
+
+//        player1.agregarPropiedad("Tren 1");
+//        player1.agregarPropiedad("Tren 2");
+//        player1.agregarPropiedad("Tren 3");
+//        player1.agregarPropiedad("Tren 4");
+//        propiedadesEstacion.get(0).setPropietario(player1);
+//        propiedadesEstacion.get(1).setPropietario(player1);
+//        propiedadesEstacion.get(2).setPropietario(player1);
+//        propiedadesEstacion.get(3).setPropietario(player1);
         
-        tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
-        tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));
         tarjetas.add(new Tarjeta("Cobras $600", "Recibes una herencia de un familiar el cual no sabías que existía Cobras $600"));
         tarjetas.add(new Tarjeta("Pagas $200", "Te han puesto una multa por no recoger lo que deja tu perro en el parque Pagas $200"));
+        tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
+        tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));
         tarjetas.add(new Tarjeta("Retrocedes dos lugares", "Rompes la interfaz grafica de Ubuntu Retrocedes dos lugares"));
         tarjetas.add(new Tarjeta("Cobras $400", "Inventas un nuevo código que hace que Win funcione 0.01% más rápido Cobras $400"));
         tarjetas.add(new Tarjeta("Pagas $500", "No aguantas más el estrés de programar, dejas todo y te vas ed un crucero 15 días por el caribe Pagas $500"));
@@ -153,7 +167,7 @@ public class Tablero {
                 .findFirst()
                 .orElse(null);
     }
-    
+
     public Casilla getCasilla(String nombre) {
         return casillas.stream()
                 .filter(c -> c.getNombre().equals(nombre))
@@ -167,14 +181,14 @@ public class Tablero {
                 .findFirst()
                 .orElse(null);
     }
-    
+
     public ServicioPublico getPropiedadServicio(String nombre) {
         return propiedadesServicio.stream()
                 .filter(c -> c.getNombre().equals(nombre))
                 .findFirst()
                 .orElse(null);
     }
-    
+
     public Estacion getPropiedadEstacion(String nombre) {
         return propiedadesEstacion.stream()
                 .filter(c -> c.getNombre().equals(nombre))
@@ -185,11 +199,11 @@ public class Tablero {
     public List<Solar> getPropiedadesSolar() {
         return propiedadesSolar;
     }
-    
+
     public List<ServicioPublico> getPropiedadesServicios() {
         return propiedadesServicio;
     }
-    
+
     public List<Estacion> getPropiedadesEstacion() {
         return propiedadesEstacion;
     }
@@ -204,8 +218,30 @@ public class Tablero {
         ConstruirViewController construirViewController = (ConstruirViewController) FlowController.getInstance().getController("ConstruirView");
         construirViewController.construirCasasHoteles(jugador, this, banca, azul, amarillo, rojo, verde);
         FlowController.getInstance().goViewInWindowModal("ConstruirView", stageJuegoView, true);
-        
+
         System.out.println(azul + " : " + amarillo + " : " + rojo + " : " + verde);
+    }
+
+    public int cuantosServicios(JugadorDto jugador) {
+        List<String> propi = jugador.getPropiedades();
+        int cont = 0;
+        for(String serv : propi) {
+            if(getPropiedadServicio(serv) != null && getPropiedadServicio(serv).tienePropietario() && getPropiedadServicio(serv).getPropietario().getNombre().equals(jugador.getNombre())) {
+                cont++;
+            }
+        }
+        return cont;
+    }
+    
+    public int cuantasEstaciones(JugadorDto jugador) {
+        List<String> propi = jugador.getPropiedades();
+        int cont = 0;
+        for(String esta : propi) {
+            if(getPropiedadEstacion(esta) != null && getPropiedadEstacion(esta).tienePropietario() && getPropiedadEstacion(esta).getPropietario().getNombre().equals(jugador.getNombre())) {
+                cont++;
+            }
+        }
+        return cont;
     }
 
     public Tarjeta getTarjeta() {

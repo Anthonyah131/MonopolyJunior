@@ -356,7 +356,7 @@ public class JuegoViewController extends Controller implements Initializable {
         }
 
         dadoTirado = dado.lanzar();
-//        dadoTirado = 6;
+//        dadoTirado = 9;
 
         moverFicha(dadoTirado, id, player);
 
@@ -650,7 +650,7 @@ public class JuegoViewController extends Controller implements Initializable {
         Casilla casilla = tablero.getCasillaActual(jugador);
         casilla.accion(jugador, banca, tablero, getStage(), dadoTirado);
         actualizarDatosInterfaz(jugador);
-        System.out.println(jugador.getNombre() + " : " + casilla.getNombre());
+        System.out.println("Jugador " + jugador.getNombre() + " : En la casilla " + casilla.getNombre());
     }
 
     public void actualizarDatosInterfaz(JugadorDto player) {

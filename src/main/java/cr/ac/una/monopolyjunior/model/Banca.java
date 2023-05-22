@@ -43,6 +43,12 @@ public class Banca {
         jugador.recibir((int) (propiedad.getPrecioCompra() * 0.75));
     }
     
+    public void venderPropiedad(JugadorDto jugador, Propiedad propiedad) {
+        propiedad.setPropietario(jugador);
+        jugador.agregarPropiedad(propiedad.getNombre());
+        jugador.pagar(propiedad.getPrecioCompra());
+    }
+    
     public void hipotecarPropiedad(Propiedad propiedad, Tablero tablero, JugadorDto jugador) {
         propiedad.setHipotecada(true);
         jugador.recibir(propiedad.getValorHipoteca());

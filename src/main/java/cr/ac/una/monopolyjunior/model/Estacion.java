@@ -24,26 +24,35 @@ public class Estacion extends Propiedad {
 
     public int calcularRenta(int numeroEstaciones) {
         int rentaa = 0;
-        if (tienePropietario()) {
-            switch (numeroEstaciones) {
-                case 1:
-                    rentaa = this.getRenta();
-                    break;
-                case 2:
-                    rentaa = this.renta2Estaciones;
-                    break;
-                case 3:
-                    rentaa = this.renta3Estaciones;
-                    break;
-                case 4:
-                    rentaa = this.renta4Estaciones;
-                    break;
+        switch (numeroEstaciones) {
+            case 1:
+                rentaa = this.getRenta();
+                break;
+            case 2:
+                rentaa = this.renta2Estaciones;
+                break;
+            case 3:
+                rentaa = this.renta3Estaciones;
+                break;
+            case 4:
+                rentaa = this.renta4Estaciones;
+                break;
 
-                default:
-            }
-            return rentaa;
-        } else {
-            return rentaa;
+            default:
         }
+        return rentaa;
+
+    }
+
+    public int getRenta2Estaciones() {
+        return renta2Estaciones;
+    }
+
+    public int getRenta3Estaciones() {
+        return renta3Estaciones;
+    }
+
+    public int getRenta4Estaciones() {
+        return renta4Estaciones;
     }
 }

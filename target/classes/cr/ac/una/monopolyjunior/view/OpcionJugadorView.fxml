@@ -3,6 +3,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane id="AnchorPane" fx:id="rootOpcionJugadorView" prefHeight="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.OpcionJugadorViewController">
+<AnchorPane id="AnchorPane" fx:id="rootOpcionJugadorView" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.OpcionJugadorViewController">
     
 </AnchorPane>

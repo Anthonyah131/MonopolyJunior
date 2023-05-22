@@ -15,11 +15,14 @@ public class ServicioPublico extends Propiedad {
         super(nombre, precioCompra, renta, valorHipoteca);
     }
 
-    public int calcularRenta(int valorDados) {
-        if (tienePropietario()) {
-            return valorDados * MULTIPLICADOR_RENTA;
-        } else {
-            return 0;
+    public int calcularRenta(int dado, int cantidadServicios) {
+        switch (cantidadServicios) {
+            case 1:
+                return dado * 10;
+            case 2:
+                return dado * 20;
+            default:
+                throw new AssertionError();
         }
     }
 }
