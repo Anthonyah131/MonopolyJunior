@@ -78,7 +78,6 @@ public class JugadorDto {
                 this.propiedades.remove(i);
             }
         }
-//        this.propiedades.remove(propiedad);
     }
 
     public void pagar(int cantidad) {

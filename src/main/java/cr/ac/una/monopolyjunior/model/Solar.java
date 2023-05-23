@@ -11,7 +11,7 @@ import cr.ac.una.monopolyjunior.util.FlowController;
  *
  * @author ANTHONY
  */
-public class Solar extends Propiedad {
+public class Solar extends PropiedadDto {
 
     private String color;
     private int casas;

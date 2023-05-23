@@ -8,10 +8,10 @@ import com.jfoenix.controls.JFXButton;
 import cr.ac.una.monopolyjunior.model.Banca;
 import cr.ac.una.monopolyjunior.model.Estacion;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
-import cr.ac.una.monopolyjunior.model.Propiedad;
+import cr.ac.una.monopolyjunior.model.PropiedadDto;
 import cr.ac.una.monopolyjunior.model.ServicioPublico;
 import cr.ac.una.monopolyjunior.model.Solar;
-import cr.ac.una.monopolyjunior.model.Tablero;
+import cr.ac.una.monopolyjunior.model.TableroDto;
 import cr.ac.una.monopolyjunior.util.FlowController;
 import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
@@ -47,8 +47,8 @@ public class VenderViewController extends Controller implements Initializable {
     @FXML
     private JFXButton btnListo;
 
-    ObservableList<Propiedad> propiedades = FXCollections.observableArrayList();
-    Tablero tablero;
+    ObservableList<PropiedadDto> propiedades = FXCollections.observableArrayList();
+    TableroDto tablero;
     JugadorDto jugador;
     Banca banca;
 
@@ -66,9 +66,10 @@ public class VenderViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnListo(ActionEvent event) {
+        getStage().close();
     }
 
-    public void VenderPropiedades(Tablero tablero, JugadorDto jugador, Banca banca) {
+    public void VenderPropiedades(TableroDto tablero, JugadorDto jugador, Banca banca) {
         try {
             this.jugador = jugador;
             this.banca = banca;
@@ -77,11 +78,11 @@ public class VenderViewController extends Controller implements Initializable {
             tbvPropiedades.getColumns().clear();
             tbvPropiedades.getItems().clear();
 
-            TableColumn<Propiedad, String> tbcNombre = new TableColumn<>("Nombre");
+            TableColumn<PropiedadDto, String> tbcNombre = new TableColumn<>("Nombre");
             tbcNombre.setPrefWidth(150);
             tbcNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
 
-            TableColumn<Propiedad, Boolean> tbcVender = new TableColumn<>("Vender");
+            TableColumn<PropiedadDto, Boolean> tbcVender = new TableColumn<>("Vender");
             tbcVender.setPrefWidth(100);
             tbcVender.setCellValueFactory(cd -> new SimpleObjectProperty(cd.getValue() != null));
             tbcVender.setCellFactory(cd -> new ButtonCell("Vender"));
@@ -94,6 +95,27 @@ public class VenderViewController extends Controller implements Initializable {
             getPropiedades();
             tbvPropiedades.setItems(propiedades);
             tbvPropiedades.refresh();
+            
+            tbvPropiedades.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Verifica si es un solo clic
+                PropiedadDto propiedadSeleccionada = (PropiedadDto) tbvPropiedades.getSelectionModel().getSelectedItem();
+                if (propiedadSeleccionada != null) {
+                    if (propiedadSeleccionada instanceof Solar) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.solarInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof ServicioPublico) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.servicioPublicoInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof Estacion) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.estacionInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    }
+                }
+            }
+        });
 
         } catch (Exception ex) {
             Logger.getLogger(VenderViewController.class.getName()).log(Level.SEVERE, "Error consultando las propiedades", ex);
@@ -101,7 +123,7 @@ public class VenderViewController extends Controller implements Initializable {
         }
     }
 
-    public void hipotecarPropiedades(Tablero tablero, JugadorDto jugador, Banca banca) {
+    public void hipotecarPropiedades(TableroDto tablero, JugadorDto jugador, Banca banca) {
         try {
             this.jugador = jugador;
             this.banca = banca;
@@ -110,15 +132,15 @@ public class VenderViewController extends Controller implements Initializable {
             tbvPropiedades.getColumns().clear();
             tbvPropiedades.getItems().clear();
 
-            TableColumn<Propiedad, String> tbcNombre = new TableColumn<>("Nombre");
+            TableColumn<PropiedadDto, String> tbcNombre = new TableColumn<>("Nombre");
             tbcNombre.setPrefWidth(150);
             tbcNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
             
-            TableColumn<Propiedad, String> tbcHipoteca = new TableColumn<>("Valor Hipoteca");
+            TableColumn<PropiedadDto, String> tbcHipoteca = new TableColumn<>("Valor Hipoteca");
             tbcHipoteca.setPrefWidth(100);
             tbcHipoteca.setCellValueFactory(cd -> new SimpleStringProperty("" + cd.getValue().getValorHipoteca()));
 
-            TableColumn<Propiedad, Boolean> tbcVender = new TableColumn<>("Hipotecar");
+            TableColumn<PropiedadDto, Boolean> tbcVender = new TableColumn<>("Hipotecar");
             tbcVender.setPrefWidth(100);
             tbcVender.setCellValueFactory(cd -> new SimpleObjectProperty(cd.getValue() != null));
             tbcVender.setCellFactory(cd -> new ButtonCell("Hipotecar"));
@@ -132,6 +154,27 @@ public class VenderViewController extends Controller implements Initializable {
             getPropiedades();
             tbvPropiedades.setItems(propiedades);
             tbvPropiedades.refresh();
+            
+            tbvPropiedades.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Verifica si es un solo clic
+                PropiedadDto propiedadSeleccionada = (PropiedadDto) tbvPropiedades.getSelectionModel().getSelectedItem();
+                if (propiedadSeleccionada != null) {
+                    if (propiedadSeleccionada instanceof Solar) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.solarInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof ServicioPublico) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.servicioPublicoInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof Estacion) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.estacionInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    }
+                }
+            }
+        });
 
         } catch (Exception ex) {
             Logger.getLogger(VenderViewController.class.getName()).log(Level.SEVERE, "Error consultando las propiedades", ex);
@@ -139,7 +182,7 @@ public class VenderViewController extends Controller implements Initializable {
         }
     }
 
-    public void pagarHipotecaPropiedades(Tablero tablero, JugadorDto jugador, Banca banca) {
+    public void pagarHipotecaPropiedades(TableroDto tablero, JugadorDto jugador, Banca banca) {
         try {
             this.jugador = jugador;
             this.banca = banca;
@@ -148,15 +191,15 @@ public class VenderViewController extends Controller implements Initializable {
             tbvPropiedades.getColumns().clear();
             tbvPropiedades.getItems().clear();
 
-            TableColumn<Propiedad, String> tbcNombre = new TableColumn<>("Nombre");
+            TableColumn<PropiedadDto, String> tbcNombre = new TableColumn<>("Nombre");
             tbcNombre.setPrefWidth(150);
             tbcNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
             
-            TableColumn<Propiedad, String> tbcHipoteca = new TableColumn<>("Valor Pagar");
+            TableColumn<PropiedadDto, String> tbcHipoteca = new TableColumn<>("Valor Pagar");
             tbcHipoteca.setPrefWidth(100);
             tbcHipoteca.setCellValueFactory(cd -> new SimpleStringProperty("" + (int)(cd.getValue().getValorHipoteca() + cd.getValue().getValorHipoteca() * 0.20)));
 
-            TableColumn<Propiedad, Boolean> tbcVender = new TableColumn<>("Pagar Hipoteca");
+            TableColumn<PropiedadDto, Boolean> tbcVender = new TableColumn<>("Pagar Hipoteca");
             tbcVender.setPrefWidth(100);
             tbcVender.setCellValueFactory(cd -> new SimpleObjectProperty(cd.getValue() != null));
             tbcVender.setCellFactory(cd -> new ButtonCell("Pagar Hipoteca"));
@@ -170,6 +213,27 @@ public class VenderViewController extends Controller implements Initializable {
             getPropiedadesHipotecadas();
             tbvPropiedades.setItems(propiedades);
             tbvPropiedades.refresh();
+            
+            tbvPropiedades.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Verifica si es un solo clic
+                PropiedadDto propiedadSeleccionada = (PropiedadDto) tbvPropiedades.getSelectionModel().getSelectedItem();
+                if (propiedadSeleccionada != null) {
+                    if (propiedadSeleccionada instanceof Solar) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.solarInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof ServicioPublico) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.servicioPublicoInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof Estacion) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.estacionInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    }
+                }
+            }
+        });
 
         } catch (Exception ex) {
             Logger.getLogger(VenderViewController.class.getName()).log(Level.SEVERE, "Error consultando las propiedades", ex);
@@ -209,7 +273,7 @@ public class VenderViewController extends Controller implements Initializable {
                 .collect(Collectors.toList()));
     }
 
-    private class ButtonCell extends TableCell<Propiedad, Boolean> {
+    private class ButtonCell extends TableCell<PropiedadDto, Boolean> {
 
         final Button cellButton = new Button();
 
@@ -220,7 +284,7 @@ public class VenderViewController extends Controller implements Initializable {
 //            cellButton.getStyleClass().add("jfx-btnimg-tbveliminar");
 
                 cellButton.setOnAction((ActionEvent t) -> {
-                    Propiedad prop = (Propiedad) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+                    PropiedadDto prop = (PropiedadDto) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
                     if (new Mensaje().showConfirmation("Vender Propiedad", getStage(), "¿Esta seguro que desea vender " + prop.getNombre() + " por un valor de $" + (int) (prop.getPrecioCompra() * 0.75) + "?")) {
                         if (prop != null && prop instanceof Solar) {
                             Solar propSolar = (Solar) prop;
@@ -265,7 +329,7 @@ public class VenderViewController extends Controller implements Initializable {
 //            cellButton.getStyleClass().add("jfx-btnimg-tbveliminar");
 
                 cellButton.setOnAction((ActionEvent t) -> {
-                    Propiedad prop = (Propiedad) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+                    PropiedadDto prop = (PropiedadDto) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
                     if (new Mensaje().showConfirmation("Hipotecar Propiedad", getStage(), "¿Esta seguro que desea Hipotecar " + prop.getNombre() + " por un valor de $" + prop.getValorHipoteca() + "?")) {
                         banca.hipotecarPropiedad(prop, tablero, jugador);
 
@@ -282,7 +346,7 @@ public class VenderViewController extends Controller implements Initializable {
 //            cellButton.getStyleClass().add("jfx-btnimg-tbveliminar");
 
                 cellButton.setOnAction((ActionEvent t) -> {
-                    Propiedad prop = (Propiedad) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+                    PropiedadDto prop = (PropiedadDto) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
                     if (jugador.getSaldo() >= prop.getValorHipoteca() + prop.getValorHipoteca() * 0.20) {
                         if (new Mensaje().showConfirmation("Pagar Hipoteca", getStage(), "¿Esta seguro que desea pagar la hipoteca de " + prop.getNombre() + " con un monto de $" + (int)(prop.getValorHipoteca() + prop.getValorHipoteca() * 0.20) + "?")) {
                             banca.CobrarHipotecarPropiedad(prop, tablero, jugador);

@@ -12,12 +12,13 @@ import cr.ac.una.monopolyjunior.model.Estacion;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
 import cr.ac.una.monopolyjunior.model.ServicioPublico;
 import cr.ac.una.monopolyjunior.model.Solar;
-import cr.ac.una.monopolyjunior.model.Tablero;
+import cr.ac.una.monopolyjunior.model.TableroDto;
 import cr.ac.una.monopolyjunior.util.FlowController;
 import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -83,10 +84,12 @@ public class JuegoViewController extends Controller implements Initializable {
     boolean turnoP1 = true;
     boolean turnoP2 = false;
 
-    Tablero tablero;
+    TableroDto tablero;
     Banca banca;
-    Dado dado;
-    int dadoTirado;
+    Dado dado1;
+    Dado dado2;
+    int dadoTirado1;
+    int dadoTirado2;
 
     /**
      * Initializes the controller class.
@@ -126,11 +129,69 @@ public class JuegoViewController extends Controller implements Initializable {
             boardAnchor.getChildren().remove(1);
         }
 
+        ImageView dadoImage1 = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/dados/1.png"));
+        dadoImage1.setPreserveRatio(true);
+        dadoImage1.setFitHeight(180);
+        ImageView dadoImage2 = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/dados/1.png"));
+        dadoImage2.setPreserveRatio(true);
+        dadoImage2.setFitHeight(180);
+        Label lbDadoTotal = new Label("0");
+        lbDadoTotal.getStyleClass().add("juegoView-lbDadosTotal");
         JFXButton btnDados = new JFXButton("Lanzar Dados");
-        btnDados.setOnAction(this::onActionBtnDados);
-        HBox hobxDados = new HBox(btnDados);
-        hobxDados.setAlignment(Pos.CENTER);
-        StackPane stakPaneDados = new StackPane(hobxDados);
+        btnDados.getStyleClass().add("juegoView-button");
+        btnDados.setOnAction(event -> {
+            JugadorDto player;
+            String id;
+
+            if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+                player = tablero.getJugadores().get(0);
+                id = "imgPlayer1";
+            } else {
+                player = tablero.getJugadores().get(1);
+                id = "imgPlayer2";
+            }
+            btnDados.setDisable(true);
+            Thread thread = new Thread() {
+                public void run() {
+                    System.out.println("Thread Running");
+                    try {
+                        for (int i = 0; i < 15; i++) {
+                            dadoTirado1 = dado1.lanzar();
+                            dadoTirado2 = dado1.lanzar();
+//                            dadoTirado1 = 5;
+//                            dadoTirado2 = 6;
+                            String imagePath1 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado1 + ".png";
+                            String imagePath2 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado2 + ".png";
+
+                            Platform.runLater(() -> {
+                                dadoImage1.setImage(new Image(imagePath1));
+                                dadoImage2.setImage(new Image(imagePath2));
+                                lbDadoTotal.setText("" + (dadoTirado1 + dadoTirado2));
+                            });
+                            Thread.sleep(50);
+                        }
+                        Platform.runLater(() -> {
+                            moverFicha(dadoTirado1 + dadoTirado2, id, player);
+                            accionCasilla(player);
+                            translateAnimation(0.5, boardAnchor.getChildren().get(1), 2000);
+                            activarOpciones();
+                            btnDados.setDisable(false);
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+        });
+
+        HBox hboxDados = new HBox(dadoImage1, dadoImage2);
+        hboxDados.setAlignment(Pos.CENTER);
+        hboxDados.setSpacing(20);
+        VBox vboxDados = new VBox(hboxDados, lbDadoTotal, btnDados);
+        vboxDados.setAlignment(Pos.CENTER);
+        vboxDados.setSpacing(20);
+        StackPane stakPaneDados = new StackPane(vboxDados);
         stakPaneDados.setMinWidth(564);
         stakPaneDados.setMinHeight(564);
         stakPaneDados.setMaxWidth(564);
@@ -139,7 +200,7 @@ public class JuegoViewController extends Controller implements Initializable {
 
         JugadorDto jugador1 = new JugadorDto(player1, ficha1, 1500);
         JugadorDto jugador2 = new JugadorDto(player2, ficha2, 1500);
-        tablero = new Tablero(jugador1, jugador2);
+        tablero = new TableroDto(jugador1, jugador2);
 
         turnoP1 = true;
         turnoP2 = false;
@@ -149,7 +210,8 @@ public class JuegoViewController extends Controller implements Initializable {
         lbCapital.setText("" + tablero.getJugadores().get(0).getSaldo());
 
         banca = new Banca();
-        dado = new Dado(6);
+        dado1 = new Dado(6);
+        dado2 = new Dado(6);
 
         StackPane node = null;
         for (Node child : boardPane.getChildren()) {
@@ -189,6 +251,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
+
     private void onActionBtnFinalizarTurno(ActionEvent event) {
         JugadorDto player;
         if (turnoP1) {
@@ -343,28 +406,6 @@ public class JuegoViewController extends Controller implements Initializable {
         }
     }
 
-    private void onActionBtnDados(ActionEvent event) {
-        JugadorDto player;
-        String id = "";
-
-        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
-            player = tablero.getJugadores().get(0);
-            id = "imgPlayer1";
-        } else {
-            player = tablero.getJugadores().get(1);
-            id = "imgPlayer2";
-        }
-
-        dadoTirado = dado.lanzar();
-//        dadoTirado = 9;
-
-        moverFicha(dadoTirado, id, player);
-
-        accionCasilla(player);
-        translateAnimation(0.5, boardAnchor.getChildren().get(1), 2000);
-        activarOpciones();
-    }
-
     public void moverFicha(int dadoTirado, String id, JugadorDto player) {
         int posX = player.getPosicionX();
         int posY = player.getPosicionY();
@@ -376,14 +417,45 @@ public class JuegoViewController extends Controller implements Initializable {
                 break;
             }
         }
-
         System.out.println("Dado : " + dadoTirado);
-        if (posX >= 0 && posX <= 7 && posY == 0) {
+        if (posX >= 1 && posX <= 8 && posY == 8) {
+            posX -= dadoTirado;
+            if (posX < 0) {
+                dadoTirado = posX * -1;
+                posX = 0;
+                posY -= dadoTirado;
+                if (posY < 0) {
+                    dadoTirado = posY * -1;
+                    posY = 0;
+                    posX += dadoTirado;
+                }
+            }
+        } else if (posX == 0 && posY >= 1 && posY <= 8) {
+            posY -= dadoTirado;
+            if (posY < 0) {
+                dadoTirado = posY * -1;
+                posY = 0;
+                posX += dadoTirado;
+                if (posX > 8) {
+                    dadoTirado = posX - 8;
+                    posX = 8;
+                    posY += dadoTirado;
+                }
+            }
+        } else if (posX >= 0 && posX <= 7 && posY == 0) {
             posX += dadoTirado;
             if (posX > 8) {
                 dadoTirado = posX - 8;
                 posX = 8;
                 posY += dadoTirado;
+                if (posY > 8) {
+                    pasaPorGo();
+                }
+                if (posY > 8) {
+                    dadoTirado = posY - 8;
+                    posY = 8;
+                    posX -= dadoTirado;
+                }
             }
         } else if (posX == 8 && posY >= 0 && posY <= 7) {
             posY += dadoTirado;
@@ -394,22 +466,14 @@ public class JuegoViewController extends Controller implements Initializable {
                 dadoTirado = posY - 8;
                 posY = 8;
                 posX -= dadoTirado;
-            }
-        } else if (posX >= 1 && posX <= 8 && posY == 8) {
-            posX -= dadoTirado;
-            if (posX < 0) {
-                dadoTirado = posX * -1;
-                posX = 0;
-                posY -= dadoTirado;
-            }
-        } else if (posX == 0 && posY >= 1 && posY <= 8) {
-            posY -= dadoTirado;
-            if (posY < 0) {
-                dadoTirado = posY * -1;
-                posY = 0;
-                posX += dadoTirado;
+                if (posX < 0) {
+                    dadoTirado = posX * -1;
+                    posX = 0;
+                    posY -= dadoTirado;
+                }
             }
         }
+        System.out.println(player.getNombre() + ": posx " + posX + " : posy " + posY);
 
 //        posX = 8; // Ve a la Carcel
 //        posY = 0; // Ve a la Carcel
@@ -648,7 +712,7 @@ public class JuegoViewController extends Controller implements Initializable {
 
     public void accionCasilla(JugadorDto jugador) {
         Casilla casilla = tablero.getCasillaActual(jugador);
-        casilla.accion(jugador, banca, tablero, getStage(), dadoTirado);
+        casilla.accion(jugador, banca, tablero, getStage(), dadoTirado1 + dadoTirado2);
         actualizarDatosInterfaz(jugador);
         System.out.println("Jugador " + jugador.getNombre() + " : En la casilla " + casilla.getNombre());
     }

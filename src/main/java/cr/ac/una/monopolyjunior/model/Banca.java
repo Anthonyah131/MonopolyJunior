@@ -37,24 +37,24 @@ public class Banca {
         jugador.recibir(monto);
     }
 
-    public void comprarPropiedad(Propiedad propiedad, JugadorDto jugador) {
+    public void comprarPropiedad(PropiedadDto propiedad, JugadorDto jugador) {
         propiedad.setPropietario(null);
         jugador.quitarPropiedad(propiedad.getNombre());
         jugador.recibir((int) (propiedad.getPrecioCompra() * 0.75));
     }
     
-    public void venderPropiedad(JugadorDto jugador, Propiedad propiedad) {
+    public void venderPropiedad(JugadorDto jugador, PropiedadDto propiedad) {
         propiedad.setPropietario(jugador);
         jugador.agregarPropiedad(propiedad.getNombre());
         jugador.pagar(propiedad.getPrecioCompra());
     }
     
-    public void hipotecarPropiedad(Propiedad propiedad, Tablero tablero, JugadorDto jugador) {
+    public void hipotecarPropiedad(PropiedadDto propiedad, TableroDto tablero, JugadorDto jugador) {
         propiedad.setHipotecada(true);
         jugador.recibir(propiedad.getValorHipoteca());
     }
     
-    public void CobrarHipotecarPropiedad(Propiedad propiedad, Tablero tablero, JugadorDto jugador) {
+    public void CobrarHipotecarPropiedad(PropiedadDto propiedad, TableroDto tablero, JugadorDto jugador) {
         propiedad.setHipotecada(false);
         jugador.pagar((int) (propiedad.getValorHipoteca() + propiedad.getValorHipoteca() * 0.20));
     }

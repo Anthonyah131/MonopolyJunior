@@ -8,10 +8,10 @@ import com.jfoenix.controls.JFXButton;
 import cr.ac.una.monopolyjunior.model.Banca;
 import cr.ac.una.monopolyjunior.model.Estacion;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
-import cr.ac.una.monopolyjunior.model.Propiedad;
+import cr.ac.una.monopolyjunior.model.PropiedadDto;
 import cr.ac.una.monopolyjunior.model.ServicioPublico;
 import cr.ac.una.monopolyjunior.model.Solar;
-import cr.ac.una.monopolyjunior.model.Tablero;
+import cr.ac.una.monopolyjunior.model.TableroDto;
 import cr.ac.una.monopolyjunior.model.Tarjeta;
 import cr.ac.una.monopolyjunior.util.FlowController;
 import cr.ac.una.tarea.util.Mensaje;
@@ -59,7 +59,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
     public void initialize() {
     }
 
-    public void comprarPropiedadInterfaz(JugadorDto jugador, Banca banca, Propiedad propiedad) {
+    public void comprarPropiedadInterfaz(JugadorDto jugador, Banca banca, PropiedadDto propiedad) {
         rootOpcionJugadorView.getChildren().clear();
 
         Solar prop = (Solar) propiedad;
@@ -224,7 +224,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    public void comprarServicioPublicoInterfaz(JugadorDto jugador, Banca banca, Propiedad propiedad) {
+    public void comprarServicioPublicoInterfaz(JugadorDto jugador, Banca banca, PropiedadDto propiedad) {
         rootOpcionJugadorView.getChildren().clear();
 
         StackPane stackPane = new StackPane();
@@ -303,7 +303,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    public void comprarEstacionInterfaz(JugadorDto jugador, Banca banca, Propiedad propiedad) {
+    public void comprarEstacionInterfaz(JugadorDto jugador, Banca banca, PropiedadDto propiedad) {
         rootOpcionJugadorView.getChildren().clear();
 
         Estacion prop = (Estacion) propiedad;
@@ -406,7 +406,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    public void miCapitalInterfaz(JugadorDto jugador, Tablero tablero) {
+    public void miCapitalInterfaz(JugadorDto jugador, TableroDto tablero) {
         rootOpcionJugadorView.getChildren().clear();
 
         StackPane stackPane = new StackPane();
@@ -416,17 +416,38 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         tbvPropiedades.getColumns().clear();
         tbvPropiedades.getItems().clear();
 
-        TableColumn<Propiedad, String> tbcNombre = new TableColumn<>("Nombre");
+        TableColumn<PropiedadDto, String> tbcNombre = new TableColumn<>("Nombre");
         tbcNombre.setPrefWidth(150);
         tbcNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
 
-        TableColumn<Propiedad, String> tbcRenta = new TableColumn<>("Renta");
+        TableColumn<PropiedadDto, String> tbcRenta = new TableColumn<>("Renta");
         tbcRenta.setPrefWidth(100);
         tbcRenta.setCellValueFactory(cd -> new SimpleStringProperty("" + cd.getValue().getRenta()));
 
         tbvPropiedades.getColumns().add(tbcNombre);
         tbvPropiedades.getColumns().add(tbcRenta);
         tbvPropiedades.refresh();
+
+        tbvPropiedades.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Verifica si es un solo clic
+                PropiedadDto propiedadSeleccionada = (PropiedadDto) tbvPropiedades.getSelectionModel().getSelectedItem();
+                if (propiedadSeleccionada != null) {
+                    if (propiedadSeleccionada instanceof Solar) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.solarInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof ServicioPublico) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.servicioPublicoInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof Estacion) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.estacionInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    }
+                }
+            }
+        });
 
         vbox.getChildren().add(tbvPropiedades);
         stackPane.getChildren().add(vbox);
@@ -435,7 +456,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         cargarPropiedades(tbvPropiedades, jugador, tablero);
     }
 
-    public void ImpuestoInterfaz(int impuesto, JugadorDto jugador, Banca banca, Tablero tablero) {
+    public void ImpuestoInterfaz(int impuesto, JugadorDto jugador, Banca banca, TableroDto tablero) {
         rootOpcionJugadorView.getChildren().clear();
 
         for (int i = 0; i < tablero.getJugadores().size(); i++) {
@@ -508,7 +529,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    public void CarcelInterfaz(JugadorDto jugador, Tablero tablero) {
+    public void CarcelInterfaz(JugadorDto jugador, TableroDto tablero) {
         rootOpcionJugadorView.getChildren().clear();
 
         for (int i = 0; i < tablero.getJugadores().size(); i++) {
@@ -586,7 +607,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    public void rentaSolarInterfaz(JugadorDto jugador, Tablero tablero, String nombre) {
+    public void rentaSolarInterfaz(JugadorDto jugador, TableroDto tablero, String nombre) {
         rootOpcionJugadorView.getChildren().clear();
 
         for (int i = 0; i < tablero.getJugadores().size(); i++) {
@@ -666,7 +687,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    public void rentaServicioPublicoInterfaz(JugadorDto jugador, Tablero tablero, String nombre, int dadoTirado) {
+    public void rentaServicioPublicoInterfaz(JugadorDto jugador, TableroDto tablero, String nombre, int dadoTirado) {
         rootOpcionJugadorView.getChildren().clear();
 
         for (int i = 0; i < tablero.getJugadores().size(); i++) {
@@ -748,7 +769,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    public void rentaEstacionInterfaz(JugadorDto jugador, Tablero tablero, String nombre) {
+    public void rentaEstacionInterfaz(JugadorDto jugador, TableroDto tablero, String nombre) {
         rootOpcionJugadorView.getChildren().clear();
 
         for (int i = 0; i < tablero.getJugadores().size(); i++) {
@@ -830,7 +851,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    public void tarjetaInterfaz(JugadorDto jugador, Banca banca, Tablero tablero, Tarjeta tarjetaSuerte, Stage stageJuegoView) {
+    public void tarjetaInterfaz(JugadorDto jugador, Banca banca, TableroDto tablero, Tarjeta tarjetaSuerte, Stage stageJuegoView) {
         rootOpcionJugadorView.getChildren().clear();
 
         StackPane stackPane = new StackPane();
@@ -925,7 +946,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    public void goInterfaz(JugadorDto jugador, Banca banca, Tablero tablero, Stage stageJuegoView) {
+    public void goInterfaz(JugadorDto jugador, Banca banca, TableroDto tablero, Stage stageJuegoView) {
         rootOpcionJugadorView.getChildren().clear();
 
         StackPane stackPane = new StackPane();
@@ -957,7 +978,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    public void declararGanador(JugadorDto jugador, Tablero tablero) {
+    public void declararGanador(JugadorDto jugador, TableroDto tablero) {
         rootOpcionJugadorView.getChildren().clear();
 
         StackPane stackPane = new StackPane();
@@ -992,8 +1013,8 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         rootOpcionJugadorView.getChildren().add(stackPane);
     }
 
-    private void cargarPropiedades(TableView tbvPropiedades, JugadorDto jugador, Tablero tablero) {
-        ObservableList<Propiedad> propiedades = FXCollections.observableArrayList();
+    private void cargarPropiedades(TableView tbvPropiedades, JugadorDto jugador, TableroDto tablero) {
+        ObservableList<PropiedadDto> propiedades = FXCollections.observableArrayList();
         for (String prop : jugador.getPropiedades()) {
             Solar sola = tablero.getPropiedadSolar(prop);
             if (sola != null) {

@@ -30,7 +30,7 @@ public class Tarjeta {
         return this.descripcion;
     }
 
-    public void aplicarEfecto(JugadorDto jugador, Banca banca, Tablero tablero, Stage stageJuegoView) {
+    public void aplicarEfecto(JugadorDto jugador, Banca banca, TableroDto tablero, Stage stageJuegoView) {
         System.out.println(this.tipo);
         OpcionJugadorViewController opcionJugadorViewController;
         JuegoViewController juegoViewController;
@@ -38,7 +38,7 @@ public class Tarjeta {
             case "Ve a la carcel":
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.CarcelInterfaz(jugador, tablero);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 
                 juegoViewController = (JuegoViewController) FlowController.getInstance().getController("JuegoView");
                 juegoViewController.moverFicha(jugador, 0, 8);
@@ -47,7 +47,7 @@ public class Tarjeta {
             case "Ve a la casilla Go":
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.tarjetaInterfaz(jugador, banca, tablero, this, stageJuegoView);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 
                 juegoViewController = (JuegoViewController) FlowController.getInstance().getController("JuegoView");
                 juegoViewController.moverFicha(jugador, 8, 8);
@@ -57,24 +57,24 @@ public class Tarjeta {
             case "Cobras $600":
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.tarjetaInterfaz(jugador, banca, tablero, this, stageJuegoView);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 jugador.recibir(600);
                 break;
             case "Cobras $400":
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.tarjetaInterfaz(jugador, banca, tablero, this, stageJuegoView);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 jugador.recibir(400);
                 break;
             case "Pagas $500":
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.tarjetaInterfaz(jugador, banca, tablero, this, stageJuegoView);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 break;
             case "Pagas $200":
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.tarjetaInterfaz(jugador, banca, tablero, this, stageJuegoView);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 break;
             case "Retrocedes dos lugares":
                 // ...

@@ -8,7 +8,7 @@ package cr.ac.una.monopolyjunior.model;
  *
  * @author ANTHONY
  */
-public class ServicioPublico extends Propiedad {
+public class ServicioPublico extends PropiedadDto {
     private static final int MULTIPLICADOR_RENTA = 10;
 
     public ServicioPublico(String nombre, int precioCompra, int renta, int valorHipoteca) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -11,23 +12,23 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.ConstruirViewController">
+<AnchorPane id="AnchorPane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.ConstruirViewController">
    <children>
-      <StackPane layoutX="210.0" layoutY="123.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane layoutX="210.0" layoutY="123.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="CENTER">
+            <VBox alignment="CENTER" spacing="10.0">
                <children>
-                  <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="tbpConstruirPropiedad" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab fx:id="tbpPropiedades" text="Propiedades">
                         <content>
-                          <AnchorPane>
+                          <AnchorPane styleClass="venderView-root">
                                  <children>
-                                    <TableView fx:id="tbvPropiedades" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TableView fx:id="tbvPropiedades" prefHeight="300.0" styleClass="venderView-table-view" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <columns>
                                         <TableColumn fx:id="tbcNombre" prefWidth="200.0" text="Nombre" />
-                                        <TableColumn fx:id="tbcCasas" minWidth="0.0" prefWidth="100.0" text="C2" />
-                                          <TableColumn fx:id="tbcHotel" minWidth="0.0" prefWidth="100.0" text="C2" />
+                                        <TableColumn fx:id="tbcCasas" minWidth="0.0" prefWidth="100.0" text="Casas" />
+                                          <TableColumn fx:id="tbcHotel" minWidth="0.0" prefWidth="100.0" text="Hotel" />
                                       </columns>
                                     </TableView>
                                  </children>
@@ -38,39 +39,45 @@
                         <content>
                           <AnchorPane>
                                  <children>
-                                    <StackPane layoutX="86.0" layoutY="109.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <StackPane layoutX="86.0" layoutY="109.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                              <children>
-                                                <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="300.0" prefWidth="200.0">
+                                                <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="300.0">
                                                    <children>
-                                                      <VBox alignment="CENTER">
+                                                      <VBox alignment="CENTER" prefHeight="100.0">
                                                          <children>
-                                                            <Label fx:id="lbTitulo" text="Titulo" />
+                                                            <Label fx:id="lbTitulo" styleClass="carta-lbTitulo" text="Titulo" />
                                                          </children>
                                                       </VBox>
-                                                      <VBox alignment="CENTER">
+                                                      <VBox alignment="CENTER" spacing="25.0" VBox.vgrow="ALWAYS">
                                                          <children>
                                                             <HBox alignment="CENTER">
                                                                <children>
-                                                                  <Label text="Casas: " />
-                                                                  <HBox alignment="CENTER">
+                                                                  <Label styleClass="carta-lbTitulo" text="Casas: ">
+                                                                     <padding>
+                                                                        <Insets right="20.0" />
+                                                                     </padding></Label>
+                                                                  <HBox alignment="CENTER" spacing="15.0">
                                                                      <children>
-                                                                        <JFXButton fx:id="btnMenos" onAction="#onActionMenos" text="-" />
-                                                                        <Label fx:id="lbCasasCantidad" text="0" />
-                                                                        <JFXButton fx:id="btnMas" onAction="#onActionMas" text="+" />
+                                                                        <JFXButton fx:id="btnMenos" onAction="#onActionMenos" prefWidth="30.0" styleClass="juegoView-button" text="-" />
+                                                                        <Label fx:id="lbCasasCantidad" styleClass="carta-lbTituloPropiedad" text="0" />
+                                                                        <JFXButton fx:id="btnMas" onAction="#onActionMas" prefWidth="30.0" styleClass="juegoView-button" text="+" />
                                                                      </children>
                                                                   </HBox>
                                                                </children>
                                                             </HBox>
                                                             <HBox alignment="CENTER">
                                                                <children>
-                                                                  <Label text="Hotel" />
-                                                                  <HBox alignment="CENTER">
+                                                                  <Label styleClass="carta-lbTitulo" text="Hotel:">
+                                                                     <padding>
+                                                                        <Insets right="20.0" />
+                                                                     </padding></Label>
+                                                                  <HBox alignment="CENTER" spacing="15.0">
                                                                      <children>
-                                                                        <JFXButton fx:id="btnMenosH" onAction="#onActionMenosH" text="-" />
-                                                                        <Label fx:id="lbHotelCantidad" text="0" />
-                                                                        <JFXButton fx:id="btnMasH" onAction="#onActionMasH" text="+" />
+                                                                        <JFXButton fx:id="btnMenosH" onAction="#onActionMenosH" prefWidth="30.0" styleClass="juegoView-button" text="-" />
+                                                                        <Label fx:id="lbHotelCantidad" styleClass="carta-lbTituloPropiedad" text="0" />
+                                                                        <JFXButton fx:id="btnMasH" onAction="#onActionMasH" prefWidth="30.0" styleClass="juegoView-button" text="+" />
                                                                      </children>
                                                                   </HBox>
                                                                </children>
@@ -89,9 +96,9 @@
                       </Tab>
                     </tabs>
                   </TabPane>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                      <children>
-                        <JFXButton fx:id="btnListo" onAction="#onActionBtnListo" text="Listo" />
+                        <JFXButton fx:id="btnListo" onAction="#onActionBtnListo" styleClass="juegoView-button" text="Listo" />
                      </children>
                   </HBox>
                </children>

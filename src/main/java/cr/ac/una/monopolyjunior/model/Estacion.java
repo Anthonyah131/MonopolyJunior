@@ -8,7 +8,7 @@ package cr.ac.una.monopolyjunior.model;
  *
  * @author ANTHONY
  */
-public class Estacion extends Propiedad {
+public class Estacion extends PropiedadDto {
 
     private static final int MULTIPLICADOR_RENTA = 25;
     private int renta2Estaciones;

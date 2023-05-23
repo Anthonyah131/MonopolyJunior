@@ -8,7 +8,8 @@ import com.jfoenix.controls.JFXButton;
 import cr.ac.una.monopolyjunior.model.Banca;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
 import cr.ac.una.monopolyjunior.model.Solar;
-import cr.ac.una.monopolyjunior.model.Tablero;
+import cr.ac.una.monopolyjunior.model.TableroDto;
+import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,10 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -58,6 +61,8 @@ public class ConstruirViewController extends Controller implements Initializable
     @FXML
     private JFXButton btnListo;
     @FXML
+    private TabPane tbpConstruirPropiedad;
+    @FXML
     private Tab tbpPropiedades;
     @FXML
     private Tab tbpConstruir;
@@ -88,6 +93,7 @@ public class ConstruirViewController extends Controller implements Initializable
 
     @Override
     public void initialize() {
+        tbpConstruirPropiedad.getSelectionModel().select(tbpPropiedades);
         nuevaPropiedad();
         actualizarPropiedad();
     }
@@ -118,10 +124,17 @@ public class ConstruirViewController extends Controller implements Initializable
 
     @FXML
     private void onActionBtnListo(ActionEvent event) {
+        getStage().close();
     }
 
     @FXML
     private void onSelectionChangedTbpConstruir(Event event) {
+        if (tbpConstruir.isSelected()) {
+            if (propiedad.getNombre().isBlank()) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Construir", getStage(), "Debe seleccionar la propiedad antes.");
+                tbpConstruirPropiedad.getSelectionModel().select(tbpPropiedades);
+            }
+        }
     }
 
     public void actualizarPropiedad() {
@@ -134,7 +147,7 @@ public class ConstruirViewController extends Controller implements Initializable
         propiedad = new Solar();
     }
 
-    public void construirCasasHoteles(JugadorDto jugador, Tablero tablero, Banca banca, boolean azul, boolean amarillo, boolean rojo, boolean verde) {
+    public void construirCasasHoteles(JugadorDto jugador, TableroDto tablero, Banca banca, boolean azul, boolean amarillo, boolean rojo, boolean verde) {
         tbvPropiedades.getItems().clear();
         this.banca = banca;
         getPropiedades(jugador, tablero, azul, amarillo, rojo, verde);
@@ -142,7 +155,7 @@ public class ConstruirViewController extends Controller implements Initializable
         tbvPropiedades.refresh();
     }
 
-    public void getPropiedades(JugadorDto jugador, Tablero tablero, boolean azul, boolean amarillo, boolean rojo, boolean verde) {
+    public void getPropiedades(JugadorDto jugador, TableroDto tablero, boolean azul, boolean amarillo, boolean rojo, boolean verde) {
         propiedades.clear();
         List<Solar> solaresPropios = new ArrayList<>();
 

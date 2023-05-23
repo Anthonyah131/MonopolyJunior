@@ -61,8 +61,8 @@ public class Casilla {
         this.posY = posY;
     }
 
-    public void accion(JugadorDto jugador, Banca banca, Tablero tablero, Stage stageJuegoView, int dadoTirado) {
-        Propiedad propiedad = null;
+    public void accion(JugadorDto jugador, Banca banca, TableroDto tablero, Stage stageJuegoView, int dadoTirado) {
+        PropiedadDto propiedad = null;
         OpcionJugadorViewController opcionJugadorViewController;
         switch (this.tipo) {
             case "Go":
@@ -88,12 +88,12 @@ public class Casilla {
                 if (!propiedad.tienePropietario()) {
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                     opcionJugadorViewController.comprarServicioPublicoInterfaz(jugador, banca, propiedad);
-                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 } else if (!propiedad.getPropietario().getNombre().equals(jugador.getNombre())) {
                     System.out.println("Debe pagar alquiler a " + propiedad.getPropietario().getNombre());
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                     opcionJugadorViewController.rentaServicioPublicoInterfaz(jugador, tablero, this.nombre, dadoTirado);
-                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 }
                 break;
             case "Estacion":
@@ -101,30 +101,30 @@ public class Casilla {
                 if (!propiedad.tienePropietario()) {
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                     opcionJugadorViewController.comprarEstacionInterfaz(jugador, banca, propiedad);
-                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 } else if (!propiedad.getPropietario().getNombre().equals(jugador.getNombre())) {
                     System.out.println("Debe pagar alquiler a " + propiedad.getPropietario().getNombre());
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                     opcionJugadorViewController.rentaEstacionInterfaz(jugador, tablero, nombre);
-                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 }
                 break;
             case "Impuesto190":
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.ImpuestoInterfaz(190, jugador, banca, tablero);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 break;
             case "Impuesto160":
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.ImpuestoInterfaz(160, jugador, banca, tablero);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 break;
             case "Parking Free":
                 break;
             case "Ve a la Carcel":
                 opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                 opcionJugadorViewController.CarcelInterfaz(jugador, tablero);
-                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
 
                 JuegoViewController juegoViewController = (JuegoViewController) FlowController.getInstance().getController("JuegoView");
                 juegoViewController.moverFicha(jugador, 0, 8);
@@ -140,7 +140,7 @@ public class Casilla {
                 if (bandera == true) {
                     opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
                     opcionJugadorViewController.CarcelInterfaz(jugador, tablero);
-                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, true);
+                    FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", stageJuegoView, false);
                 } else {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Deuda o Multa", stageJuegoView, "Suerte que estas de paso, no pagas nada.");
                 }

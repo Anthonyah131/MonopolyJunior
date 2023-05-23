@@ -6,15 +6,14 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="cr.ac.una.monopolyjunior.controller.VenderViewController">
+<AnchorPane id="AnchorPane" styleClass="venderView-root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.monopolyjunior.controller.VenderViewController">
    <children>
       <StackPane fx:id="root" layoutX="92.0" layoutY="82.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" spacing="10.0">
                <children>
-                  <TableView fx:id="tbvPropiedades" prefHeight="200.0" prefWidth="200.0" />
-                  <JFXButton fx:id="btnListo" onAction="#onActionBtnListo" text="Listo" />
+                  <TableView fx:id="tbvPropiedades" prefHeight="300.0" styleClass="venderView-table-view" />
+                  <JFXButton fx:id="btnListo" onAction="#onActionBtnListo" styleClass="juegoView-button" text="Listo" />
                </children>
             </VBox>
          </children>
