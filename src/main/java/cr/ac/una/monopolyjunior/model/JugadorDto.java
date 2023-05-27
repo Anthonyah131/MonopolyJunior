@@ -12,12 +12,14 @@ import java.util.List;
  * @author ANTHONY
  */
 public class JugadorDto {
+    private Long id;
     private String nombre;
     private int saldo;
     private String ficha;
     private int posicionX;
     private int posicionY;
     private List<String> propiedades;
+    private Boolean modificado;
 
     public JugadorDto(String nombre, String ficha, int saldo) {
         this.nombre = nombre;
@@ -28,9 +30,29 @@ public class JugadorDto {
 //        this.posicionX = 6;
 //        this.posicionY = 0;
         this.propiedades = new ArrayList<>();
+        this.modificado = false;
+    }
+    
+    public JugadorDto(Jugador jugador) {
+        this.id = jugador.getId();
+        this.nombre = jugador.getNombre();
+        this.saldo = Integer.parseInt(jugador.getSaldo().toString());
+        this.ficha = jugador.getFicha();
+        this.posicionX = Integer.parseInt(jugador.getPosicionx().toString());
+        this.posicionY = Integer.parseInt(jugador.getPosiciony().toString());
+        this.propiedades = new ArrayList<>();
     }
 
     // Getters y setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public String getNombre() {
         return this.nombre;
     }
@@ -65,6 +87,14 @@ public class JugadorDto {
 
     public List<String> getPropiedades() {
         return this.propiedades;
+    }
+
+    public Boolean getModificado() {
+        return modificado;
+    }
+
+    public void setModificado(Boolean modificado) {
+        this.modificado = modificado;
     }
 
     // Métodos

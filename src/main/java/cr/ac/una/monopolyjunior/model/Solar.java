@@ -41,6 +41,15 @@ public class Solar extends PropiedadDto {
         this.rentaHotel = rentaHotel;
     }
 
+    public Solar(Propiedad propiedad) {
+        this.id = propiedad.getProId();
+        this.nombre = propiedad.getProNombre();
+        this.casas = Integer.parseInt(propiedad.getProCasas().toString());
+        this.hotel = Integer.parseInt(propiedad.getProHotel().toString());
+        this.hipotecada = "S".equals(propiedad.getProHipotecada());
+//        setPropietario(propiedad.getJugId());
+    }
+
     public void construirCasa(Banca banca) {
         if (this.hotel == 0 && this.casas < 4 && getPropietario().getSaldo() >= 100) {
             banca.cobrarConsCasa(100, getPropietario());
@@ -121,7 +130,7 @@ public class Solar extends PropiedadDto {
     public int getRenta2Casa() {
         return renta2Casa;
     }
-    
+
     public int getRenta3Casa() {
         return renta3Casa;
     }

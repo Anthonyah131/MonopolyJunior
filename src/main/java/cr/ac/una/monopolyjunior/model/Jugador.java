@@ -65,12 +65,12 @@ public class Jugador implements Serializable {
     @OneToMany(mappedBy = "jugId", fetch = FetchType.LAZY)
     private List<Propiedad> propiedadList;
     @JoinColumn(name = "TAB_ID", referencedColumnName = "TAB_ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tablero tabId;
 
     public Jugador() {
     }
-
+    
     public Jugador(Long id) {
         this.id = id;
     }
@@ -84,51 +84,64 @@ public class Jugador implements Serializable {
         this.posicionY = posicionY;
     }
 
-    public Long getJugId() {
+    public Long getId() {
         return id;
     }
 
-    public void setJugId(Long id) {
+    public Jugador(JugadorDto jugadorDto) {
+        this.id = jugadorDto.getId();
+        actualizar(jugadorDto);
+    }
+    
+    public void actualizar(JugadorDto jugadorDto) {
+        this.nombre = jugadorDto.getNombre();
+        this.saldo = Long.valueOf(jugadorDto.getSaldo());
+        this.ficha = jugadorDto.getFicha();
+        this.posicionX = Long.valueOf(jugadorDto.getPosicionX());
+        this.posicionY = Long.valueOf(jugadorDto.getPosicionY());
+    }
+    
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getJugNombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setJugNombre(String nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public Long getJugSaldo() {
+    public Long getSaldo() {
         return saldo;
     }
 
-    public void setJugSaldo(Long saldo) {
+    public void setSaldo(Long saldo) {
         this.saldo = saldo;
     }
 
-    public String getJugFicha() {
+    public String getFicha() {
         return ficha;
     }
 
-    public void setJugFicha(String ficha) {
+    public void setFicha(String ficha) {
         this.ficha = ficha;
     }
 
-    public Long getJugPosicionx() {
+    public Long getPosicionx() {
         return posicionX;
     }
 
-    public void setJugPosicionx(Long posicionX) {
+    public void setPosicionx(Long posicionX) {
         this.posicionX = posicionX;
     }
 
-    public Long getJugPosiciony() {
+    public Long getPosiciony() {
         return posicionY;
     }
 
-    public void setJugPosiciony(Long posicionY) {
+    public void setPosiciony(Long posicionY) {
         this.posicionY = posicionY;
     }
 

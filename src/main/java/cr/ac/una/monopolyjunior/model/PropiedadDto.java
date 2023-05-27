@@ -10,10 +10,11 @@ package cr.ac.una.monopolyjunior.model;
  */
 public class PropiedadDto {
 
-    private String nombre;
+    protected Long id;
+    protected String nombre;
     private int precioCompra;
     private int renta;
-    private boolean hipotecada;
+    protected boolean hipotecada;
     private int valorHipoteca;
     private JugadorDto propietario;
 
@@ -35,7 +36,14 @@ public class PropiedadDto {
         this.propietario = null;
     }
 
-    // Getters y setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return this.nombre;
     }
@@ -71,7 +79,7 @@ public class PropiedadDto {
     public void setPropietario(JugadorDto propietario) {
         this.propietario = propietario;
     }
-    
+
     public boolean tienePropietario() {
         return this.propietario != null;
     }

@@ -9,14 +9,21 @@ import cr.ac.una.monopolyjunior.model.Banca;
 import cr.ac.una.monopolyjunior.model.Casilla;
 import cr.ac.una.monopolyjunior.model.Dado;
 import cr.ac.una.monopolyjunior.model.Estacion;
+import cr.ac.una.monopolyjunior.model.Jugador;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
 import cr.ac.una.monopolyjunior.model.ServicioPublico;
 import cr.ac.una.monopolyjunior.model.Solar;
 import cr.ac.una.monopolyjunior.model.TableroDto;
+import cr.ac.una.monopolyjunior.service.JugadorService;
+import cr.ac.una.monopolyjunior.service.PropiedadService;
+import cr.ac.una.monopolyjunior.service.TableroService;
 import cr.ac.una.monopolyjunior.util.FlowController;
+import cr.ac.una.monopolyjunior.util.Respuesta;
 import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -157,7 +164,7 @@ public class JuegoViewController extends Controller implements Initializable {
                     try {
                         for (int i = 0; i < 15; i++) {
                             dadoTirado1 = dado1.lanzar();
-                            dadoTirado2 = dado1.lanzar();
+                            dadoTirado2 = dado2.lanzar();
 //                            dadoTirado1 = 5;
 //                            dadoTirado2 = 6;
                             String imagePath1 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado1 + ".png";
@@ -397,6 +404,10 @@ public class JuegoViewController extends Controller implements Initializable {
         }
         if (new Mensaje().showConfirmation("Finalizar Partida", getStage(), "¿Desea guardar la partida, si dice que no se finalizara la partida actual?")) {
             FlowController.getInstance().goMain();
+            guardarPropiedades();
+            guardarJugadores();
+            guardarJugadores();
+//            guardarPartida();
             getStage().close();
         } else {
             OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
@@ -743,6 +754,64 @@ public class JuegoViewController extends Controller implements Initializable {
         btnHipotecar.setDisable(false);
         btnPagarHipoteca.setDisable(false);
         btnPagarDeudaMulta.setDisable(false);
+    }
+
+    public void guardarPartida() {
+        try {
+            TableroService service = new TableroService();
+            Respuesta respuesta = service.guardarTablero(tablero);
+            if (!respuesta.getEstado()) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar tablero", getStage(), respuesta.getMensaje());
+            } else {
+                tablero = (TableroDto) respuesta.getResultado("Tablero");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar tablero", getStage(), "Tablero actualizado correctamente.");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error guardando el Tablero.", ex);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar tablero", getStage(), "Ocurrio un error guardando el Tablero.");
+        }
+    }
+
+    public void guardarJugadores() {
+        for(int i = 0; i < tablero.getJugadores().size(); i++) {
+            try {
+                JugadorDto jug = tablero.getJugadores().get(i);
+                JugadorService service = new JugadorService();
+                Respuesta respuesta = service.guardarJugador(jug, tablero);
+                if (!respuesta.getEstado()) {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar jugador", getStage(), respuesta.getMensaje());
+                } else {
+                    jug = (JugadorDto) respuesta.getResultado("Jugador");
+                    tablero.getJugadores().get(i).setId(jug.getId());
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar jugador", getStage(), "Jugador actualizado correctamente.");
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error guardando el jugador.", ex);
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar jugador", getStage(), "Ocurrio un error guardando el jugador.");
+            }
+        }
+    }
+
+    public void guardarPropiedades() {
+        for(int i = 0; i < tablero.getPropiedadesSolar().size(); i++) {
+            try {
+                Solar solar = tablero.getPropiedadesSolar().get(i);
+                if (solar.tienePropietario()) {
+                    PropiedadService service = new PropiedadService();
+                    Respuesta respuesta = service.guardarSolar(solar);
+                    if (!respuesta.getEstado()) {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Solar", getStage(), respuesta.getMensaje());
+                    } else {
+                        solar = (Solar) respuesta.getResultado("Solar");
+                        tablero.getPropiedadesSolar().get(i).setId(solar.getId());
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Solar", getStage(), "Solar actualizado correctamente.");
+                    }
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error guardando el Solar.", ex);
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Solar", getStage(), "Ocurrio un error guardando el Solar.");
+            }
+        }
     }
 
     public void translateAnimation(double duration, Node node, double width) { //Metodo de la animacion

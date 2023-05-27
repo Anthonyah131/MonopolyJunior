@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,7 +47,7 @@ public class Tablero implements Serializable {
     @Basic(optional = false)
     @Column(name = "TAB_JUGADOR2DEBE")
     private String jugador2debe;
-    @OneToMany(mappedBy = "tabId")
+    @OneToMany(mappedBy = "tabId", fetch = FetchType.LAZY)
     private List<Jugador> jugadorList;
 
     public Tablero() {
@@ -61,28 +62,38 @@ public class Tablero implements Serializable {
         this.jugador1debe = jugador1debe;
         this.jugador2debe = jugador2debe;
     }
+    
+    public Tablero(TableroDto tableroDto) {
+        this.id = tableroDto.getId();
+        actualizarTablero(tableroDto);
+    }     
+    
+    public void actualizarTablero(TableroDto tableroDto){
+        this.jugador1debe = tableroDto.player1Debe ? "S" : "N";
+        this.jugador2debe = tableroDto.player2Debe ? "S" : "N";
+    }
 
-    public Long getTabId() {
+    public Long getId() {
         return id;
     }
 
-    public void setTabId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getTabJugador1debe() {
+    public String getJugador1debe() {
         return jugador1debe;
     }
 
-    public void setTabJugador1debe(String jugador1debe) {
+    public void setJugador1debe(String jugador1debe) {
         this.jugador1debe = jugador1debe;
     }
 
-    public String getTabJugador2debe() {
+    public String getJugador2debe() {
         return jugador2debe;
     }
 
-    public void setTabJugador2debe(String jugador2debe) {
+    public void setJugador2debe(String jugador2debe) {
         this.jugador2debe = jugador2debe;
     }
 

@@ -67,6 +67,18 @@ public class Propiedad implements Serializable {
         this.nombre = nombre;
         this.hipotecada = hipotecada;
     }
+    
+    public Propiedad(PropiedadDto propiedadDto) {
+        this.id = propiedadDto.getId();
+        actualizar(propiedadDto);
+    }
+    
+    public void actualizar(PropiedadDto propiedadDto) {
+        this.nombre = propiedadDto.getNombre();
+        this.hipotecada = propiedadDto.isHipotecada() ? "S" : "N";
+        this.casas = propiedadDto instanceof Solar ? Long.valueOf(((Solar)propiedadDto).getCasas()) : null;
+        this.hotel = propiedadDto instanceof Solar ? Long.valueOf(((Solar)propiedadDto).getHotel()) : null;
+    }
 
     public Long getProId() {
         return id;

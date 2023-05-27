@@ -16,6 +16,7 @@ import javafx.stage.Stage;
  */
 public class TableroDto {
 
+    private Long id;
     private List<Casilla> casillas;
     private List<Solar> propiedadesSolar;
     private List<ServicioPublico> propiedadesServicio;
@@ -131,7 +132,21 @@ public class TableroDto {
 
     public TableroDto(TableroDto tablero) {
     }
+    
+    public TableroDto(Tablero tablero) {
+        this.id = tablero.getId();
+        this.player1Debe = "S".equals(tablero.getJugador1debe());
+        this.player2Debe = "S".equals(tablero.getJugador2debe());
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public List<Casilla> getCasillas() {
         return casillas;
     }
