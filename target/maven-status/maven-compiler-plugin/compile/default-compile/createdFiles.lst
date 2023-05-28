@@ -15,7 +15,6 @@ cr\ac\una\monopolyjunior\util\EntityManagerHelper.class
 cr\ac\una\monopolyjunior\controller\VenderViewController$ButtonCell.class
 cr\ac\una\monopolyjunior\model\JugadorDto.class
 cr\ac\una\monopolyjunior\model\Propiedad.class
-cr\ac\una\monopolyjunior\model\TableroDto.class
 cr\ac\una\monopolyjunior\controller\OpcionJugadorViewController.class
 cr\ac\una\monopolyjunior\util\FlowController.class
 cr\ac\una\monopolyjunior\model\Casilla.class
@@ -33,3 +32,4 @@ cr\ac\una\monopolyjunior\model\Solar.class
 cr\ac\una\monopolyjunior\model\Propiedad_.class
 cr\ac\una\monopolyjunior\model\ServicioPublico.class
 cr\ac\una\monopolyjunior\controller\NuevaPartidaViewController.class
+cr\ac\una\monopolyjunior\service\TableroService.class

@@ -257,8 +257,133 @@ public class JuegoViewController extends Controller implements Initializable {
         desactivarOpciones();
     }
 
-    @FXML
+    public void cargarTablero(TableroDto tableroDto) {
+        tablero = tableroDto;
+        
+        if (boardAnchor.getChildren().size() >= 2) {
+            boardAnchor.getChildren().remove(1);
+        }
 
+        ImageView dadoImage1 = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/dados/1.png"));
+        dadoImage1.setPreserveRatio(true);
+        dadoImage1.setFitHeight(180);
+        ImageView dadoImage2 = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/dados/1.png"));
+        dadoImage2.setPreserveRatio(true);
+        dadoImage2.setFitHeight(180);
+        Label lbDadoTotal = new Label("0");
+        lbDadoTotal.getStyleClass().add("juegoView-lbDadosTotal");
+        JFXButton btnDados = new JFXButton("Lanzar Dados");
+        btnDados.getStyleClass().add("juegoView-button");
+        btnDados.setOnAction(event -> {
+            JugadorDto player;
+            String id;
+
+            if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+                player = tablero.getJugadores().get(0);
+                id = "imgPlayer1";
+            } else {
+                player = tablero.getJugadores().get(1);
+                id = "imgPlayer2";
+            }
+            btnDados.setDisable(true);
+            Thread thread = new Thread() {
+                public void run() {
+                    System.out.println("Thread Running");
+                    try {
+                        for (int i = 0; i < 15; i++) {
+                            dadoTirado1 = dado1.lanzar();
+                            dadoTirado2 = dado2.lanzar();
+//                            dadoTirado1 = 5;
+//                            dadoTirado2 = 6;
+                            String imagePath1 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado1 + ".png";
+                            String imagePath2 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado2 + ".png";
+
+                            Platform.runLater(() -> {
+                                dadoImage1.setImage(new Image(imagePath1));
+                                dadoImage2.setImage(new Image(imagePath2));
+                                lbDadoTotal.setText("" + (dadoTirado1 + dadoTirado2));
+                            });
+                            Thread.sleep(50);
+                        }
+                        Platform.runLater(() -> {
+                            moverFicha(dadoTirado1 + dadoTirado2, id, player);
+                            accionCasilla(player);
+                            translateAnimation(0.5, boardAnchor.getChildren().get(1), 2000);
+                            activarOpciones();
+                            btnDados.setDisable(false);
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+        });
+
+        HBox hboxDados = new HBox(dadoImage1, dadoImage2);
+        hboxDados.setAlignment(Pos.CENTER);
+        hboxDados.setSpacing(20);
+        VBox vboxDados = new VBox(hboxDados, lbDadoTotal, btnDados);
+        vboxDados.setAlignment(Pos.CENTER);
+        vboxDados.setSpacing(20);
+        StackPane stakPaneDados = new StackPane(vboxDados);
+        stakPaneDados.setMinWidth(564);
+        stakPaneDados.setMinHeight(564);
+        stakPaneDados.setMaxWidth(564);
+        stakPaneDados.setMaxHeight(564);
+        boardAnchor.getChildren().add(stakPaneDados);
+
+        turnoP1 = true;
+        turnoP2 = false;
+
+        lbTurno.setText(tablero.getJugadores().get(0).getNombre());
+        imgFichaTurno.setImage(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha()));
+        lbCapital.setText("" + tablero.getJugadores().get(0).getSaldo());
+
+        banca = new Banca();
+        dado1 = new Dado(6);
+        dado2 = new Dado(6);
+
+        StackPane node = null;
+        for (Node child : boardPane.getChildren()) {
+            node = (StackPane) child;
+            node.getChildren().clear();
+            if (GridPane.getRowIndex(child) == 8 || GridPane.getRowIndex(child) == 0) {
+                HBox hbox = new HBox();
+                node.getChildren().add(hbox);
+            } else {
+                VBox vbox = new VBox();
+                node.getChildren().add(vbox);
+            }
+        }
+
+        for (Node child : boardPane.getChildren()) {
+            if (GridPane.getColumnIndex(child) == 8 && GridPane.getRowIndex(child) == 8) {
+                node = (StackPane) child;
+                break;
+            }
+        }
+
+        if (node != null) {
+            System.out.println("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha());
+            ImageView imgPlayer1 = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha()));
+            imgPlayer1.setFitWidth(50);
+            imgPlayer1.setFitHeight(50);
+            imgPlayer1.setId("imgPlayer1");
+
+            ImageView imgPlayer2 = new ImageView(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(1).getFicha()));
+            imgPlayer2.setFitWidth(50);
+            imgPlayer2.setFitHeight(50);
+            imgPlayer2.setId("imgPlayer2");
+
+            node.getChildren().addAll(imgPlayer1, imgPlayer2);
+        }
+        moverFicha(tablero.getJugadores().get(0), "imgPlayer1");
+        moverFicha(tablero.getJugadores().get(1), "imgPlayer2");
+        desactivarOpciones();
+    }
+
+    @FXML
     private void onActionBtnFinalizarTurno(ActionEvent event) {
         JugadorDto player;
         if (turnoP1) {
@@ -407,7 +532,8 @@ public class JuegoViewController extends Controller implements Initializable {
             guardarPropiedades();
             guardarJugadores();
             guardarJugadores();
-//            guardarPartida();
+            guardarPartida();
+            guardarPartida();
             getStage().close();
         } else {
             OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
@@ -510,6 +636,80 @@ public class JuegoViewController extends Controller implements Initializable {
         }
 
         tablero.moverJugador(player, posX, posY);
+    }
+
+    public void moverFicha(JugadorDto player, int posX, int posY) {
+        String id = "";
+
+        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+            player = tablero.getJugadores().get(0);
+            id = "imgPlayer1";
+        } else {
+            player = tablero.getJugadores().get(1);
+            id = "imgPlayer2";
+        }
+
+        int posXA = player.getPosicionX();
+        int posYA = player.getPosicionY();
+
+        StackPane node = null;
+        for (Node child : boardPane.getChildren()) {
+            if (GridPane.getColumnIndex(child) == posXA && GridPane.getRowIndex(child) == posYA) {
+                node = (StackPane) child;
+                break;
+            }
+        }
+
+        if (node != null) {
+            ImageView imgFicha = null;
+            for (Node child : node.getChildren()) {
+                if (id.equals(child.getId())) {
+                    imgFicha = (ImageView) child;
+                    break;
+                }
+            }
+            node.getChildren().remove(imgFicha);
+
+            for (Node child : boardPane.getChildren()) {
+                if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                    node = (StackPane) child;
+                    node.getChildren().add(imgFicha);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void moverFicha(JugadorDto player, String id) {
+        int posX = player.getPosicionX();
+        int posY = player.getPosicionY();
+
+        StackPane node = null;
+        for (Node child : boardPane.getChildren()) {
+            if (GridPane.getColumnIndex(child) == 8 && GridPane.getRowIndex(child) == 8) {
+                node = (StackPane) child;
+                break;
+            }
+        }
+
+        if (node != null) {
+            ImageView imgFicha = null;
+            for (Node child : node.getChildren()) {
+                if (id.equals(child.getId())) {
+                    imgFicha = (ImageView) child;
+                    break;
+                }
+            }
+            node.getChildren().remove(imgFicha);
+
+            for (Node child : boardPane.getChildren()) {
+                if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                    node = (StackPane) child;
+                    node.getChildren().add(imgFicha);
+                    break;
+                }
+            }
+        }
     }
 
     public void agregarCasaIntefaz(Solar solar) {
@@ -630,48 +830,6 @@ public class JuegoViewController extends Controller implements Initializable {
         }
     }
 
-    public void moverFicha(JugadorDto player, int posX, int posY) {
-        String id = "";
-
-        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
-            player = tablero.getJugadores().get(0);
-            id = "imgPlayer1";
-        } else {
-            player = tablero.getJugadores().get(1);
-            id = "imgPlayer2";
-        }
-
-        int posXA = player.getPosicionX();
-        int posYA = player.getPosicionY();
-
-        StackPane node = null;
-        for (Node child : boardPane.getChildren()) {
-            if (GridPane.getColumnIndex(child) == posXA && GridPane.getRowIndex(child) == posYA) {
-                node = (StackPane) child;
-                break;
-            }
-        }
-
-        if (node != null) {
-            ImageView imgFicha = null;
-            for (Node child : node.getChildren()) {
-                if (id.equals(child.getId())) {
-                    imgFicha = (ImageView) child;
-                    break;
-                }
-            }
-            node.getChildren().remove(imgFicha);
-
-            for (Node child : boardPane.getChildren()) {
-                if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
-                    node = (StackPane) child;
-                    node.getChildren().add(imgFicha);
-                    break;
-                }
-            }
-        }
-    }
-
     public void pasaPorGo() {
         System.out.println("Ups te pasaste Go no olvides tus $200");
 
@@ -773,7 +931,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     public void guardarJugadores() {
-        for(int i = 0; i < tablero.getJugadores().size(); i++) {
+        for (int i = 0; i < tablero.getJugadores().size(); i++) {
             try {
                 JugadorDto jug = tablero.getJugadores().get(i);
                 JugadorService service = new JugadorService();
@@ -793,7 +951,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     public void guardarPropiedades() {
-        for(int i = 0; i < tablero.getPropiedadesSolar().size(); i++) {
+        for (int i = 0; i < tablero.getPropiedadesSolar().size(); i++) {
             try {
                 Solar solar = tablero.getPropiedadesSolar().get(i);
                 if (solar.tienePropietario()) {

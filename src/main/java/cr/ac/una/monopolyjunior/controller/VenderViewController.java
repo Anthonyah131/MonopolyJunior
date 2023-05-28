@@ -74,6 +74,13 @@ public class VenderViewController extends Controller implements Initializable {
             this.jugador = jugador;
             this.banca = banca;
             this.tablero = tablero;
+            
+            tablero.getPropiedadesSolar().stream().forEach(prop -> {
+                if (prop.tienePropietario()) {
+                    System.out.println("Entra con la propiedad " + prop.getNombre() + " : El propietario es " + prop.getPropietario().getNombre());
+                    System.out.println("Entra con la propiedad " + prop.getNombre() + " : " + prop.isHipotecada());
+                }
+            });
 
             tbvPropiedades.getColumns().clear();
             tbvPropiedades.getItems().clear();
