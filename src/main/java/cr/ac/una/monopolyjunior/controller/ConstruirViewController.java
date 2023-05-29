@@ -78,8 +78,8 @@ public class ConstruirViewController extends Controller implements Initializable
     public void initialize(URL url, ResourceBundle rb) {
 
         tbcNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
-        tbcCasas.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
-        tbcHotel.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
+        tbcCasas.setCellValueFactory(cd -> new SimpleStringProperty("" + cd.getValue().getCasas()));
+        tbcHotel.setCellValueFactory(cd -> new SimpleStringProperty("" + cd.getValue().getHotel()));
 
         tbvPropiedades.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {

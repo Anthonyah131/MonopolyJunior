@@ -9,7 +9,6 @@ import cr.ac.una.monopolyjunior.model.Banca;
 import cr.ac.una.monopolyjunior.model.Casilla;
 import cr.ac.una.monopolyjunior.model.Dado;
 import cr.ac.una.monopolyjunior.model.Estacion;
-import cr.ac.una.monopolyjunior.model.Jugador;
 import cr.ac.una.monopolyjunior.model.JugadorDto;
 import cr.ac.una.monopolyjunior.model.ServicioPublico;
 import cr.ac.una.monopolyjunior.model.Solar;
@@ -88,9 +87,6 @@ public class JuegoViewController extends Controller implements Initializable {
     private static final int TILE_SIZE1 = 55;
     private static final int TILE_SIZE2 = 90;
 
-    boolean turnoP1 = true;
-    boolean turnoP2 = false;
-
     TableroDto tablero;
     Banca banca;
     Dado dado1;
@@ -165,8 +161,8 @@ public class JuegoViewController extends Controller implements Initializable {
                         for (int i = 0; i < 15; i++) {
                             dadoTirado1 = dado1.lanzar();
                             dadoTirado2 = dado2.lanzar();
-//                            dadoTirado1 = 5;
-//                            dadoTirado2 = 6;
+//                            dadoTirado1 = 1;
+//                            dadoTirado2 = 2;
                             String imagePath1 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado1 + ".png";
                             String imagePath2 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado2 + ".png";
 
@@ -208,9 +204,6 @@ public class JuegoViewController extends Controller implements Initializable {
         JugadorDto jugador1 = new JugadorDto(player1, ficha1, 1500);
         JugadorDto jugador2 = new JugadorDto(player2, ficha2, 1500);
         tablero = new TableroDto(jugador1, jugador2);
-
-        turnoP1 = true;
-        turnoP2 = false;
 
         lbTurno.setText(tablero.getJugadores().get(0).getNombre());
         imgFichaTurno.setImage(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha()));
@@ -259,7 +252,7 @@ public class JuegoViewController extends Controller implements Initializable {
 
     public void cargarTablero(TableroDto tableroDto) {
         tablero = tableroDto;
-        
+
         if (boardAnchor.getChildren().size() >= 2) {
             boardAnchor.getChildren().remove(1);
         }
@@ -333,12 +326,16 @@ public class JuegoViewController extends Controller implements Initializable {
         stakPaneDados.setMaxHeight(564);
         boardAnchor.getChildren().add(stakPaneDados);
 
-        turnoP1 = true;
-        turnoP2 = false;
-
-        lbTurno.setText(tablero.getJugadores().get(0).getNombre());
-        imgFichaTurno.setImage(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha()));
-        lbCapital.setText("" + tablero.getJugadores().get(0).getSaldo());
+        if (tablero.turnoP1) {
+            lbTurno.setText(tablero.getJugadores().get(0).getNombre());
+            imgFichaTurno.setImage(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(0).getFicha()));
+            lbCapital.setText("" + tablero.getJugadores().get(0).getSaldo());
+        } else if (tablero.turnoP2) {
+            lbTurno.setText(tablero.getJugadores().get(1).getNombre());
+            imgFichaTurno.setImage(new Image("cr/ac/una/monopolyjunior/resources/fichas/" + tablero.getJugadores().get(1).getFicha()));
+            lbCapital.setText("" + tablero.getJugadores().get(1).getSaldo());
+        }
+        translateAnimation(0.5, boardAnchor.getChildren().get(1), 2000);
 
         banca = new Banca();
         dado1 = new Dado(6);
@@ -380,13 +377,23 @@ public class JuegoViewController extends Controller implements Initializable {
         }
         moverFicha(tablero.getJugadores().get(0), "imgPlayer1");
         moverFicha(tablero.getJugadores().get(1), "imgPlayer2");
-        desactivarOpciones();
+
+        tablero.getPropiedadesSolar().stream().forEach(prop -> {
+            if (prop.getCasas() > 0) {
+                for (int i = 0; i < prop.getCasas(); i++) {
+                    agregarCasaIntefaz(prop);
+                }
+            }
+            if (prop.getHotel() > 0) {
+                agregarHotelIntefaz(prop);
+            }
+        });
     }
 
     @FXML
     private void onActionBtnFinalizarTurno(ActionEvent event) {
         JugadorDto player;
-        if (turnoP1) {
+        if (tablero.turnoP1) {
             player = tablero.getJugadores().get(1);
             if (tablero.player1Debe) {
                 if (new Mensaje().showConfirmation("Saldo Pendiente", getStage(), "Tienes un saldo pendiente, si continuas con el, te declaras en bancarrota, deseas continuar?")) {
@@ -399,13 +406,12 @@ public class JuegoViewController extends Controller implements Initializable {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Bancarrota", getStage(), "Recuerda pagar la deuda, si no seras declarado en bancarrota.");
                 }
             } else {
-                turnoP1 = false;
-                turnoP2 = true;
+                tablero.pasarTurno();
                 actualizarDatosInterfaz(player);
                 translateAnimation(0.5, boardAnchor.getChildren().get(1), -2000);
                 desactivarOpciones();
             }
-        } else if (turnoP2) {
+        } else if (tablero.turnoP2) {
             player = tablero.getJugadores().get(0);
             if (tablero.player2Debe) {
                 if (new Mensaje().showConfirmation("Saldo Pendiente", getStage(), "Tienes un saldo pendiente, si continuas con el, te declaras en bancarrota, deseas continuar?")) {
@@ -418,8 +424,7 @@ public class JuegoViewController extends Controller implements Initializable {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Bancarrota", getStage(), "Recuerda pagar la deuda, si no seras declarado en bancarrota.");
                 }
             } else {
-                turnoP1 = true;
-                turnoP2 = false;
+                tablero.pasarTurno();
                 actualizarDatosInterfaz(player);
                 translateAnimation(0.5, boardAnchor.getChildren().get(1), -2000);
                 desactivarOpciones();
@@ -443,9 +448,9 @@ public class JuegoViewController extends Controller implements Initializable {
     @FXML
     private void onActionBtnComprarPropi(ActionEvent event) {
         JugadorDto player = null;
-        if (turnoP1) {
+        if (tablero.turnoP1) {
             player = tablero.getJugadores().get(0);
-        } else if (turnoP2) {
+        } else if (tablero.turnoP2) {
             player = tablero.getJugadores().get(1);
         }
         comprarPropiedad(player);
@@ -454,9 +459,9 @@ public class JuegoViewController extends Controller implements Initializable {
     @FXML
     private void onActionBtnVenderPropi(ActionEvent event) {
         JugadorDto player = null;
-        if (turnoP1) {
+        if (tablero.turnoP1) {
             player = tablero.getJugadores().get(0);
-        } else if (turnoP2) {
+        } else if (tablero.turnoP2) {
             player = tablero.getJugadores().get(1);
         }
         VenderViewController venderViewViewController = (VenderViewController) FlowController.getInstance().getController("VenderView");
@@ -467,9 +472,9 @@ public class JuegoViewController extends Controller implements Initializable {
     @FXML
     private void onActionBtnConstruir(ActionEvent event) {
         JugadorDto player = null;
-        if (turnoP1) {
+        if (tablero.turnoP1) {
             player = tablero.getJugadores().get(0);
-        } else if (turnoP2) {
+        } else if (tablero.turnoP2) {
             player = tablero.getJugadores().get(1);
         }
         tablero.puedeConstruir(player, getStage(), banca);
@@ -478,9 +483,9 @@ public class JuegoViewController extends Controller implements Initializable {
     @FXML
     private void onActionBtnHipotecar(ActionEvent event) {
         JugadorDto player = null;
-        if (turnoP1) {
+        if (tablero.turnoP1) {
             player = tablero.getJugadores().get(0);
-        } else if (turnoP2) {
+        } else if (tablero.turnoP2) {
             player = tablero.getJugadores().get(1);
         }
         VenderViewController venderViewViewController = (VenderViewController) FlowController.getInstance().getController("VenderView");
@@ -491,9 +496,9 @@ public class JuegoViewController extends Controller implements Initializable {
     @FXML
     private void btnPagarHipoteca(ActionEvent event) {
         JugadorDto player = null;
-        if (turnoP1) {
+        if (tablero.turnoP1) {
             player = tablero.getJugadores().get(0);
-        } else if (turnoP2) {
+        } else if (tablero.turnoP2) {
             player = tablero.getJugadores().get(1);
         }
         VenderViewController venderViewViewController = (VenderViewController) FlowController.getInstance().getController("VenderView");
@@ -521,25 +526,27 @@ public class JuegoViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnFinalizarJuego(ActionEvent event) {
-        JugadorDto player = null;
-        if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
-            player = tablero.getJugadores().get(0);
-        } else if (tablero.getJugadores().get(1).getNombre().equals(lbTurno.getText())) {
-            player = tablero.getJugadores().get(1);
-        }
-        if (new Mensaje().showConfirmation("Finalizar Partida", getStage(), "¿Desea guardar la partida, si dice que no se finalizara la partida actual?")) {
-            FlowController.getInstance().goMain();
-            guardarPropiedades();
-            guardarJugadores();
-            guardarJugadores();
-            guardarPartida();
-            guardarPartida();
-            getStage().close();
-        } else {
-            OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
-            opcionJugadorViewController.declararGanador(player, tablero);
-            getStage().close();
-            FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
+        if (new Mensaje().showConfirmation("Finalizar Partida", getStage(), "¿Desea finalizar la partida?")) {
+            JugadorDto player = null;
+            if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
+                player = tablero.getJugadores().get(0);
+            } else if (tablero.getJugadores().get(1).getNombre().equals(lbTurno.getText())) {
+                player = tablero.getJugadores().get(1);
+            }
+            if (new Mensaje().showConfirmation("Guardar Partida", getStage(), "¿Desea guardar la partida, si dice que no se finalizara la partida actual?")) {
+                FlowController.getInstance().goMain();
+                guardarPropiedades();
+                guardarJugadores();
+                guardarJugadores();
+                guardarPartida();
+                guardarPartida();
+                getStage().close();
+            } else {
+                OpcionJugadorViewController opcionJugadorViewController = (OpcionJugadorViewController) FlowController.getInstance().getController("OpcionJugadorView");
+                opcionJugadorViewController.declararGanador(player, tablero);
+                getStage().close();
+                FlowController.getInstance().goViewInWindowModal("OpcionJugadorView", getStage(), true);
+            }
         }
     }
 
@@ -710,6 +717,99 @@ public class JuegoViewController extends Controller implements Initializable {
                 }
             }
         }
+    }
+
+    public void retrocederFicha(int dadoTirado, JugadorDto player) {
+        String id = "";
+
+        if (tablero.getJugadores().get(0).getNombre().equals(player.getNombre())) {
+            id = "imgPlayer1";
+        } else {
+            id = "imgPlayer2";
+        }
+
+        int posX = player.getPosicionX();
+        int posY = player.getPosicionY();
+
+        StackPane node = null;
+        for (Node child : boardPane.getChildren()) {
+            if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                node = (StackPane) child;
+                break;
+            }
+        }
+        System.out.println("Dado : " + dadoTirado);
+        if (posX >= 1 && posX <= 8 && posY == 8) {
+            posX += dadoTirado;  // Modificación: Cambiar "-" por "+"
+            if (posX > 8) {
+                dadoTirado = posX - 8;
+                posX = 8;
+                posY -= dadoTirado;
+                if (posY < 0) {
+                    dadoTirado = posY * -1;
+                    posY = 0;
+                    posX -= dadoTirado;  // Modificación: Cambiar "+" por "-"
+                }
+            }
+        } else if (posX == 0 && posY >= 1 && posY <= 8) {
+            posY += dadoTirado;  // Modificación: Cambiar "-" por "+"
+            if (posY > 8) {
+                dadoTirado = posY - 8;
+                posY = 8;
+                posX -= dadoTirado;  // Modificación: Cambiar "+" por "-"
+                if (posX < 0) {
+                    dadoTirado = posX * -1;
+                    posX = 0;
+                    posY -= dadoTirado;
+                }
+            }
+        } else if (posX >= 0 && posX <= 7 && posY == 0) {
+            posX -= dadoTirado;  // Modificación: Cambiar "+" por "-"
+            if (posX < 0) {
+                dadoTirado = posX * -1;
+                posX = 0;
+                posY += dadoTirado;  // Modificación: Cambiar "-" por "+"
+                if (posY > 8) {
+                    dadoTirado = posY - 8;
+                    posY = 8;
+                    posX += dadoTirado;  // Modificación: Cambiar "-" por "+"
+                }
+            }
+        } else if (posX == 8 && posY >= 0 && posY <= 7) {
+            posY -= dadoTirado;  // Modificación: Cambiar "+" por "-"
+            if (posY < 0) {
+                dadoTirado = posY * -1;
+                posY = 0;
+                posX += dadoTirado;  // Modificación: Cambiar "-" por "+"
+                if (posX > 8) {
+                    dadoTirado = posX - 8;
+                    posX = 8;
+                    posY += dadoTirado;  // Modificación: Cambiar "+" por "-"
+                }
+            }
+        }
+        System.out.println(player.getNombre() + ": posx " + posX + " : posy " + posY);
+
+        if (node != null) {
+            ImageView imgFicha = null;
+            for (Node child : node.getChildren()) {
+                if (child instanceof ImageView && id.equals(child.getId())) {
+                    imgFicha = (ImageView) child;
+                    break;
+                }
+            }
+            node.getChildren().remove(imgFicha);
+
+            for (Node child : boardPane.getChildren()) {
+                if (GridPane.getColumnIndex(child) == posX && GridPane.getRowIndex(child) == posY) {
+                    node = (StackPane) child;
+                    node.getChildren().add(imgFicha);
+                    break;
+                }
+            }
+        }
+
+        tablero.moverJugador(player, posX, posY);
     }
 
     public void agregarCasaIntefaz(Solar solar) {
@@ -901,6 +1001,7 @@ public class JuegoViewController extends Controller implements Initializable {
         btnHipotecar.setDisable(true);
         btnPagarHipoteca.setDisable(true);
         btnPagarDeudaMulta.setDisable(true);
+        btnFinalizarJuego.setDisable(true);
     }
 
     public void activarOpciones() {
@@ -912,6 +1013,7 @@ public class JuegoViewController extends Controller implements Initializable {
         btnHipotecar.setDisable(false);
         btnPagarHipoteca.setDisable(false);
         btnPagarDeudaMulta.setDisable(false);
+        btnFinalizarJuego.setDisable(false);
     }
 
     public void guardarPartida() {
@@ -922,7 +1024,6 @@ public class JuegoViewController extends Controller implements Initializable {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar tablero", getStage(), respuesta.getMensaje());
             } else {
                 tablero = (TableroDto) respuesta.getResultado("Tablero");
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar tablero", getStage(), "Tablero actualizado correctamente.");
             }
         } catch (Exception ex) {
             Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error guardando el Tablero.", ex);
@@ -941,7 +1042,6 @@ public class JuegoViewController extends Controller implements Initializable {
                 } else {
                     jug = (JugadorDto) respuesta.getResultado("Jugador");
                     tablero.getJugadores().get(i).setId(jug.getId());
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar jugador", getStage(), "Jugador actualizado correctamente.");
                 }
             } catch (Exception ex) {
                 Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error guardando el jugador.", ex);
@@ -962,7 +1062,6 @@ public class JuegoViewController extends Controller implements Initializable {
                     } else {
                         solar = (Solar) respuesta.getResultado("Solar");
                         tablero.getPropiedadesSolar().get(i).setId(solar.getId());
-                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Solar", getStage(), "Solar actualizado correctamente.");
                     }
                 }
             } catch (Exception ex) {

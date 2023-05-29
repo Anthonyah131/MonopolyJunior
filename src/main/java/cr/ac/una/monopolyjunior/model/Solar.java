@@ -119,8 +119,16 @@ public class Solar extends PropiedadDto {
         return casas;
     }
 
+    public void setCasas(int casas) {
+        this.casas = casas;
+    }
+
     public int getHotel() {
         return hotel;
+    }
+
+    public void setHotel(int hotel) {
+        this.hotel = hotel;
     }
 
     public int getRenta1Casa() {

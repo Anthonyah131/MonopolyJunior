@@ -983,12 +983,16 @@ public class OpcionJugadorViewController extends Controller implements Initializ
 
         StackPane stackPane = new StackPane();
         VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
 
         VBox cartaPropiedad = new VBox();
+        cartaPropiedad.setAlignment(Pos.CENTER);
 
         VBox vboxTitulo = new VBox();
         Label lbTituloPropiedad = new Label("Ganador");
+        lbTituloPropiedad.getStyleClass().add("NuevaPartida-lbPlayer");
         vboxTitulo.getChildren().addAll(lbTituloPropiedad);
+        vboxTitulo.setAlignment(Pos.CENTER);
 
         JugadorDto jugadorGanador = null;
         for (JugadorDto jug : tablero.getJugadores()) {
@@ -998,19 +1002,113 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         }
 
         Label lbInfo = new Label("!! Felicidades " + jugadorGanador.getNombre() + ", ganaste la partida");
+        lbInfo.getStyleClass().add("NuevaPartida-lbPlayer");
+        
+        TableView tbvPropiedadesp1 = new TableView();
 
-        cartaPropiedad.getChildren().addAll(vboxTitulo, lbInfo);
+        tbvPropiedadesp1.getColumns().clear();
+        tbvPropiedadesp1.getItems().clear();
+
+        TableColumn<PropiedadDto, String> tbcNombre = new TableColumn<>("Nombre");
+        tbcNombre.setPrefWidth(150);
+        tbcNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
+
+        TableColumn<PropiedadDto, String> tbcRenta = new TableColumn<>("Renta");
+        tbcRenta.setPrefWidth(100);
+        tbcRenta.setCellValueFactory(cd -> new SimpleStringProperty("" + cd.getValue().getRenta()));
+
+        tbvPropiedadesp1.getColumns().add(tbcNombre);
+        tbvPropiedadesp1.getColumns().add(tbcRenta);
+        tbvPropiedadesp1.refresh();
+
+        tbvPropiedadesp1.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Verifica si es un solo clic
+                PropiedadDto propiedadSeleccionada = (PropiedadDto) tbvPropiedadesp1.getSelectionModel().getSelectedItem();
+                if (propiedadSeleccionada != null) {
+                    if (propiedadSeleccionada instanceof Solar) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.solarInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof ServicioPublico) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.servicioPublicoInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof Estacion) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.estacionInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    }
+                }
+            }
+        });
+        
+        TableView tbvPropiedadesp2 = new TableView();
+
+        tbvPropiedadesp2.getColumns().clear();
+        tbvPropiedadesp2.getItems().clear();
+        
+        TableColumn<PropiedadDto, String> tbcNombre2 = new TableColumn<>("Nombre");
+        tbcNombre2.setPrefWidth(150);
+        tbcNombre2.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
+
+        TableColumn<PropiedadDto, String> tbcRenta2 = new TableColumn<>("Renta");
+        tbcRenta2.setPrefWidth(100);
+        tbcRenta2.setCellValueFactory(cd -> new SimpleStringProperty("" + cd.getValue().getRenta()));
+
+        tbvPropiedadesp2.getColumns().add(tbcNombre2);
+        tbvPropiedadesp2.getColumns().add(tbcRenta2);
+        tbvPropiedadesp2.refresh();
+
+        tbvPropiedadesp2.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Verifica si es un solo clic
+                PropiedadDto propiedadSeleccionada = (PropiedadDto) tbvPropiedadesp2.getSelectionModel().getSelectedItem();
+                if (propiedadSeleccionada != null) {
+                    if (propiedadSeleccionada instanceof Solar) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.solarInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof ServicioPublico) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.servicioPublicoInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    } else if (propiedadSeleccionada instanceof Estacion) {
+                        CartaViewController cartaViewController = (CartaViewController) FlowController.getInstance().getController("CartaView");
+                        cartaViewController.estacionInterfaz(propiedadSeleccionada);
+                        FlowController.getInstance().goViewInWindowModal("CartaView", getStage(), false);
+                    }
+                }
+            }
+        });
+        Label lbP1 = new Label(jugador.getNombre());
+        lbP1.getStyleClass().add("NuevaPartida-lbPlayer");
+        VBox vboxContendorPropiP1 = new VBox(lbP1, tbvPropiedadesp1);
+        vboxContendorPropiP1.setAlignment(Pos.CENTER);
+        Label lbP2 = new Label(jugadorGanador.getNombre());
+        lbP2.getStyleClass().add("NuevaPartida-lbPlayer");
+        VBox vboxContendorPropiP2 = new VBox(lbP2, tbvPropiedadesp2);
+        vboxContendorPropiP2.setAlignment(Pos.CENTER);
+        lbInfo.getStyleClass().add("NuevaPartida-lbPlayer");
+        HBox hboxContenedorPropiedades = new HBox(vboxContendorPropiP1, vboxContendorPropiP2);
+        hboxContenedorPropiedades.setAlignment(Pos.CENTER);
+
+        cartaPropiedad.getChildren().addAll(vboxTitulo, lbInfo, hboxContenedorPropiedades);
 
         JFXButton btnContinuar = new JFXButton("Continuar");
+        btnContinuar.getStyleClass().add("carta-button");
         btnContinuar.setOnAction(event -> {
             getStage().close();
             FlowController.getInstance().goMain();
         });
         HBox hboxOpciones = new HBox(btnContinuar);
+        hboxOpciones.setAlignment(Pos.CENTER);
 
         vbox.getChildren().addAll(cartaPropiedad, hboxOpciones);
+        vbox.setSpacing(10);
         stackPane.getChildren().add(vbox);
         rootOpcionJugadorView.getChildren().add(stackPane);
+        
+        cargarPropiedades(tbvPropiedadesp1, jugador, tablero);
+        cargarPropiedades(tbvPropiedadesp2, jugadorGanador, tablero);
     }
 
     private void cargarPropiedades(TableView tbvPropiedades, JugadorDto jugador, TableroDto tablero) {

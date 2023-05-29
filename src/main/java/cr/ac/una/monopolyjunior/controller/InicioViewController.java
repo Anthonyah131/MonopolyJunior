@@ -53,6 +53,7 @@ public class InicioViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionCargarPartida(ActionEvent event) {
+        FlowController.getInstance().salir();
         FlowController.getInstance().goViewInWindowModal("CargarPartidaView", getStage(), true);
     }
 

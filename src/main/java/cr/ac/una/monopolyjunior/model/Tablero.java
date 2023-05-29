@@ -47,6 +47,9 @@ public class Tablero implements Serializable {
     @Basic(optional = false)
     @Column(name = "TAB_JUGADOR2DEBE")
     private String jugador2debe;
+    @Basic(optional = false)
+    @Column(name = "TAB_TURNO")
+    private String turno;
     @OneToMany(mappedBy = "tabId", fetch = FetchType.LAZY)
     private List<Jugador> jugadorList;
 
@@ -57,10 +60,11 @@ public class Tablero implements Serializable {
         this.id = id;
     }
 
-    public Tablero(Long id, String jugador1debe, String jugador2debe) {
+    public Tablero(Long id, String jugador1debe, String jugador2debe, String turno) {
         this.id = id;
         this.jugador1debe = jugador1debe;
         this.jugador2debe = jugador2debe;
+        this.turno = turno;
     }
     
     public Tablero(TableroDto tableroDto) {
@@ -71,6 +75,7 @@ public class Tablero implements Serializable {
     public void actualizarTablero(TableroDto tableroDto){
         this.jugador1debe = tableroDto.player1Debe ? "S" : "N";
         this.jugador2debe = tableroDto.player2Debe ? "S" : "N";
+        this.turno = tableroDto.turnoP1 ? "P1" : "P2";
     }
 
     public Long getId() {
@@ -95,6 +100,14 @@ public class Tablero implements Serializable {
 
     public void setJugador2debe(String jugador2debe) {
         this.jugador2debe = jugador2debe;
+    }
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
     }
 
     public List<Jugador> getJugadorList() {

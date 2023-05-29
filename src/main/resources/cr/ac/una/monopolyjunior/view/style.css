@@ -258,3 +258,41 @@
 .venderView-table-view > .virtual-flow > .scroll-bar > .decrement-button {
     -fx-opacity: 0;
 }
+
+/* CargarPartidaView */
+
+.CargarPartidaView-lbTitulo {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 40px;
+    -fx-font-weight: 700;
+}
+
+.CargarPartidaView-button {
+    -fx-font-family: Arial;
+    -fx-text-fill: #333333;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, black, 3, 0.5, 2, 2);
+    -fx-font-weight: 800;
+    -fx-padding: 5px;
+    -fx-border-radius: 20;
+}
+
+.CargarPartidaView-button:hover {
+    -fx-background-color: #9e999c;
+}
+
+.CargarPartidaView-lbTitulo {
+    -fx-font-size: 28px;
+    -fx-text-fill: #fff;
+    -fx-font-weight: 800;
+    -fx-effect: dropshadow(gaussian, black, 10, 0.5, 2, 2);
+}
+.CargarPartidaView-lbJugadores {
+    -fx-font-size: 25px;
+    -fx-text-fill: #fff;
+    -fx-effect: dropshadow(gaussian, black, 10, 0.5, 2, 2);
+}
+
+.CargarPartidaView-FondoTransparente {
+    -fx-background-color: transparent;
+}

@@ -25,6 +25,8 @@ public class TableroDto {
     private List<Tarjeta> tarjetas;
     public Boolean player1Debe = false;
     public Boolean player2Debe = false;
+    public boolean turnoP1;
+    public boolean turnoP2;
 
     public TableroDto(JugadorDto player1, JugadorDto player2) {
         casillas = new ArrayList<>();
@@ -36,6 +38,9 @@ public class TableroDto {
 
         jugadores.add(player1);
         jugadores.add(player2);
+
+        turnoP1 = true;
+        turnoP2 = false;
 
         casillas.add(new Casilla("Go", "Go", 8, 8));
         casillas.add(new Casilla("?", "Suerte", 7, 8));
@@ -91,13 +96,12 @@ public class TableroDto {
 
         player1.agregarPropiedad("Avenida Lopez");
         player1.agregarPropiedad("Avenida Toros");
-        player2.agregarPropiedad("Avenida Camaano");
+        player1.agregarPropiedad("Avenida Camaano");
         player2.agregarPropiedad("Mirador");
         propiedadesSolar.get(0).setPropietario(player1);
         propiedadesSolar.get(1).setPropietario(player1);
-        propiedadesSolar.get(2).setPropietario(player2);
+        propiedadesSolar.get(2).setPropietario(player1);
         propiedadesSolar.get(5).setPropietario(player2);
-
 //        player1.agregarPropiedad("Agua");
 //        player1.agregarPropiedad("Luz");
 //        propiedadesServicio.get(0).setPropietario(player1);
@@ -110,28 +114,30 @@ public class TableroDto {
 //        propiedadesEstacion.get(1).setPropietario(player1);
 //        propiedadesEstacion.get(2).setPropietario(player1);
 //        propiedadesEstacion.get(3).setPropietario(player1);
+        tarjetas.add(new Tarjeta("Ve a Calle Soledad", "¡Felicidades, eres el unico ganador de un viaje a la soledad!"));
+        tarjetas.add(new Tarjeta("Cobras $400", "¡Tu abuelita de dió $400 a escondidas, no digas nada!"));
+        tarjetas.add(new Tarjeta("Retrocedes cinco lugares", "¡Ups, calle cerrada, devuelvete 5 lugares!"));
+        tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
+        tarjetas.add(new Tarjeta("Retrocedes dos lugares", "Rompes la interfaz grafica de Ubuntu Retrocedes dos lugares"));
         tarjetas.add(new Tarjeta("Cobras $600", "Recibes una herencia de un familiar el cual no sabías que existía Cobras $600"));
         tarjetas.add(new Tarjeta("Pagas $200", "Te han puesto una multa por no recoger lo que deja tu perro en el parque Pagas $200"));
-        tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
-        tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));
-        tarjetas.add(new Tarjeta("Retrocedes dos lugares", "Rompes la interfaz grafica de Ubuntu Retrocedes dos lugares"));
         tarjetas.add(new Tarjeta("Cobras $400", "Inventas un nuevo código que hace que Win funcione 0.01% más rápido Cobras $400"));
+        tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));
         tarjetas.add(new Tarjeta("Pagas $500", "No aguantas más el estrés de programar, dejas todo y te vas ed un crucero 15 días por el caribe Pagas $500"));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
+        tarjetas.add(new Tarjeta("Cobras $200", "¡Ganaste en los tiempos, bien por tí!"));
+        tarjetas.add(new Tarjeta("Ve a Tren 4", "¡Ve a Tren 4, si está libre puedes comprarla!"));
+        tarjetas.add(new Tarjeta("Pagas $200", "Manejaste borracho y chocaste tu vehiculo, debes arreglarlo"));
+        tarjetas.add(new Tarjeta("Ve a Avenida Perez", "Felicidades, eres el unico ganador de un viaje a Avenida Pérez"));
+        tarjetas.add(new Tarjeta("Cobras $300", "¡Te encontraste dinero en la calle, que buena suerte!"));
+        tarjetas.add(new Tarjeta("Pagas $200", "Le apostaste al número que soñaste, perdiste dinero"));
     }
 
     public TableroDto(Tablero tablero, TableroDto tableroDto) {
         this.id = tablero.getId();
         this.player1Debe = "S".equals(tablero.getJugador1debe());
         this.player2Debe = "S".equals(tablero.getJugador2debe());
+        this.turnoP1 = "P1".equals(tablero.getTurno());
+        this.turnoP2 = "P2".equals(tablero.getTurno());
 
         casillas = new ArrayList<>();
         propiedadesSolar = new ArrayList<>();
@@ -188,28 +194,30 @@ public class TableroDto {
             propiedadesSolar.add(tableroDto.getPropiedadesSolar().get(i));
         }
 
+        tarjetas.add(new Tarjeta("Ve a Calle Soledad", "¡Felicidades, eres el unico ganador de un viaje a la soledad!"));
+        tarjetas.add(new Tarjeta("Cobras $400", "¡Tu abuelita de dió $400 a escondidas, no digas nada!"));
+        tarjetas.add(new Tarjeta("Retrocedes cinco lugares", "¡Ups, calle cerrada, devuelvete 5 lugares!"));
+        tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
+        tarjetas.add(new Tarjeta("Retrocedes dos lugares", "Rompes la interfaz grafica de Ubuntu Retrocedes dos lugares"));
         tarjetas.add(new Tarjeta("Cobras $600", "Recibes una herencia de un familiar el cual no sabías que existía Cobras $600"));
         tarjetas.add(new Tarjeta("Pagas $200", "Te han puesto una multa por no recoger lo que deja tu perro en el parque Pagas $200"));
-        tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
-        tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));
-        tarjetas.add(new Tarjeta("Retrocedes dos lugares", "Rompes la interfaz grafica de Ubuntu Retrocedes dos lugares"));
         tarjetas.add(new Tarjeta("Cobras $400", "Inventas un nuevo código que hace que Win funcione 0.01% más rápido Cobras $400"));
+        tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));
         tarjetas.add(new Tarjeta("Pagas $500", "No aguantas más el estrés de programar, dejas todo y te vas ed un crucero 15 días por el caribe Pagas $500"));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
-//        tarjetas.add(new Tarjeta("", ""));
+        tarjetas.add(new Tarjeta("Cobras $200", "¡Ganaste en los tiempos, bien por tí!"));
+        tarjetas.add(new Tarjeta("Ve a Tren 4", "¡Ve a Tren 4, si está libre puedes comprarla!"));
+        tarjetas.add(new Tarjeta("Pagas $200", "Manejaste borracho y chocaste tu vehiculo, debes arreglarlo"));
+        tarjetas.add(new Tarjeta("Ve a Avenida Perez", "Felicidades, eres el unico ganador de un viaje a Avenida Pérez"));
+        tarjetas.add(new Tarjeta("Cobras $300", "¡Te encontraste dinero en la calle, que buena suerte!"));
+        tarjetas.add(new Tarjeta("Pagas $200", "Le apostaste al número que soñaste, perdiste dinero"));
     }
 
     public TableroDto(Tablero tablero) {
         this.id = tablero.getId();
         this.player1Debe = "S".equals(tablero.getJugador1debe());
         this.player2Debe = "S".equals(tablero.getJugador2debe());
+        this.turnoP1 = "P1".equals(tablero.getTurno());
+        this.turnoP2 = "P2".equals(tablero.getTurno());
 
         this.casillas = new ArrayList<>();
         this.propiedadesSolar = new ArrayList<>();
@@ -297,12 +305,17 @@ public class TableroDto {
                     prop.setPropietario(jugadores.get(0));
                     prop.setId(propiedad.getProId());
                     prop.hipotecada = "S".equals(propiedad.getProHipotecada());
+                    prop.setCasas(Integer.parseInt(propiedad.getProCasas().toString()));
+                    prop.setHotel(Integer.parseInt(propiedad.getProHotel().toString()));
                 }
             });
         }
 
         for (Propiedad propiedad : tablero.getJugadorList().get(1).getPropiedadList()) {
-            this.jugadores.get(1).getPropiedades().add(propiedad.getProNombre());
+            if (this.jugadores.get(1).getPropiedades().isEmpty() || !this.jugadores.get(1).getPropiedades().stream().anyMatch(prop -> prop.equals(propiedad.getProNombre()))) {
+                this.jugadores.get(1).getPropiedades().add(propiedad.getProNombre());
+            }
+            
             this.propiedadesServicio.stream().forEach(prop -> {
                 if (prop.getNombre().equals(propiedad.getProNombre())) {
                     prop.setPropietario(jugadores.get(1));
@@ -323,6 +336,8 @@ public class TableroDto {
                     prop.setPropietario(jugadores.get(1));
                     prop.setId(propiedad.getProId());
                     prop.hipotecada = "S".equals(propiedad.getProHipotecada());
+                    prop.setCasas(Integer.parseInt(propiedad.getProCasas().toString()));
+                    prop.setHotel(Integer.parseInt(propiedad.getProHotel().toString()));
                 }
             });
         }
@@ -334,22 +349,22 @@ public class TableroDto {
             }
         });
 
-        this.tarjetas.add(new Tarjeta("Cobras $600", "Recibes una herencia de un familiar el cual no sabías que existía Cobras $600"));
-        this.tarjetas.add(new Tarjeta("Pagas $200", "Te han puesto una multa por no recoger lo que deja tu perro en el parque Pagas $200"));
-        this.tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
-        this.tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));
-        this.tarjetas.add(new Tarjeta("Retrocedes dos lugares", "Rompes la interfaz grafica de Ubuntu Retrocedes dos lugares"));
-        this.tarjetas.add(new Tarjeta("Cobras $400", "Inventas un nuevo código que hace que Win funcione 0.01% más rápido Cobras $400"));
-        this.tarjetas.add(new Tarjeta("Pagas $500", "No aguantas más el estrés de programar, dejas todo y te vas ed un crucero 15 días por el caribe Pagas $500"));
-//        this.tarjetas.add(new Tarjeta("", ""));
-//        this.tarjetas.add(new Tarjeta("", ""));
-//        this.tarjetas.add(new Tarjeta("", ""));
-//        this.tarjetas.add(new Tarjeta("", ""));
-//        this.tarjetas.add(new Tarjeta("", ""));
-//        this.tarjetas.add(new Tarjeta("", ""));
-//        this.tarjetas.add(new Tarjeta("", ""));
-//        this.tarjetas.add(new Tarjeta("", ""));
-//        this.tarjetas.add(new Tarjeta("", ""));
+        tarjetas.add(new Tarjeta("Ve a Calle Soledad", "¡Felicidades, eres el unico ganador de un viaje a la soledad!"));
+        tarjetas.add(new Tarjeta("Cobras $400", "¡Tu abuelita de dió $400 a escondidas, no digas nada!"));
+        tarjetas.add(new Tarjeta("Retrocedes cinco lugares", "¡Ups, calle cerrada, devuelvete 5 lugares!"));
+        tarjetas.add(new Tarjeta("Ve a la carcel", "Ve a la carcel"));
+        tarjetas.add(new Tarjeta("Retrocedes dos lugares", "Rompes la interfaz grafica de Ubuntu Retrocedes dos lugares"));
+        tarjetas.add(new Tarjeta("Cobras $600", "Recibes una herencia de un familiar el cual no sabías que existía Cobras $600"));
+        tarjetas.add(new Tarjeta("Pagas $200", "Te han puesto una multa por no recoger lo que deja tu perro en el parque Pagas $200"));
+        tarjetas.add(new Tarjeta("Cobras $400", "Inventas un nuevo código que hace que Win funcione 0.01% más rápido Cobras $400"));
+        tarjetas.add(new Tarjeta("Ve a la casilla Go", "Ve a la casilla Go"));
+        tarjetas.add(new Tarjeta("Pagas $500", "No aguantas más el estrés de programar, dejas todo y te vas ed un crucero 15 días por el caribe Pagas $500"));
+        tarjetas.add(new Tarjeta("Cobras $200", "¡Ganaste en los tiempos, bien por tí!"));
+        tarjetas.add(new Tarjeta("Ve a Tren 4", "¡Ve a Tren 4, si está libre puedes comprarla!"));
+        tarjetas.add(new Tarjeta("Pagas $200", "Manejaste borracho y chocaste tu vehiculo, debes arreglarlo"));
+        tarjetas.add(new Tarjeta("Ve a Avenida Perez", "Felicidades, eres el unico ganador de un viaje a Avenida Pérez"));
+        tarjetas.add(new Tarjeta("Cobras $300", "¡Te encontraste dinero en la calle, que buena suerte!"));
+        tarjetas.add(new Tarjeta("Pagas $200", "Le apostaste al número que soñaste, perdiste dinero"));
     }
 
     public TableroDto(TableroDto tablero) {
@@ -486,5 +501,15 @@ public class TableroDto {
         Tarjeta ultimaTarjeta = tarjetas.get(tarjetas.size() - 1);
 
         return ultimaTarjeta;
+    }
+    
+    public void pasarTurno() {
+        if(this.turnoP1) {
+            this.turnoP1 = false;
+            this.turnoP2 = true;
+        } else if(this.turnoP2) {
+            this.turnoP1 = true;
+            this.turnoP2 = false;
+        }
     }
 }
