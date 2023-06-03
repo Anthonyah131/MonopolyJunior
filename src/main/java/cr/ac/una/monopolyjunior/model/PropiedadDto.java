@@ -19,6 +19,7 @@ public class PropiedadDto {
     private JugadorDto propietario;
 
     public PropiedadDto() {
+        this.id = null;
         this.nombre = "";
         this.precioCompra = 0;
         this.renta = 0;
@@ -28,6 +29,7 @@ public class PropiedadDto {
     }
 
     public PropiedadDto(String nombre, int precioCompra, int renta, int valorHipoteca) {
+        this.id = null;
         this.nombre = nombre;
         this.precioCompra = precioCompra;
         this.renta = renta;

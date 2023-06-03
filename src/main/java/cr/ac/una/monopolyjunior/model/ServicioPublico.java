@@ -14,6 +14,13 @@ public class ServicioPublico extends PropiedadDto {
     public ServicioPublico(String nombre, int precioCompra, int renta, int valorHipoteca) {
         super(nombre, precioCompra, renta, valorHipoteca);
     }
+    
+    public ServicioPublico(Propiedad propiedad) {
+        this.id = propiedad.getProId();
+        this.nombre = propiedad.getProNombre();
+        this.hipotecada = "S".equals(propiedad.getProHipotecada());
+//        setPropietario(propiedad.getJugId());
+    }
 
     public int calcularRenta(int dado, int cantidadServicios) {
         switch (cantidadServicios) {

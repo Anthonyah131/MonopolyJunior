@@ -21,6 +21,13 @@ public class Estacion extends PropiedadDto {
         this.renta3Estaciones = renta3Estaciones;
         this.renta4Estaciones = renta4Estaciones;
     }
+    
+    public Estacion(Propiedad propiedad) {
+        this.id = propiedad.getProId();
+        this.nombre = propiedad.getProNombre();
+        this.hipotecada = "S".equals(propiedad.getProHipotecada());
+//        setPropietario(propiedad.getJugId());
+    }
 
     public int calcularRenta(int numeroEstaciones) {
         int rentaa = 0;

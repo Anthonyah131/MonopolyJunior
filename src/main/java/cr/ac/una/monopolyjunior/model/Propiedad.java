@@ -76,8 +76,8 @@ public class Propiedad implements Serializable {
     public void actualizar(PropiedadDto propiedadDto) {
         this.nombre = propiedadDto.getNombre();
         this.hipotecada = propiedadDto.isHipotecada() ? "S" : "N";
-        this.casas = propiedadDto instanceof Solar ? Long.valueOf(((Solar)propiedadDto).getCasas()) : null;
-        this.hotel = propiedadDto instanceof Solar ? Long.valueOf(((Solar)propiedadDto).getHotel()) : null;
+        this.casas = propiedadDto instanceof Solar ? Long.valueOf(((Solar)propiedadDto).getCasas()) : 0;
+        this.hotel = propiedadDto instanceof Solar ? Long.valueOf(((Solar)propiedadDto).getHotel()) : 0;
     }
 
     public Long getProId() {

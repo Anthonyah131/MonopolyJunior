@@ -1069,15 +1069,127 @@ public class JuegoViewController extends Controller implements Initializable {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Solar", getStage(), "Ocurrio un error guardando el Solar.");
             }
         }
+        for (int i = 0; i < tablero.getPropiedadesEstacion().size(); i++) {
+            try {
+                Estacion estacion = tablero.getPropiedadesEstacion().get(i);
+                if (estacion.tienePropietario()) {
+                    PropiedadService service = new PropiedadService();
+                    Respuesta respuesta = service.guardarEstacion(estacion);
+                    if (!respuesta.getEstado()) {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Estacion", getStage(), respuesta.getMensaje());
+                    } else {
+                        estacion = (Estacion) respuesta.getResultado("Estacion");
+                        tablero.getPropiedadesEstacion().get(i).setId(estacion.getId());
+                    }
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error guardando el Estacion.", ex);
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Estacion", getStage(), "Ocurrio un error guardando el Estacion.");
+            }
+        }
+        for (int i = 0; i < tablero.getPropiedadesServicios().size(); i++) {
+            try {
+                ServicioPublico servicio = tablero.getPropiedadesServicios().get(i);
+                if (servicio.tienePropietario()) {
+                    PropiedadService service = new PropiedadService();
+                    Respuesta respuesta = service.guardarServicio(servicio);
+                    if (!respuesta.getEstado()) {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar ServicioPublico", getStage(), respuesta.getMensaje());
+                    } else {
+                        servicio = (ServicioPublico) respuesta.getResultado("ServicioPublico");
+                        tablero.getPropiedadesServicios().get(i).setId(servicio.getId());
+                    }
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error guardando el ServicioPublico.", ex);
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar ServicioPublico", getStage(), "Ocurrio un error guardando el ServicioPublico.");
+            }
+        }
+    }
+
+    public void eliminarPartida() {
+        try {
+            if (tablero.getId() != null) {
+                TableroService service = new TableroService();
+                Respuesta respuesta = service.eliminarTablero(tablero.getId());
+                if (!respuesta.getEstado()) {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Partida", getStage(), respuesta.getMensaje());
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error eliminando la Partida.", ex);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Partida", getStage(), "Ocurrio un error eliminando la Partida.");
+        }
+    }
+
+    public void eliminarJugadores() {
+        for (int i = 0; i < tablero.getJugadores().size(); i++) {
+            try {
+                if (tablero.getJugadores().get(i).getId() != null) {
+                    JugadorService service = new JugadorService();
+                    Respuesta respuesta = service.eliminarJugador(tablero.getJugadores().get(i).getId());
+                    if (!respuesta.getEstado()) {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Jugadores", getStage(), respuesta.getMensaje());
+                    }
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error eliminando Jugadores.", ex);
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Jugadores", getStage(), "Ocurrio un error eliminando Jugadores.");
+            }
+        }
+        eliminarPartida();
+    }
+
+    public void eliminarPropiedades() {
+        if (tablero.getId() != null) {
+            for (int i = 0; i < tablero.getPropiedadesSolar().size(); i++) {
+                try {
+                    if (tablero.getPropiedadesSolar().get(i).getId() != null) {
+                        PropiedadService service = new PropiedadService();
+                        Respuesta respuesta = service.eliminarPropiedad(tablero.getPropiedadesSolar().get(i).getId());
+                        if (!respuesta.getEstado()) {
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Propiedad", getStage(), respuesta.getMensaje());
+                        }
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error eliminando Propiedad.", ex);
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Propiedad", getStage(), "Ocurrio un error eliminando Propiedad.");
+                }
+            }
+            for (int i = 0; i < tablero.getPropiedadesServicios().size(); i++) {
+                try {
+                    if (tablero.getPropiedadesServicios().get(i).getId() != null) {
+                        PropiedadService service = new PropiedadService();
+                        Respuesta respuesta = service.eliminarPropiedad(tablero.getPropiedadesServicios().get(i).getId());
+                        if (!respuesta.getEstado()) {
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Propiedad", getStage(), respuesta.getMensaje());
+                        }
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error eliminando Propiedad.", ex);
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Propiedad", getStage(), "Ocurrio un error eliminando Propiedad.");
+                }
+            }
+            for (int i = 0; i < tablero.getPropiedadesEstacion().size(); i++) {
+                try {
+                    if (tablero.getPropiedadesEstacion().get(i).getId() != null) {
+                        PropiedadService service = new PropiedadService();
+                        Respuesta respuesta = service.eliminarPropiedad(tablero.getPropiedadesEstacion().get(i).getId());
+                        if (!respuesta.getEstado()) {
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Propiedad", getStage(), respuesta.getMensaje());
+                        }
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(JuegoViewController.class.getName()).log(Level.SEVERE, "Error eliminando Propiedad.", ex);
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Propiedad", getStage(), "Ocurrio un error eliminando Propiedad.");
+                }
+            }
+            eliminarJugadores();
+        }
     }
 
     public void translateAnimation(double duration, Node node, double width) { //Metodo de la animacion
         TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(duration), node);
-        translateTransition.setOnFinished(event -> {
-//            isAnimating = false;
-//            jfxBtnAnt.setDisable(false);
-//            jfxBtnSig.setDisable(false);
-        });
         translateTransition.setByX(width);
         translateTransition.play();
     }

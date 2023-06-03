@@ -10,6 +10,7 @@ import cr.ac.una.monopolyjunior.model.Tablero;
 import cr.ac.una.monopolyjunior.model.TableroDto;
 import cr.ac.una.monopolyjunior.util.EntityManagerHelper;
 import cr.ac.una.monopolyjunior.util.Respuesta;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -76,6 +77,34 @@ public class TableroService {
         } catch (Exception ex) {
             Logger.getLogger(TableroService.class.getName()).log(Level.SEVERE, "Error obteniendo planillas.", ex);
             return new Respuesta(false, "Error obteniendo planillas.", "getPlanillas " + ex.getMessage());
+        }
+    }
+    
+    public Respuesta eliminarTablero(Long id) {
+        try {
+            et = em.getTransaction();
+            et.begin();
+            Tablero tablero;
+            if (id != null && id > 0) {
+                tablero = em.find(Tablero.class, id);
+                if (tablero == null) {
+                    et.rollback();
+                    return new Respuesta(false, "No se encrontró el tablero a eliminar.", "eliminarTablero NoResultException");
+                }
+                em.remove(tablero);
+            } else {
+                et.rollback();
+                return new Respuesta(false, "Debe cargar el tablero a eliminar.", "eliminarTablero NoResultException");
+            }
+            et.commit();
+            return new Respuesta(true, "", "");
+        } catch (Exception ex) {
+            et.rollback();
+            if (ex.getCause() != null && ex.getCause().getCause().getClass() == SQLIntegrityConstraintViolationException.class) {
+                return new Respuesta(false, "No se puede eliminar el tablero porque tiene relaciones con otros registros.", "eliminarTablero " + ex.getMessage());
+            }
+            Logger.getLogger(TableroService.class.getName()).log(Level.SEVERE, "Ocurrio un error al guardar el tablero.", ex);
+            return new Respuesta(false, "Ocurrio un error al eliminar el tablero.", "eliminarTablero " + ex.getMessage());
         }
     }
 }

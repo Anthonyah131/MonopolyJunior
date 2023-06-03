@@ -1003,7 +1003,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
 
         Label lbInfo = new Label("!! Felicidades " + jugadorGanador.getNombre() + ", ganaste la partida");
         lbInfo.getStyleClass().add("NuevaPartida-lbPlayer");
-        
+
         TableView tbvPropiedadesp1 = new TableView();
 
         tbvPropiedadesp1.getColumns().clear();
@@ -1041,12 +1041,12 @@ public class OpcionJugadorViewController extends Controller implements Initializ
                 }
             }
         });
-        
+
         TableView tbvPropiedadesp2 = new TableView();
 
         tbvPropiedadesp2.getColumns().clear();
         tbvPropiedadesp2.getItems().clear();
-        
+
         TableColumn<PropiedadDto, String> tbcNombre2 = new TableColumn<>("Nombre");
         tbcNombre2.setPrefWidth(150);
         tbcNombre2.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
@@ -1096,6 +1096,8 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         JFXButton btnContinuar = new JFXButton("Continuar");
         btnContinuar.getStyleClass().add("carta-button");
         btnContinuar.setOnAction(event -> {
+            JuegoViewController juegoViewController = (JuegoViewController) FlowController.getInstance().getController("JuegoView");
+            juegoViewController.eliminarPropiedades();
             getStage().close();
             FlowController.getInstance().goMain();
         });
@@ -1106,7 +1108,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
         vbox.setSpacing(10);
         stackPane.getChildren().add(vbox);
         rootOpcionJugadorView.getChildren().add(stackPane);
-        
+
         cargarPropiedades(tbvPropiedadesp1, jugador, tablero);
         cargarPropiedades(tbvPropiedadesp2, jugadorGanador, tablero);
     }
