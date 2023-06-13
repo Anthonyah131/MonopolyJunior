@@ -40,7 +40,7 @@ public class CartaViewController extends Controller implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {  // Esta clase muestra las cartas de cada propiedad
         // TODO
     }
 

@@ -75,7 +75,7 @@ public class ConstruirViewController extends Controller implements Initializable
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {  // Acá muestra las propiedades para construir y demoler
 
         tbcNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
         tbcCasas.setCellValueFactory(cd -> new SimpleStringProperty("" + cd.getValue().getCasas()));
@@ -155,7 +155,7 @@ public class ConstruirViewController extends Controller implements Initializable
         tbvPropiedades.refresh();
     }
 
-    public void getPropiedades(JugadorDto jugador, TableroDto tablero, boolean azul, boolean amarillo, boolean rojo, boolean verde) {
+    public void getPropiedades(JugadorDto jugador, TableroDto tablero, boolean azul, boolean amarillo, boolean rojo, boolean verde) {  // Obtiene las propiedades en las que se puedan construir
         propiedades.clear();
         List<Solar> solaresPropios = new ArrayList<>();
 

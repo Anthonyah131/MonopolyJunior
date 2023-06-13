@@ -98,7 +98,7 @@ public class JuegoViewController extends Controller implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) { // Se crean los StackPane del tablero
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
                 StackPane tile = new StackPane();
@@ -127,7 +127,7 @@ public class JuegoViewController extends Controller implements Initializable {
     public void initialize() {
     }
 
-    public void crearTablero(String player1, String ficha1, String player2, String ficha2) {
+    public void crearTablero(String player1, String ficha1, String player2, String ficha2) { // Se cargan los datos de cada jugador y la intefaz
         if (boardAnchor.getChildren().size() >= 2) {
             boardAnchor.getChildren().remove(1);
         }
@@ -142,7 +142,7 @@ public class JuegoViewController extends Controller implements Initializable {
         lbDadoTotal.getStyleClass().add("juegoView-lbDadosTotal");
         JFXButton btnDados = new JFXButton("Lanzar Dados");
         btnDados.getStyleClass().add("juegoView-button");
-        btnDados.setOnAction(event -> {
+        btnDados.setOnAction(event -> { // El metodo de lanzar los dados, con un hilo para la animacion de los dados
             JugadorDto player;
             String id;
 
@@ -161,8 +161,6 @@ public class JuegoViewController extends Controller implements Initializable {
                         for (int i = 0; i < 15; i++) {
                             dadoTirado1 = dado1.lanzar();
                             dadoTirado2 = dado2.lanzar();
-//                            dadoTirado1 = 1;
-//                            dadoTirado2 = 2;
                             String imagePath1 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado1 + ".png";
                             String imagePath2 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado2 + ".png";
 
@@ -248,9 +246,9 @@ public class JuegoViewController extends Controller implements Initializable {
             node.getChildren().addAll(imgPlayer1, imgPlayer2);
         }
         desactivarOpciones();
-    }
+    } 
 
-    public void cargarTablero(TableroDto tableroDto) {
+    public void cargarTablero(TableroDto tableroDto) { // Se carga un tablero ya existente
         tablero = tableroDto;
 
         if (boardAnchor.getChildren().size() >= 2) {
@@ -286,8 +284,6 @@ public class JuegoViewController extends Controller implements Initializable {
                         for (int i = 0; i < 15; i++) {
                             dadoTirado1 = dado1.lanzar();
                             dadoTirado2 = dado2.lanzar();
-//                            dadoTirado1 = 5;
-//                            dadoTirado2 = 6;
                             String imagePath1 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado1 + ".png";
                             String imagePath2 = "cr/ac/una/monopolyjunior/resources/dados/" + dadoTirado2 + ".png";
 
@@ -391,7 +387,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionBtnFinalizarTurno(ActionEvent event) {
+    private void onActionBtnFinalizarTurno(ActionEvent event) { // Comprueba la informacion para pasar al siguiente turno y actualizar la interfaz
         JugadorDto player;
         if (tablero.turnoP1) {
             player = tablero.getJugadores().get(1);
@@ -433,7 +429,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionBtnMiCapital(ActionEvent event) {
+    private void onActionBtnMiCapital(ActionEvent event) {  // Abre una ventana con las propiedades del jugador
         JugadorDto player = null;
         if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
             player = tablero.getJugadores().get(0);
@@ -446,7 +442,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionBtnComprarPropi(ActionEvent event) {
+    private void onActionBtnComprarPropi(ActionEvent event) { // Comprar una propiedad
         JugadorDto player = null;
         if (tablero.turnoP1) {
             player = tablero.getJugadores().get(0);
@@ -457,7 +453,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionBtnVenderPropi(ActionEvent event) {
+    private void onActionBtnVenderPropi(ActionEvent event) {  // Abre una ventana con las propiedades disponibles para la venta
         JugadorDto player = null;
         if (tablero.turnoP1) {
             player = tablero.getJugadores().get(0);
@@ -470,7 +466,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionBtnConstruir(ActionEvent event) {
+    private void onActionBtnConstruir(ActionEvent event) { // Abre una ventana para construir en propiedades disponibles
         JugadorDto player = null;
         if (tablero.turnoP1) {
             player = tablero.getJugadores().get(0);
@@ -481,7 +477,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionBtnHipotecar(ActionEvent event) {
+    private void onActionBtnHipotecar(ActionEvent event) { // Abre una ventana para hipotecar las propiedades disponibles
         JugadorDto player = null;
         if (tablero.turnoP1) {
             player = tablero.getJugadores().get(0);
@@ -494,7 +490,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void btnPagarHipoteca(ActionEvent event) {
+    private void btnPagarHipoteca(ActionEvent event) {  // Abre una ventana para pagar la propiedades hipotecadas
         JugadorDto player = null;
         if (tablero.turnoP1) {
             player = tablero.getJugadores().get(0);
@@ -507,7 +503,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionBtnPagarDeudaMulta(ActionEvent event) {
+    private void onActionBtnPagarDeudaMulta(ActionEvent event) {  // Pagar una multa o deuda si existe
         JugadorDto player = null;
         Boolean bandera = false;
         if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
@@ -525,7 +521,7 @@ public class JuegoViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionBtnFinalizarJuego(ActionEvent event) {
+    private void onActionBtnFinalizarJuego(ActionEvent event) { // Finalizar el juego actual, si se desea guardar la partida o no
         if (new Mensaje().showConfirmation("Finalizar Partida", getStage(), "¿Desea finalizar la partida?")) {
             JugadorDto player = null;
             if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
@@ -550,7 +546,7 @@ public class JuegoViewController extends Controller implements Initializable {
         }
     }
 
-    public void moverFicha(int dadoTirado, String id, JugadorDto player) {
+    public void moverFicha(int dadoTirado, String id, JugadorDto player) { // Mover una ficha por la cantidad de dados tirados
         int posX = player.getPosicionX();
         int posY = player.getPosicionY();
 
@@ -619,10 +615,6 @@ public class JuegoViewController extends Controller implements Initializable {
         }
         System.out.println(player.getNombre() + ": posx " + posX + " : posy " + posY);
 
-//        posX = 8; // Ve a la Carcel
-//        posY = 0; // Ve a la Carcel
-//        posX = 0; // Impuesto
-//        posY = 7; // Impuesto
         if (node != null) {
             ImageView imgFicha = null;
             for (Node child : node.getChildren()) {
@@ -645,7 +637,7 @@ public class JuegoViewController extends Controller implements Initializable {
         tablero.moverJugador(player, posX, posY);
     }
 
-    public void moverFicha(JugadorDto player, int posX, int posY) {
+    public void moverFicha(JugadorDto player, int posX, int posY) { // Mover una ficha a una posicion en especifico
         String id = "";
 
         if (tablero.getJugadores().get(0).getNombre().equals(lbTurno.getText())) {
@@ -687,7 +679,7 @@ public class JuegoViewController extends Controller implements Initializable {
         }
     }
 
-    public void moverFicha(JugadorDto player, String id) {
+    public void moverFicha(JugadorDto player, String id) { // Mover ficha a ultima posicion del jugador guardada
         int posX = player.getPosicionX();
         int posY = player.getPosicionY();
 
@@ -719,7 +711,7 @@ public class JuegoViewController extends Controller implements Initializable {
         }
     }
 
-    public void retrocederFicha(int dadoTirado, JugadorDto player) {
+    public void retrocederFicha(int dadoTirado, JugadorDto player) { // Retroceder ficha la cantidad de posiciones dadas por el dado
         String id = "";
 
         if (tablero.getJugadores().get(0).getNombre().equals(player.getNombre())) {
@@ -740,7 +732,7 @@ public class JuegoViewController extends Controller implements Initializable {
         }
         System.out.println("Dado : " + dadoTirado);
         if (posX >= 1 && posX <= 8 && posY == 8) {
-            posX += dadoTirado;  // Modificación: Cambiar "-" por "+"
+            posX += dadoTirado;
             if (posX > 8) {
                 dadoTirado = posX - 8;
                 posX = 8;
@@ -748,15 +740,15 @@ public class JuegoViewController extends Controller implements Initializable {
                 if (posY < 0) {
                     dadoTirado = posY * -1;
                     posY = 0;
-                    posX -= dadoTirado;  // Modificación: Cambiar "+" por "-"
+                    posX -= dadoTirado;
                 }
             }
         } else if (posX == 0 && posY >= 1 && posY <= 8) {
-            posY += dadoTirado;  // Modificación: Cambiar "-" por "+"
+            posY += dadoTirado;
             if (posY > 8) {
                 dadoTirado = posY - 8;
                 posY = 8;
-                posX -= dadoTirado;  // Modificación: Cambiar "+" por "-"
+                posX -= dadoTirado;
                 if (posX < 0) {
                     dadoTirado = posX * -1;
                     posX = 0;
@@ -764,27 +756,27 @@ public class JuegoViewController extends Controller implements Initializable {
                 }
             }
         } else if (posX >= 0 && posX <= 7 && posY == 0) {
-            posX -= dadoTirado;  // Modificación: Cambiar "+" por "-"
+            posX -= dadoTirado;
             if (posX < 0) {
                 dadoTirado = posX * -1;
                 posX = 0;
-                posY += dadoTirado;  // Modificación: Cambiar "-" por "+"
+                posY += dadoTirado;
                 if (posY > 8) {
                     dadoTirado = posY - 8;
                     posY = 8;
-                    posX += dadoTirado;  // Modificación: Cambiar "-" por "+"
+                    posX += dadoTirado;
                 }
             }
         } else if (posX == 8 && posY >= 0 && posY <= 7) {
-            posY -= dadoTirado;  // Modificación: Cambiar "+" por "-"
+            posY -= dadoTirado;
             if (posY < 0) {
                 dadoTirado = posY * -1;
                 posY = 0;
-                posX += dadoTirado;  // Modificación: Cambiar "-" por "+"
+                posX += dadoTirado;
                 if (posX > 8) {
                     dadoTirado = posX - 8;
                     posX = 8;
-                    posY += dadoTirado;  // Modificación: Cambiar "+" por "-"
+                    posY += dadoTirado;
                 }
             }
         }
@@ -930,7 +922,7 @@ public class JuegoViewController extends Controller implements Initializable {
         }
     }
 
-    public void pasaPorGo() {
+    public void pasaPorGo() { // Se llama este metodo si el usuario pasó por go
         System.out.println("Ups te pasaste Go no olvides tus $200");
 
         JugadorDto jugador;
@@ -979,7 +971,7 @@ public class JuegoViewController extends Controller implements Initializable {
         }
     }
 
-    public void accionCasilla(JugadorDto jugador) {
+    public void accionCasilla(JugadorDto jugador) { // Se llama este metodo cada que el usuario quiera realizar una acción de la casilla donde se encuentra
         Casilla casilla = tablero.getCasillaActual(jugador);
         casilla.accion(jugador, banca, tablero, getStage(), dadoTirado1 + dadoTirado2);
         actualizarDatosInterfaz(jugador);

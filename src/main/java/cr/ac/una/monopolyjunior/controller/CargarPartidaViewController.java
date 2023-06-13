@@ -57,11 +57,10 @@ public class CargarPartidaViewController extends Controller implements Initializ
         cargarPartidas();
     }
 
-    private void cargarPartidas() {
+    private void cargarPartidas() {  // Busca partidas guardadas y si la hay las carga y muestra
         vboxContenedor.getChildren().clear();
         TableroService service = new TableroService();
         Respuesta respuesta = service.getTableros();
-//        scroll.getStyleClass().add("CargarPartidaView-FondoTransparente");
         scroll.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
         rootScroll.getStyleClass().add("CargarPartidaView-FondoTransparente");
 

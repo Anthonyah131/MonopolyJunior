@@ -7,7 +7,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-06-03T16:04:19", comments="EclipseLink-2.7.9.v20210604-rNA")
+@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-06-13T09:04:49", comments="EclipseLink-2.7.9.v20210604-rNA")
 @StaticMetamodel(Jugador.class)
 public class Jugador_ { 
 

@@ -56,7 +56,7 @@ public class VenderViewController extends Controller implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {  // Permite ver la interfaz de vender, Hipotecar o pagar Hipotecas 
         // TODO
     }
 

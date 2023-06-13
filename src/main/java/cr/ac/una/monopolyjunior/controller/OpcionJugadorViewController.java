@@ -51,7 +51,7 @@ public class OpcionJugadorViewController extends Controller implements Initializ
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) { // Esta clase muestra diferentes opciones de interfaz para el usuario
         // TODO
     }
 
